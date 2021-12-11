@@ -24,7 +24,10 @@ INCLUDES 	:= $(wildcard $(SRCDIR)/*.h)
 OBJECTS 	:= $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 # targets
-build: $(OBJDIR) $(TARGET)
+build: tags $(OBJDIR) $(TARGET)
+
+tags:
+	ctags -R src/
 
 $(BINDIR)/$(TARGET): $(OBJECTS)
 	$(LINKER) $(OBJECTS) $(LFLAGS) $(CSFLAGS) -o $@

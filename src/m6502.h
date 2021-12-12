@@ -9,7 +9,8 @@
  *
  * Emulates the functionality of a MOS technology 6502 processor. The 
  * reference documentation for the implementation is from 
- * https://eater.net/datasheets/w65c02s.pdf (Accessed 2021-12-10). 
+ * https://www.masswerk.at/6502/6502_instruction_set.html 
+ * (Accessed 2021-12-12).
  *
  * Author: Henrik A. Glass
  *
@@ -84,6 +85,12 @@ const u8 STATUS_MASK_UNUSED = 0b00100000; //
 const u8 STATUS_MASK_V      = 0b01000000; // oVerflow
 const u8 STATUS_MASK_N      = 0b10000000; // Negative
 
+struct AddrDataPair 
+{
+    u8  data;
+    u16 addr;
+};
+
 /*
  * Instruction set
  */
@@ -117,6 +124,23 @@ struct Cpu
 
     // Memory is included for simplicity.
     Memory mem;
+
+    /*
+     * Memory access per addressing mode.
+     */
+    AddrDataPair addr_acc();
+    AddrDataPair addr_abs();
+    AddrDataPair addr_abs_X();
+    AddrDataPair addr_abs_Y();
+    AddrDataPair addr_imm();
+    AddrDataPair addr_impl();
+    AddrDataPair addr_ind();
+    AddrDataPair addr_X_ind();
+    AddrDataPair addr_ind_Y();
+    AddrDataPair addr_rel();
+    AddrDataPair addr_zpg();
+    AddrDataPair addr_zpg_X();
+    AddrDataPair addr_zpg_Y();
 
     // reset
     void reset();

@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "typedefs.h"
+#include "memory.h"
 
 /*****************************************************************************
  *
@@ -17,63 +18,6 @@
  *****************************************************************************/
 
 /*
- * Layout proposed by Rockwell and implemented by most: 
- * <https://www.csh.rit.edu/~moffitt/docs/6502.html#MEM_MAP>
- */
-const u16 ZERO_PAGE_LOW   = 0x0000;
-const u16 ZERO_PAGE_HIGH  = 0x00FF;
-const u16 STACK_PAGE_LOW  = 0x0100;
-const u16 STACK_PAGE_HIGH = 0x01FF;
-const u16 FREE_RAM_LOW    = 0x0200;
-const u16 FREE_RAM_HIGH   = 0x3FFF;
-const u16 IO_MEM_LOW      = 0x4000;
-const u16 IO_MEM_HIGH     = 0x7FFF;
-const u16 FREE_ROM_LOW    = 0x8000;
-const u16 FREE_ROM_HIGH   = 0xFFF9;
-const u16 NMI_VECTOR      = 0xFFFA; 
-const u16 RESET_VECTOR    = 0xFFFC; // TODO implement at 0xFCE2;
-const u16 IRQ_BRK_VECTOR  = 0xFFFE;
-
-/*
- * A general purpose memory.
- */
-struct Memory 
-{
-    
-    Memory()
-    {
-        printf("MEM init.\n");
-        data = new u8[0xFFFF + 1];
-        memset(data, 0, (0xFFFF + 1) * sizeof(u8)); // Not really neccessary.
-        data[RESET_VECTOR]     =  FREE_ROM_LOW & 0x00FF; // TODO temporary
-        data[RESET_VECTOR + 1] = (FREE_ROM_LOW & 0xFF00) >> 8; 
-    }
-
-    ~Memory()
-    {
-        delete[] data;
-    }
-
-    // 8-bit data bus --> byte-aligned array.
-    u8 *data;
-
-    // read/write
-    u8  operator[](u16 address) const 
-    {
-        return data[address];
-    }
-    u8 &operator[](u16 address) 
-    {
-        return data[address];
-    }
-
-    /*
-     * Loads memory from file at specified offset.
-     */
-    void load_from_file(char *path, u16 offset);
-};
-
-/*
  * Status register layout
  */
 const u8 STATUS_MASK_C      = 0b00000001; // Carry
@@ -85,16 +29,11 @@ const u8 STATUS_MASK_UNUSED = 0b00100000; //
 const u8 STATUS_MASK_V      = 0b01000000; // oVerflow
 const u8 STATUS_MASK_N      = 0b10000000; // Negative
 
-struct AddrDataPair 
-{
-    u8  data;
-    u16 addr;
-};
 
 /*
  * Instruction set
  */
-enum Instruction 
+enum TTInstruction 
 {
     BRK     = 0x00,
     NOP     = 0xEA,
@@ -110,6 +49,8 @@ enum Instruction
  */
 struct Cpu 
 {
+    Cpu();
+
     // Program counter
     u16 PC;
 
@@ -124,23 +65,6 @@ struct Cpu
 
     // Memory is included for simplicity.
     Memory mem;
-
-    /*
-     * Memory access per addressing mode.
-     */
-    AddrDataPair addr_acc();
-    AddrDataPair addr_abs();
-    AddrDataPair addr_abs_X();
-    AddrDataPair addr_abs_Y();
-    AddrDataPair addr_imm();
-    AddrDataPair addr_impl();
-    AddrDataPair addr_ind();
-    AddrDataPair addr_X_ind();
-    AddrDataPair addr_ind_Y();
-    AddrDataPair addr_rel();
-    AddrDataPair addr_zpg();
-    AddrDataPair addr_zpg_X();
-    AddrDataPair addr_zpg_Y();
 
     // reset
     void reset();

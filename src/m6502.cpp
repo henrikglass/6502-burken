@@ -28,7 +28,7 @@ u8 Cpu::fetch_execute_next()
     auto op = op_table[opcode];
     
     // execute
-    u8 cycles_taken = op.perform(this);
+    u8 cycles_taken = op.execute(this);
 
     // return # of elapsed cpu cycles
     return cycles_taken;

@@ -32,7 +32,7 @@ struct Operation
 {
     u8 (*instr)(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu * cpu)); // instr.
     AddrModeRet (*addr_mode)(Cpu *cpu); // addressing mode.
-    u8 perform(Cpu *cpu) 
+    u8 execute(Cpu *cpu) 
     {
         return instr(cpu, addr_mode);
     }

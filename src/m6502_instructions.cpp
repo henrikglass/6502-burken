@@ -1,36 +1,275 @@
 
 #include "m6502.h"
 
-u8 op_brk(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+/*
+ * Temporary. TODO remove.
+ */
+void not_implemented() 
 {
-    printf("Hit BRK instruction. Exit for now.\n");
-    exit(0); // TODO implement correctly
-    return 0;
+    printf("Instruction not yet implemented. Exiting.");
+    exit(0);
 }
 
-u8 op_ora(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
-{
 
-    printf("Hit BRK instruction. Exit for now.\n");
-    exit(0); // TODO implement correctly
-    return 0;
-} 
+/******************************************************************************
+ *
+ * Arithmetic & logic
+ *
+ ******************************************************************************/
 
-u8 op_nop(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+// Add with carry
+u8 op_adc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    printf("NOP \n");
+    not_implemented();
     return 1;
 }
 
+// Subtract with carry
+u8 op_sbc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Arithmetic shift left 
+u8 op_asl(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// logical shift right 
+u8 op_lsr(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Rotate left
+u8 op_rol(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Rotate right
+u8 op_ror(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Compare with Cpu->X
+u8 op_cpx(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Compare with Cpu->Y
+u8 op_cpy(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Compare with Cpu->AXX
+u8 op_cmp(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Increment 
+u8 op_inc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Decrement 
+u8 op_dec(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// And  
+u8 op_and(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Or with Cpu->ACC 
+u8 op_ora(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Exclusive or
+u8 op_eor(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Increment Cpu->X
+u8 op_inx(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Increment Cpu->Y
+u8 op_iny(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Decrement Cpu->X
+u8 op_dex(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Decrement Cpu->Y
+u8 op_dey(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+/******************************************************************************
+ *
+ * Memory 
+ *
+ ******************************************************************************/
+
+// Push Cpu->SR onto stack 
+u8 op_php(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Pull Cpu->SR from stack
+u8 op_plp(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Push Cpu->ACC onto stack 
+u8 op_pha(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Pull Cpu->ACC from stack
+u8 op_pla(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Store Cpu->ACC
+u8 op_sta(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Store Cpu->X
+u8 op_stx(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Store Cpu->Y
+u8 op_sty(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Load Cpu->ACC
 u8 op_lda(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-
     printf("LDA ");
     auto res = addr_mode(cpu);
     cpu->ACC = res.data;
     return 2 + res.additional_cycles; // TODO check ??
 }
 
+// Load Cpu->X
+u8 op_ldx(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Load Cpu->Y
+u8 op_ldy(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Transfer Cpu->X --> Cpu->ACC
+u8 op_txa(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Transfer Cpu->Y --> Cpu->ACC
+u8 op_tya(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Transfer Cpu->ACC --> Cpu->X
+u8 op_tax(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Transfer Cpu->ACC --> Cpu->Y
+u8 op_tay(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Transfer Cpu->X --> $(Cpu->SP)
+u8 op_txs(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Transfer $(Cpu->SP) --> Cpu->X
+u8 op_tsx(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+/******************************************************************************
+ *
+ * Branching, Jumps, etc.
+ *
+ ******************************************************************************/
+
+// Jump 
 u8 op_jmp(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
     printf("JMP ");
@@ -38,6 +277,173 @@ u8 op_jmp(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     cpu->PC = res.address;
     return 3 + res.additional_cycles; // TODO check ??
 }
+
+// Jump subroutine
+u8 op_jsr(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Branch on equal
+u8 op_beq(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Branch on not equal
+u8 op_bne(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Branch on overflow set
+u8 op_bvs(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Branch on overflow clear
+u8 op_bvc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Branch on plus 
+u8 op_bpl(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Branch on minus 
+u8 op_bmi(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Branch on carry set
+u8 op_bcs(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Branch on carry clear
+u8 op_bcc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Return from interrupt
+u8 op_rti(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Return from subroutine
+u8 op_rts(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+/******************************************************************************
+ *
+ * Flags & status. 
+ *
+ ******************************************************************************/
+
+// Set carry 
+u8 op_sec(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+} 
+
+// Set decimal
+u8 op_sed(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Set overflow
+u8 op_sev(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// set interrupt disable
+u8 op_sei(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Clear carry
+u8 op_clc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Clear decimal
+u8 op_cld(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Clear overflow
+u8 op_clv(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+// Clear interrupt disable
+u8 op_cli(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;
+}
+
+/******************************************************************************
+ *
+ * Misc.
+ *
+ ******************************************************************************/
+
+// Break
+u8 op_brk(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    printf("Hit BRK instruction. Exit for now.\n");
+    exit(0); // TODO implement correctly
+    return 0;
+} 
+
+// Bit test
+u8 op_bit(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    not_implemented();
+    return 1;    
+}
+
+// No operation
+u8 op_nop(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
+{
+    printf("NOP \n");
+    return 1;
+} 
 
 /*
  * Special instruction for invalid op codes. Exits the program with an error 
@@ -49,6 +455,13 @@ u8 OP_INVALID(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     exit(1);
     return 1; // unreachable
 }
+
+
+/******************************************************************************
+ *
+ * Misc.
+ *
+ ******************************************************************************/
 
 Instruction instruction_table[256];
 

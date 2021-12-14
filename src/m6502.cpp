@@ -1,10 +1,9 @@
 #include <iostream>
 
 #include "m6502.h" 
-#include "instruction_set.h"
 
 Cpu::Cpu() {
-    populate_op_table();
+    populate_instruction_table();
     this->reset();
 }
 
@@ -25,10 +24,10 @@ u8 Cpu::fetch_execute_next()
 {
     // fetch
     u8 opcode = this->mem[this->PC++];
-    auto op = op_table[opcode];
+    auto instr = instruction_table[opcode];
     
     // execute
-    u8 cycles_taken = op.execute(this);
+    u8 cycles_taken = instr.execute(this);
 
     // return # of elapsed cpu cycles
     return cycles_taken;

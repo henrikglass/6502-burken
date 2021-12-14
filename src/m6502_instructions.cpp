@@ -63,7 +63,17 @@ void populate_instruction_table()
         instruction_table[i] = {OP_INVALID, nullptr};
 
     // populate
+    // row 1
     instruction_table[0x00] = {op_brk, addr_impl};
+    instruction_table[0x01] = {op_ora, addr_X_ind};
+    instruction_table[0x05] = {op_ora, addr_zpg};
+    instruction_table[0x06] = {op_asl, addr_zpg};
+    instruction_table[0x08] = {op_php, addr_impl};
+    instruction_table[0x09] = {op_ora, addr_imm};
+    instruction_table[0x0A] = {op_asl, addr_acc};
+    instruction_table[0x0D] = {op_ora, addr_abs};
+    instruction_table[0x0E] = {op_asl, addr_abs};
+
     instruction_table[0x4C] = {op_jmp, addr_abs};
     instruction_table[0xA9] = {op_lda, addr_imm};
     instruction_table[0xEA] = {op_nop, addr_impl};

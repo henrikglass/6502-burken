@@ -202,7 +202,6 @@ u8 op_rts(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Return from subrouti
  */
 u8 op_sec(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Set carry 
 u8 op_sed(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Set decimal
-u8 op_sev(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Set overflow
 u8 op_sei(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // set interrupt disable
 u8 op_clc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Clear carry
 u8 op_cld(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Clear decimal

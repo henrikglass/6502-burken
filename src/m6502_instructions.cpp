@@ -364,57 +364,50 @@ u8 op_rts(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Set carry 
 u8 op_sec(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    cpu->SR |= STATUS_MASK_C;
+    return 2;
 } 
 
 // Set decimal
 u8 op_sed(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
-}
-
-// Set overflow
-u8 op_sev(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
-{
-    not_implemented();
-    return 1;
+    cpu->SR |= STATUS_MASK_D;
+    return 2;
 }
 
 // set interrupt disable
 u8 op_sei(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    cpu->SR |= STATUS_MASK_I;
+    return 2;
 }
 
 // Clear carry
 u8 op_clc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    cpu->SR &= ~STATUS_MASK_C;
+    return 2;
 }
 
 // Clear decimal
 u8 op_cld(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    cpu->SR &= ~STATUS_MASK_D;
+    return 2;
 }
 
 // Clear overflow
 u8 op_clv(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    cpu->SR &= ~STATUS_MASK_V;
+    return 2;
 }
 
 // Clear interrupt disable
 u8 op_cli(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    cpu->SR &= ~STATUS_MASK_I;
+    return 2;
 }
 
 /******************************************************************************

@@ -22,6 +22,11 @@ void Cpu::reset()
 
 u8 Cpu::fetch_execute_next() 
 {
+
+#ifdef DEBUG_PRINTS
+    this->print_status();
+#endif
+
     // fetch
     u8 opcode = this->mem[this->PC++];
     auto instr = instruction_table[opcode];
@@ -35,8 +40,9 @@ u8 Cpu::fetch_execute_next()
 
 void Cpu::print_status() 
 {
-    printf("ACC: %02X\tX: %02X\tY: %02X\n", this->ACC, this->X, this->Y);
+    printf("ACC: 0x%02X\tX: 0x%02X\t\tY: 0x%02X\n", this->ACC, this->X, this->Y);
     printf("PC: %04X\n", this->PC);
+    printf("OP: %s\n", instruction_table[this->mem[this->PC]].mnemonic.c_str());
     printf("CARRY (C):\t%d\tZERO (Z):\t%d\tIRQB (I):\t%d\tDECIMAL (D):\t%d\n", 
             (bool)(this->SR & STATUS_MASK_C),
             (bool)(this->SR & STATUS_MASK_Z),

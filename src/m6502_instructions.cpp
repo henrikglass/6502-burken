@@ -201,7 +201,6 @@ u8 op_sty(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Load Cpu->ACC
 u8 op_lda(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    printf("LDA ");
     auto res = addr_mode(cpu);
     cpu->ACC = res.data;
     return 2 + res.additional_cycles; // TODO check ??
@@ -272,7 +271,6 @@ u8 op_tsx(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Jump 
 u8 op_jmp(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    printf("JMP ");
     auto res = addr_mode(cpu);
     cpu->PC = res.address;
     return 3 + res.additional_cycles; // TODO check ??
@@ -434,7 +432,6 @@ u8 op_bit(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // No operation
 u8 op_nop(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    printf("NOP \n");
     return 1;
 } 
 
@@ -470,18 +467,18 @@ void populate_instruction_table()
 
     // populate
     // row 1
-    instruction_table[0x00] = {op_brk, addr_impl};
-    instruction_table[0x01] = {op_ora, addr_X_ind};
-    instruction_table[0x05] = {op_ora, addr_zpg};
-    instruction_table[0x06] = {op_asl, addr_zpg};
-    instruction_table[0x08] = {op_php, addr_impl};
-    instruction_table[0x09] = {op_ora, addr_imm};
-    instruction_table[0x0A] = {op_asl, addr_acc};
-    instruction_table[0x0D] = {op_ora, addr_abs};
-    instruction_table[0x0E] = {op_asl, addr_abs};
+    instruction_table[0x00] = {op_brk, addr_impl,  "BRK"};
+    instruction_table[0x01] = {op_ora, addr_X_ind, "ORA X,ind"};
+    instruction_table[0x05] = {op_ora, addr_zpg,   "ORA zpg"};
+    instruction_table[0x06] = {op_asl, addr_zpg,   "ASL zpg"};
+    instruction_table[0x08] = {op_php, addr_impl,  "PHP"};
+    instruction_table[0x09] = {op_ora, addr_imm,   "ORA #"};
+    instruction_table[0x0A] = {op_asl, addr_acc,   "ASL A"};
+    instruction_table[0x0D] = {op_ora, addr_abs,   "ORA abs"};
+    instruction_table[0x0E] = {op_asl, addr_abs,   "ASL abs"};
 
-    instruction_table[0x4C] = {op_jmp, addr_abs};
-    instruction_table[0xA9] = {op_lda, addr_imm};
-    instruction_table[0xEA] = {op_nop, addr_impl};
+    instruction_table[0x4C] = {op_jmp, addr_abs,   "JMP abs"};
+    instruction_table[0xA9] = {op_lda, addr_imm,   "LDA #"};
+    instruction_table[0xEA] = {op_nop, addr_impl,  "NOP"};
 }
 

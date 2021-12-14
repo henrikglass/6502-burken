@@ -16,7 +16,6 @@
  */
 AddrModeRet addr_acc(Cpu *cpu)
 {
-    printf("ACC\n");
     return {0, cpu->ACC, 0xFFFF}; 
 }
 
@@ -27,7 +26,6 @@ AddrModeRet addr_acc(Cpu *cpu)
  */
 AddrModeRet addr_abs(Cpu *cpu)
 {
-    printf("ABS\n");
     u8 ll = cpu->mem[cpu->PC++];
     u8 hh = cpu->mem[cpu->PC++];
     u16 addr = (hh << 8) + ll;
@@ -42,7 +40,6 @@ AddrModeRet addr_abs(Cpu *cpu)
  */
 AddrModeRet addr_abs_X(Cpu *cpu)
 {
-    printf("ABS_X\n");
     u8 ll = cpu->mem[cpu->PC++];
     u8 hh = cpu->mem[cpu->PC++];
     u16 addr = (hh << 8) + ll + cpu->X;
@@ -57,7 +54,6 @@ AddrModeRet addr_abs_X(Cpu *cpu)
  */
 AddrModeRet addr_abs_Y(Cpu *cpu)
 {
-    printf("ABS_Y\n");
     u8 ll = cpu->mem[cpu->PC++];
     u8 hh = cpu->mem[cpu->PC++];
     u16 addr = (hh << 8) + ll + cpu->Y;
@@ -72,7 +68,6 @@ AddrModeRet addr_abs_Y(Cpu *cpu)
  */
 AddrModeRet addr_imm(Cpu *cpu)
 {
-    printf("IMM\n");
     u16 addr = cpu->PC++;
     u8 data = cpu->mem[addr];
     return {0, data, addr}; // TODO # cycles
@@ -87,7 +82,6 @@ AddrModeRet addr_imm(Cpu *cpu)
  */
 AddrModeRet addr_impl(Cpu *cpu)
 {
-    printf("IMPL\n");
     return {0, 0xFF, 0xFFFF};
 }
 
@@ -99,7 +93,6 @@ AddrModeRet addr_impl(Cpu *cpu)
  */
 AddrModeRet addr_ind(Cpu *cpu)
 {
-    printf("IND\n");
     u8 ll = cpu->mem[cpu->PC++];
     u8 hh = cpu->mem[cpu->PC++];
     u16 addr = (hh << 8) + ll;
@@ -118,7 +111,6 @@ AddrModeRet addr_ind(Cpu *cpu)
  */
 AddrModeRet addr_X_ind(Cpu *cpu)
 {
-    printf("X_IND\n");
     u8 ll = cpu->mem[cpu->PC++];
     u8 hh = 0x00;                         // zero page
     ll = (ll + cpu->X);                  // No carry!
@@ -138,7 +130,6 @@ AddrModeRet addr_X_ind(Cpu *cpu)
  */
 AddrModeRet addr_ind_Y(Cpu *cpu)
 {
-    printf("IND_Y\n");
     u8 ll = cpu->mem[cpu->PC++];
     u8 hh = 0x00;                        // zero page
     u16 zp_addr = ll;
@@ -156,7 +147,6 @@ AddrModeRet addr_ind_Y(Cpu *cpu)
  */
 AddrModeRet addr_rel(Cpu *cpu)
 {
-    printf("REL\n");
     u8 offset = cpu->mem[cpu->PC++];
     u16 addr = cpu->PC + offset;        // last PC or cpu? 
     u8 data = cpu->mem[addr]; 
@@ -170,7 +160,6 @@ AddrModeRet addr_rel(Cpu *cpu)
  */
 AddrModeRet addr_zpg(Cpu *cpu)
 {
-    printf("ZPG\n");
     u8 ll = cpu->mem[cpu->PC++];
     u16 addr = ll;
     u8 data = cpu->mem[addr];
@@ -185,7 +174,6 @@ AddrModeRet addr_zpg(Cpu *cpu)
  */
 AddrModeRet addr_zpg_X(Cpu *cpu)
 {
-    printf("ZPG_X\n");
     u8 ll = cpu->mem[cpu->PC++];
     u16 addr = ll + cpu->X; // TODO check add done in 8 bit space?
     u8 data = cpu->mem[addr];
@@ -200,7 +188,6 @@ AddrModeRet addr_zpg_X(Cpu *cpu)
  */
 AddrModeRet addr_zpg_Y(Cpu *cpu)
 {
-    printf("ZPG_Y\n");
     u8 ll = cpu->mem[cpu->PC++];
     u16 addr = ll + cpu->Y;
     u8 data = cpu->mem[addr];

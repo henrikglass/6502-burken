@@ -4,11 +4,9 @@ TARGET 	= 6502-emul
 # compiler
 CC 		= g++
 
-# compiler specific flags
-CSFLAGS = #-fopenmp # gcc
-
 # other flags
 CFLAGS 	= -O2 -std=c++2a -Wall -pedantic -march=native #-pg -g
+DEBUG_FLAGS = -DDEBUG_PRINTS
 
 # linker
 LINKER 	= g++
@@ -30,10 +28,10 @@ tags:
 	ctags -R src/
 
 $(BINDIR)/$(TARGET): $(OBJECTS)
-	$(LINKER) $(OBJECTS) $(LFLAGS) $(CSFLAGS) -o $@
+	$(LINKER) $(OBJECTS) $(LFLAGS) -o $@
 
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
-	$(CC) $(CFLAGS) $(CSFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(DEBUG_FLAGS) -c $< -o $@
 
 $(OBJDIR):
 	mkdir $(OBJDIR)

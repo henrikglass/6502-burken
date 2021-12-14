@@ -25,12 +25,12 @@ int main()
 
     // print memory contents
     for(int i = 0x8000; i < 0x801A; i++) {
-        printf("%02X ", cpu.mem[i]);
+        printf("0x%04X    0x%02X -- %s\n", i, cpu.mem[i], instruction_table[cpu.mem[i]].mnemonic.c_str());
     }
     printf("\n\n\n");
 
+    // enter infinite fetch (decode) execute loop
     for(;;) {
-        cpu.print_status();
         u8 cycles = cpu.fetch_execute_next();
         std::this_thread::sleep_for(std::chrono::milliseconds(cycles*50));
     }

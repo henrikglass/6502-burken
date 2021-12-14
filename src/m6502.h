@@ -60,16 +60,16 @@ struct Cpu
     Cpu();
 
     // Program counter
-    u16 PC;
+    u16 PC=0xFF;
 
     // Accumulator and index registers 
-    u8  ACC, X, Y;
+    u8  ACC=0xFF, X=0xFF, Y=0xFF;
     
     // Process status register
-    u8  SR;
+    u8  SR=0xFF;
 
     // Stack pointer
-    u16  SP;
+    u16  SP=0xFFFF;
 
     // Memory is included for simplicity.
     Memory mem;
@@ -126,12 +126,14 @@ AddrModeRet addr_zpg_Y(Cpu *cpu);
 /*
  * Represents a table entry in the Instruction table. The first element is a 
  * function pointer to an operation function. The second element is a 
- * function pointer to an addressing mode function.
+ * function pointer to an addressing mode function. The third element is
+ * a mnemonic.
  */
 struct Instruction
 {
     u8 (*op)(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu * cpu)); // instr.
     AddrModeRet (*addr_mode)(Cpu *cpu); // addressing mode.
+    std::string mnemonic;
     u8 execute(Cpu *cpu) 
     {
         return op(cpu, addr_mode); // Apply operation with chosen addressing mode

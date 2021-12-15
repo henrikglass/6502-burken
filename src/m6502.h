@@ -42,34 +42,35 @@ enum TTInstruction
 /*
  * Status register layout
  */
-const u8 STATUS_MASK_C      = 0b00000001; // Carry
-const u8 STATUS_MASK_Z      = 0b00000010; // Zero
-const u8 STATUS_MASK_I      = 0b00000100; // block IRQ interrupts
-const u8 STATUS_MASK_D      = 0b00001000; // Decimal mode
-const u8 STATUS_MASK_B      = 0b00010000; // BRK was executed
-const u8 STATUS_MASK_UNUSED = 0b00100000; //
-const u8 STATUS_MASK_V      = 0b01000000; // oVerflow
-const u8 STATUS_MASK_N      = 0b10000000; // Negative
+const u8 BIT_C      = 0; // Carry
+const u8 BIT_Z      = 1; // Zero
+const u8 BIT_I      = 2; // block IRQ interrupts
+const u8 BIT_D      = 3; // Decimal mode
+const u8 BIT_B      = 4; // BRK was executed
+const u8 BIT_UNUSED = 5; //
+const u8 BIT_V      = 6; // oVerflow
+const u8 BIT_N      = 7; // Negative
 
 
 /*
  * A 6502 cpu.
+ *
  */
 struct Cpu 
 {
     Cpu();
 
     // Program counter
-    u16 PC=0xFF;
+    u16 PC = 0x00;
 
     // Accumulator and index registers 
-    u8  ACC=0xFF, X=0xFF, Y=0xFF;
+    u8 ACC = 0x00, X = 0x00, Y = 0x00;
     
     // Process status register
-    u8  SR=0xFF;
+    u8 SR = 0x00;
 
     // Stack pointer
-    u16  SP=0xFFFF;
+    u16 SP = 0x0000;
 
     // Memory is included for simplicity.
     Memory mem;

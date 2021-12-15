@@ -38,3 +38,4 @@ $(OBJDIR):
 
 clean:
 	rm $(BINDIR)/$(TARGET) & rm $(OBJDIR)/*.o
+	rm tags

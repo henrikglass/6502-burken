@@ -10,6 +10,22 @@ void not_implemented()
     exit(0);
 }
 
+/*
+ * Few helper functions
+ */
+u8 get_status_bit(Cpu *cpu, u8 bit_pos) 
+{
+    return (cpu->SR & (1 << bit_pos)) >> bit_pos;
+}
+
+void set_status_bit(Cpu *cpu, u8 bit_pos, bool value) 
+{
+    u8 mask = (1 << bit_pos);
+    if (value == HIGH)
+        cpu->SR |= mask;
+    else
+        cpu->SR &= ~mask; 
+}
 
 /******************************************************************************
  *
@@ -20,8 +36,21 @@ void not_implemented()
 // Add with carry
 u8 op_adc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    auto fetched = addr_mode(cpu);
+    u16 acc      = (u16) cpu->ACC; 
+    u16 oper     = (u16) fetched.data; 
+    u16 carry    = (u16) get_status_bit(cpu, BIT_C);
+
+    // perform operation in 16-bit space to capture potential carry bit
+    u16 res = acc + oper + carry;
+
+    set_status_bit(cpu, BIT_C, (bool) (res >> 8));
+    set_status_bit(cpu, BIT_N, (bool) ((res && 0xFF) >> 7));
+    set_status_bit(cpu, BIT_Z, (bool) ((res && 0xFF) == 0));
+    // TODO overflow flag
+
+    cpu->ACC = (u8) (res & 0xFF);
+    return 1 + fetched.additional_cycles;
 }
 
 // Subtract with carry
@@ -362,49 +391,49 @@ u8 op_rts(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Set carry 
 u8 op_sec(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    cpu->SR |= STATUS_MASK_C;
+    set_status_bit(cpu, BIT_C, HIGH);
     return 2;
 } 
 
 // Set decimal
 u8 op_sed(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    cpu->SR |= STATUS_MASK_D;
+    set_status_bit(cpu, BIT_D, HIGH);
     return 2;
 }
 
 // set interrupt disable
 u8 op_sei(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    cpu->SR |= STATUS_MASK_I;
+    set_status_bit(cpu, BIT_I, HIGH);
     return 2;
 }
 
 // Clear carry
 u8 op_clc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    cpu->SR &= ~STATUS_MASK_C;
+    set_status_bit(cpu, BIT_C, LOW);
     return 2;
 }
 
 // Clear decimal
 u8 op_cld(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    cpu->SR &= ~STATUS_MASK_D;
+    set_status_bit(cpu, BIT_D, LOW);
     return 2;
 }
 
 // Clear overflow
 u8 op_clv(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    cpu->SR &= ~STATUS_MASK_V;
+    set_status_bit(cpu, BIT_V, LOW);
     return 2;
 }
 
 // Clear interrupt disable
 u8 op_cli(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    cpu->SR &= ~STATUS_MASK_I;
+    set_status_bit(cpu, BIT_I, LOW);
     return 2;
 }
 
@@ -476,7 +505,11 @@ void populate_instruction_table()
     instruction_table[0x0A] = {op_asl, addr_acc,   "ASL A"};
     instruction_table[0x0D] = {op_ora, addr_abs,   "ORA abs"};
     instruction_table[0x0E] = {op_asl, addr_abs,   "ASL abs"};
+    
+    // row 2
+    instruction_table[0x18] = {op_clc, addr_impl,   "CLC"};
 
+    instruction_table[0x69] = {op_adc, addr_imm,   "ADC #"};
     instruction_table[0x4C] = {op_jmp, addr_abs,   "JMP abs"};
     instruction_table[0xA9] = {op_lda, addr_imm,   "LDA #"};
     instruction_table[0xEA] = {op_nop, addr_impl,  "NOP"};

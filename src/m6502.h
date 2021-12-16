@@ -97,7 +97,7 @@ struct Cpu
 struct AddrModeRet
 {
     u8  additional_cycles;
-    u8  data;
+    u8 *data_ptr;
     u16 address;
 };
 

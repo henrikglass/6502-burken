@@ -16,7 +16,7 @@
  */
 AddrModeRet addr_acc(Cpu *cpu)
 {
-    return {0, cpu->ACC, 0xFFFF}; 
+    return {1, &(cpu->ACC), 0xFFFF}; 
 }
 
 /*
@@ -29,8 +29,8 @@ AddrModeRet addr_abs(Cpu *cpu)
     u8 ll = cpu->mem[cpu->PC++];
     u8 hh = cpu->mem[cpu->PC++];
     u16 addr = (hh << 8) + ll;
-    u8 data  = cpu->mem[addr];
-    return {0, data, addr}; // TODO # cycles
+    u8 *data_ptr = &(cpu->mem[addr]); // TODO 
+    return {3, data_ptr, addr}; // TODO # cycles
 }
 
 /*
@@ -43,8 +43,8 @@ AddrModeRet addr_abs_X(Cpu *cpu)
     u8 ll = cpu->mem[cpu->PC++];
     u8 hh = cpu->mem[cpu->PC++];
     u16 addr = (hh << 8) + ll + cpu->X;
-    u8 data = cpu->mem[addr];
-    return {0, data, addr}; // TODO # cycles
+    u8 *data_ptr = &(cpu->mem[addr]); // TODO 
+    return {3, data_ptr, addr}; // TODO # cycles
 }
 
 /*
@@ -57,8 +57,8 @@ AddrModeRet addr_abs_Y(Cpu *cpu)
     u8 ll = cpu->mem[cpu->PC++];
     u8 hh = cpu->mem[cpu->PC++];
     u16 addr = (hh << 8) + ll + cpu->Y;
-    u8 data = cpu->mem[addr];
-    return {0, data, addr}; // TODO # cycles
+    u8 *data_ptr = &(cpu->mem[addr]); // TODO 
+    return {3, data_ptr, addr}; // TODO # cycles
 }
 
 /*
@@ -69,20 +69,8 @@ AddrModeRet addr_abs_Y(Cpu *cpu)
 AddrModeRet addr_imm(Cpu *cpu)
 {
     u16 addr = cpu->PC++;
-    u8 data = cpu->mem[addr];
-    return {0, data, addr}; // TODO # cycles
-}
-
-/*
- * impl --- implied --- OPC
- *
- * Operand implied.
- *
- * @NotImplemented
- */
-AddrModeRet addr_impl(Cpu *cpu)
-{
-    return {0, 0xFF, 0xFFFF};
+    u8 *data_ptr = &(cpu->mem[addr]); // don't write to this... 
+    return {1, data_ptr, addr}; // TODO # cycles
 }
 
 /*
@@ -99,8 +87,8 @@ AddrModeRet addr_ind(Cpu *cpu)
     ll = cpu->mem[addr];
     hh = cpu->mem[addr + 1];
     addr = (hh << 8) + ll + cpu->Y;
-    u8 data = cpu->mem[addr];
-    return {0, data, addr}; // TODO # cycles
+    u8 *data_ptr = &(cpu->mem[addr]); // TODO 
+    return {0, data_ptr, addr}; // TODO # cycles
 }
 
 /*
@@ -118,8 +106,8 @@ AddrModeRet addr_X_ind(Cpu *cpu)
     ll = cpu->mem[zp_addr];
     hh = cpu->mem[zp_addr + 1];
     u16 addr = (hh << 8) + ll;
-    u8  data = cpu->mem[addr];
-    return {0, data, addr}; // TODO # cycles
+    u8 *data_ptr = &(cpu->mem[addr]); // TODO 
+    return {0, data_ptr, addr}; // TODO # cycles
 }
 
 /*
@@ -136,8 +124,8 @@ AddrModeRet addr_ind_Y(Cpu *cpu)
     ll = cpu->mem[zp_addr];
     hh = cpu->mem[zp_addr + 1];
     u16 addr = (hh << 8) + ll + cpu->Y; // with carry
-    u8  data = cpu->mem[addr];
-    return {0, data, addr}; // TODO # cycles
+    u8 *data_ptr = &(cpu->mem[addr]); // TODO 
+    return {0, data_ptr, addr}; // TODO # cycles
 }
 
 /*
@@ -149,8 +137,8 @@ AddrModeRet addr_rel(Cpu *cpu)
 {
     u8 offset = cpu->mem[cpu->PC++];
     u16 addr = cpu->PC + offset;        // last PC or cpu? 
-    u8 data = cpu->mem[addr]; 
-    return {0, data, addr}; // TODO # cycles
+    u8 *data_ptr = &(cpu->mem[addr]); // TODO 
+    return {0, data_ptr, addr}; // TODO # cycles
 }
 
 /*
@@ -162,8 +150,8 @@ AddrModeRet addr_zpg(Cpu *cpu)
 {
     u8 ll = cpu->mem[cpu->PC++];
     u16 addr = ll;
-    u8 data = cpu->mem[addr];
-    return {0, data, addr}; // TODO # cycles
+    u8 *data_ptr = &(cpu->mem[addr]); // TODO 
+    return {0, data_ptr, addr}; // TODO # cycles
 }
 
 /*
@@ -176,8 +164,8 @@ AddrModeRet addr_zpg_X(Cpu *cpu)
 {
     u8 ll = cpu->mem[cpu->PC++];
     u16 addr = ll + cpu->X; // TODO check add done in 8 bit space?
-    u8 data = cpu->mem[addr];
-    return {0, data, addr}; // TODO # cycles
+    u8 *data_ptr = &(cpu->mem[addr]); // TODO 
+    return {0, data_ptr, addr}; // TODO # cycles
 }
 
 /*
@@ -190,7 +178,7 @@ AddrModeRet addr_zpg_Y(Cpu *cpu)
 {
     u8 ll = cpu->mem[cpu->PC++];
     u16 addr = ll + cpu->Y;
-    u8 data = cpu->mem[addr];
-    return {0, data, addr}; // TODO # cycles
+    u8 *data_ptr = &(cpu->mem[addr]); // TODO 
+    return {0, data_ptr, addr}; // TODO # cycles
 }
 

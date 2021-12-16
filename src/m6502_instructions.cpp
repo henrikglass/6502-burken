@@ -11,8 +11,11 @@ void not_implemented()
 }
 
 /*
- * Few helper functions
+ * Few helper functions and constants
  */
+const u8 MSB_MASK = 0b1000000;
+const u8 LSB_MASK = 0b0000001;
+
 u8 get_status_bit(Cpu *cpu, u8 bit_pos) 
 {
     return (cpu->SR & (1 << bit_pos)) >> bit_pos;
@@ -27,9 +30,26 @@ void set_status_bit(Cpu *cpu, u8 bit_pos, bool value)
         cpu->SR &= ~mask; 
 }
 
+u8 generic_compare(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu), u8 register_value)
+{
+    // TODO test
+    auto fetched = addr_mode(cpu);
+    u8 m = *(fetched.data_ptr);
+
+    u8 res = register_value - m;
+
+    set_status_bit(cpu, BIT_C, (register_value > m));
+    set_status_bit(cpu, BIT_N, (res >> 7));
+    set_status_bit(cpu, BIT_Z, (res == 0));
+
+    return 1 + fetched.additional_cycles; // TODO add 1?
+}
+
 /******************************************************************************
  *
  * Arithmetic & logic
+ *
+ * TODO remove unnecessary parentheses. 
  *
  ******************************************************************************/
 
@@ -37,17 +57,17 @@ void set_status_bit(Cpu *cpu, u8 bit_pos, bool value)
 u8 op_adc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
     auto fetched = addr_mode(cpu);
-    u16 acc      = (u16) cpu->ACC; 
-    u16 oper     = (u16) fetched.data; 
-    u16 carry    = (u16) get_status_bit(cpu, BIT_C);
+    u16 a = (u16) cpu->ACC; 
+    u16 m = (u16) *(fetched.data_ptr); 
+    u16 c = (u16) get_status_bit(cpu, BIT_C);
 
-    // perform operation in 16-bit space to capture potential carry bit
-    u16 res = acc + oper + carry;
+    // op: perform operation in 16-bit space to capture potential carry bit
+    u16 res = a + m + c;
 
-    set_status_bit(cpu, BIT_C, (bool) (res >> 8));
-    set_status_bit(cpu, BIT_N, (bool) ((res && 0xFF) >> 7));
-    set_status_bit(cpu, BIT_Z, (bool) ((res && 0xFF) == 0));
-    // TODO overflow flag
+    set_status_bit(cpu, BIT_C, (res >> 8));
+    set_status_bit(cpu, BIT_N, ((res && 0xFF) >> 7));
+    set_status_bit(cpu, BIT_Z, ((res && 0xFF) == 0));
+    set_status_bit(cpu, BIT_V, ((~(a ^ m)) & (a ^ c) & 0x80)); // Thanks https://stackoverflow.com/a/16861251/5350029
 
     cpu->ACC = (u8) (res & 0xFF);
     return 1 + fetched.additional_cycles;
@@ -56,92 +76,202 @@ u8 op_adc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Subtract with carry
 u8 op_sbc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    // TODO test
+    auto fetched = addr_mode(cpu);
+    u16 a = (u16) cpu->ACC; 
+    u16 m = (u16) *(fetched.data_ptr); 
+    u16 c = (u16) get_status_bit(cpu, BIT_C);
+    
+    // op: same as op_adc but we flip b
+    u16 res = a + (m ^ 0xFF) + c;
+
+    set_status_bit(cpu, BIT_C, (res >> 8));
+    set_status_bit(cpu, BIT_N, ((res && 0xFF) >> 7));
+    set_status_bit(cpu, BIT_Z, ((res && 0xFF) == 0));
+    set_status_bit(cpu, BIT_V, ((~(a ^ m)) & (a ^ c) & 0x80)); // Thanks https://stackoverflow.com/a/16861251/5350029
+    cpu->ACC = (u8) (res & 0xFF);
+
+    return 1 + fetched.additional_cycles;
 }
 
 // Arithmetic shift left 
 u8 op_asl(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    // TODO test
+    auto fetched = addr_mode(cpu);
+    u16 m = (u16) *(fetched.data_ptr);
+
+    // op
+    u16 res = m << 1;
+
+    set_status_bit(cpu, BIT_C, (res >> 8));
+    set_status_bit(cpu, BIT_N, ((res && 0xFF) >> 7));
+    set_status_bit(cpu, BIT_Z, ((res && 0xFF) == 0));
+    *(fetched.data_ptr) = (u8) (res & 0xFF);
+
+    return 1 + fetched.additional_cycles;
 }
 
 // logical shift right 
 u8 op_lsr(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    // TODO test
+    auto fetched = addr_mode(cpu);
+    u8 m = *(fetched.data_ptr);
+
+    // op
+    u8 res = m >> 1;
+
+    set_status_bit(cpu, BIT_C, (bool) (m & 1));
+    set_status_bit(cpu, BIT_N, LOW);
+    set_status_bit(cpu, BIT_Z, (res == 0));
+    *(fetched.data_ptr) = res;
+
+    return 1 + fetched.additional_cycles;
 }
 
 // Rotate left
 u8 op_rol(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    // TODO test
+    auto fetched = addr_mode(cpu);
+    u16 m = (u16) *(fetched.data_ptr);
+    u16 c = get_status_bit(cpu, BIT_C);
+
+    // op
+    u16 res = (m << 1) + c;
+
+    set_status_bit(cpu, BIT_C, (res >> 8));
+    set_status_bit(cpu, BIT_N, ((res && 0xFF) >> 7));
+    set_status_bit(cpu, BIT_Z, ((res && 0xFF) == 0));
+    *(fetched.data_ptr) = (u8) (res & 0xFF);
+
+    return 1 + fetched.additional_cycles;
 }
 
 // Rotate right
 u8 op_ror(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    // TODO test
+    auto fetched = addr_mode(cpu);
+    u8 m = *(fetched.data_ptr);
+    u16 c = get_status_bit(cpu, BIT_C);
+
+    // op
+    u8 res = (m >> 1) + (c << 7);
+
+    set_status_bit(cpu, BIT_C, (bool) (m & 1));
+    set_status_bit(cpu, BIT_N, (res >> 7));
+    set_status_bit(cpu, BIT_Z, (res == 0));
+    *(fetched.data_ptr) = (u8) (res & 0xFF);
+
+    return 1 + fetched.additional_cycles;
 }
+
+
 
 // Compare with Cpu->X
 u8 op_cpx(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    // TODO test
+    return generic_compare(cpu, addr_mode, cpu->X);
 }
 
 // Compare with Cpu->Y
 u8 op_cpy(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    // TODO test
+    return generic_compare(cpu, addr_mode, cpu->Y);
 }
 
 // Compare with Cpu->AXX
 u8 op_cmp(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    // TODO test
+    return generic_compare(cpu, addr_mode, cpu->ACC);
 }
 
 // Increment 
 u8 op_inc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    // TODO test
+    auto fetched = addr_mode(cpu);
+    u8 m = *(fetched.data_ptr);
+    
+    m++;
+
+    set_status_bit(cpu, BIT_N, (m >> 7));
+    set_status_bit(cpu, BIT_Z, (m == 0));
+    *(fetched.data_ptr) = m;
+    
+    return 1 + fetched.additional_cycles;
 }
 
 // Decrement 
 u8 op_dec(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    // TODO test
+    auto fetched = addr_mode(cpu);
+    u8 m = *(fetched.data_ptr);
+    
+    m--;
+
+    set_status_bit(cpu, BIT_N, (m >> 7));
+    set_status_bit(cpu, BIT_Z, (m == 0));
+    *(fetched.data_ptr) = m;
+    
+    return 1 + fetched.additional_cycles;
 }
 
 // And  
 u8 op_and(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    // TODO test
+    auto fetched = addr_mode(cpu);
+    u8 a = cpu->ACC;
+    u8 m = *(fetched.data_ptr);
+    
+    a &= m;
+
+    set_status_bit(cpu, BIT_N, (a >> 7));
+    set_status_bit(cpu, BIT_Z, (a == 0));
+    cpu->ACC = a;
+    
+    return 1 + fetched.additional_cycles;
 }
 
 // Or with Cpu->ACC 
 u8 op_ora(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    // TODO test
+    auto fetched = addr_mode(cpu);
+    u8 a = cpu->ACC;
+    u8 m = *(fetched.data_ptr);
+    
+    a |= m;
+
+    set_status_bit(cpu, BIT_N, (a >> 7));
+    set_status_bit(cpu, BIT_Z, (a == 0));
+    cpu->ACC = a;
+    
+    return 1 + fetched.additional_cycles;
 }
 
 // Exclusive or
 u8 op_eor(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    not_implemented();
-    return 1;
+    // TODO test
+    auto fetched = addr_mode(cpu);
+    u8 a = cpu->ACC;
+    u8 m = *(fetched.data_ptr);
+    
+    a ^= m;
+
+    set_status_bit(cpu, BIT_N, (a >> 7));
+    set_status_bit(cpu, BIT_Z, (a == 0));
+    cpu->ACC = a;
+    
+    return 1 + fetched.additional_cycles;
 }
 
 // Increment Cpu->X
@@ -230,9 +360,9 @@ u8 op_sty(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Load Cpu->ACC
 u8 op_lda(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    auto res = addr_mode(cpu);
-    cpu->ACC = res.data;
-    return 2 + res.additional_cycles; // TODO check ??
+    auto fetched = addr_mode(cpu);
+    cpu->ACC = *(fetched.data_ptr);
+    return 2 + fetched.additional_cycles; // TODO check ??
 }
 
 // Load Cpu->X
@@ -300,9 +430,9 @@ u8 op_tsx(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Jump 
 u8 op_jmp(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    auto res = addr_mode(cpu);
-    cpu->PC = res.address;
-    return 3 + res.additional_cycles; // TODO check ??
+    auto fetched = addr_mode(cpu);
+    cpu->PC = fetched.address;
+    return 3 + fetched.additional_cycles; // TODO check ??
 }
 
 // Jump subroutine
@@ -490,28 +620,31 @@ Instruction instruction_table[256];
  */
 void populate_instruction_table() 
 {
+
+    const auto IMPLIED = nullptr;
+
     // "zero" fill
     for (int i = 0; i < 256; i++)
         instruction_table[i] = {OP_INVALID, nullptr};
 
     // populate
     // row 1
-    instruction_table[0x00] = {op_brk, addr_impl,  "BRK"};
+    instruction_table[0x00] = {op_brk, IMPLIED,    "BRK"};
     instruction_table[0x01] = {op_ora, addr_X_ind, "ORA X,ind"};
     instruction_table[0x05] = {op_ora, addr_zpg,   "ORA zpg"};
     instruction_table[0x06] = {op_asl, addr_zpg,   "ASL zpg"};
-    instruction_table[0x08] = {op_php, addr_impl,  "PHP"};
+    instruction_table[0x08] = {op_php, IMPLIED,    "PHP"};
     instruction_table[0x09] = {op_ora, addr_imm,   "ORA #"};
     instruction_table[0x0A] = {op_asl, addr_acc,   "ASL A"};
     instruction_table[0x0D] = {op_ora, addr_abs,   "ORA abs"};
     instruction_table[0x0E] = {op_asl, addr_abs,   "ASL abs"};
     
     // row 2
-    instruction_table[0x18] = {op_clc, addr_impl,   "CLC"};
+    instruction_table[0x18] = {op_clc, IMPLIED,    "CLC"};
 
     instruction_table[0x69] = {op_adc, addr_imm,   "ADC #"};
     instruction_table[0x4C] = {op_jmp, addr_abs,   "JMP abs"};
     instruction_table[0xA9] = {op_lda, addr_imm,   "LDA #"};
-    instruction_table[0xEA] = {op_nop, addr_impl,  "NOP"};
+    instruction_table[0xEA] = {op_nop, IMPLIED,    "NOP"};
 }
 

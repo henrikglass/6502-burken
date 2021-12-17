@@ -1,7 +1,11 @@
 #ifndef MEMORY_H
 #define MEMORY_H
 
-#include <iostream>
+#include "typedefs.h"
+
+#include <string>
+
+const u32 MEM_SIZE = 0x10000;
 
 /*
  * Layout proposed by Rockwell and implemented by most: 
@@ -27,36 +31,18 @@ const u16 IRQ_BRK_VECTOR  = 0xFFFE;
 struct Memory 
 {
     
-    Memory()
-    {
-        printf("MEM init.\n");
-        data = new u8[0xFFFF + 1];
-        memset(data, 0, (0xFFFF + 1) * sizeof(u8)); // Not really neccessary.
-        data[RESET_VECTOR]     =  FREE_ROM_LOW & 0x00FF; // TODO temporary (start at 0x8000)
-        data[RESET_VECTOR + 1] = (FREE_ROM_LOW & 0xFF00) >> 8; 
-    }
-
-    ~Memory()
-    {
-        delete[] data;
-    }
-
     u8 *data;
 
-    u8  operator[](u16 address) const 
-    {
-        return data[address];
-    }
+    Memory();
+    ~Memory();
 
-    u8 &operator[](u16 address) 
-    {
-        return data[address];
-    }
+    u8  operator[](u16 address) const; 
+    u8 &operator[](u16 address);
 
     /*
      * Loads memory from file at specified offset.
      */
-    void load_from_file(char *path, u16 offset);
+    int load_from_file(const std::string &path, u16 offset);
 };
 
 #endif

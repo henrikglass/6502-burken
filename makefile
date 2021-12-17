@@ -1,5 +1,5 @@
 # project
-TARGET 	= 6502-emul
+TARGET 	= 6502-burken
 
 # compiler
 CC 		= g++

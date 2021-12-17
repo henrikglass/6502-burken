@@ -1,10 +1,10 @@
 #include <iostream>
 
 #include "m6502.h" 
+#include <bitset>
 
 Cpu::Cpu() {
     populate_instruction_table();
-    this->reset();
 }
 
 void Cpu::reset() 
@@ -39,7 +39,13 @@ u8 Cpu::fetch_execute_next()
 
 void Cpu::print_status() 
 {
-    printf("ACC: 0x%02X\tX: 0x%02X\t\tY: 0x%02X\n", this->ACC, this->X, this->Y);
+    std::bitset<8> acc(this->ACC);
+    std::bitset<8> x(this->X);
+    std::bitset<8> y(this->Y);
+    printf("ACC: 0x%02X\t\tX: 0x%02X\t\t\tY: 0x%02X\n", this->ACC, this->X, this->Y);
+    std::cout << "binary ACC:\t" << acc << std::endl;
+    std::cout << "binary X:\t" << x << std::endl;
+    std::cout << "binary Y:\t" << y << std::endl;
     printf("SP: %04X\n", this->SP);
     printf("PC: %04X\n", this->PC);
     printf("CARRY (C):\t%d\tZERO (Z):\t%d\tIRQB (I):\t%d\tDECIMAL (D):\t%d\n", 

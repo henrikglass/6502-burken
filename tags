@@ -35,8 +35,9 @@ LOW	src/typedefs.h	/^const bool LOW  = false;$/;"	v	typeref:typename:const bool
 LSB_MASK	src/m6502_instructions.cpp	/^const u8 LSB_MASK = 0b0000001;$/;"	v	typeref:typename:const u8
 M6502_H	src/m6502.h	/^#define M6502_H$/;"	d
 MEMORY_H	src/memory.h	/^#define MEMORY_H$/;"	d
+MEM_SIZE	src/memory.h	/^const u32 MEM_SIZE = 0x10000;$/;"	v	typeref:typename:const u32
 MSB_MASK	src/m6502_instructions.cpp	/^const u8 MSB_MASK = 0b1000000;$/;"	v	typeref:typename:const u8
-Memory	src/memory.h	/^    Memory()$/;"	f	struct:Memory
+Memory	src/memory.cpp	/^Memory::Memory()$/;"	f	class:Memory
 Memory	src/memory.h	/^struct Memory $/;"	s
 NMI_VECTOR	src/memory.h	/^const u16 NMI_VECTOR      = 0xFFFA; $/;"	v	typeref:typename:const u16
 NOP	src/m6502.h	/^    NOP     = 0xEA,$/;"	e	enum:TTInstruction
@@ -54,7 +55,7 @@ X	src/m6502.h	/^    u8 ACC = 0x00, X = 0x00, Y = 0x00;$/;"	m	struct:Cpu	typeref:
 Y	src/m6502.h	/^    u8 ACC = 0x00, X = 0x00, Y = 0x00;$/;"	m	struct:Cpu	typeref:typename:u8
 ZERO_PAGE_HIGH	src/memory.h	/^const u16 ZERO_PAGE_HIGH  = 0x00FF;$/;"	v	typeref:typename:const u16
 ZERO_PAGE_LOW	src/memory.h	/^const u16 ZERO_PAGE_LOW   = 0x0000;$/;"	v	typeref:typename:const u16
-__anona94a61ab0102	src/memory.h	/^    {$/;"	f	struct:Memory	file:
+__anon256972060102	src/memory.cpp	/^{$/;"	f	file:
 additional_cycles	src/m6502.h	/^    u8  additional_cycles;$/;"	m	struct:AddrModeRet	typeref:typename:u8
 addr_X_ind	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_X_ind(Cpu *cpu)$/;"	f	typeref:typename:AddrModeRet
 addr_abs	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_abs(Cpu *cpu)$/;"	f	typeref:typename:AddrModeRet
@@ -83,6 +84,7 @@ i32	src/typedefs.h	/^typedef int32_t  i32; $/;"	t	typeref:typename:int32_t
 i64	src/typedefs.h	/^typedef int64_t  i64; $/;"	t	typeref:typename:int64_t
 i8	src/typedefs.h	/^typedef int8_t    i8; $/;"	t	typeref:typename:int8_t
 instruction_table	src/m6502_instructions.cpp	/^Instruction instruction_table[256];$/;"	v	typeref:typename:Instruction[256]
+load_from_file	src/memory.cpp	/^int Memory::load_from_file(const std::string &path, u16 offset)$/;"	f	class:Memory	typeref:typename:int
 main	src/main.cpp	/^int main() $/;"	f	typeref:typename:int
 mem	src/m6502.h	/^    Memory mem;$/;"	m	struct:Cpu	typeref:typename:Memory
 mnemonic	src/m6502.h	/^    std::string mnemonic;$/;"	m	struct:Instruction	typeref:typename:std::string
@@ -144,7 +146,7 @@ op_tsx	src/m6502_instructions.cpp	/^u8 op_tsx(Cpu *cpu, AddrModeRet (*addr_mode)
 op_txa	src/m6502_instructions.cpp	/^u8 op_txa(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) $/;"	f	typeref:typename:u8
 op_txs	src/m6502_instructions.cpp	/^u8 op_txs(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) $/;"	f	typeref:typename:u8
 op_tya	src/m6502_instructions.cpp	/^u8 op_tya(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) $/;"	f	typeref:typename:u8
-operator []	src/memory.h	/^    u8  operator[](u16 address) const $/;"	f	struct:Memory	typeref:typename:u8
+operator []	src/memory.cpp	/^u8 Memory::operator[](u16 address) const $/;"	f	class:Memory	typeref:typename:u8
 populate_instruction_table	src/m6502_instructions.cpp	/^void populate_instruction_table() $/;"	f	typeref:typename:void
 print_status	src/m6502.cpp	/^void Cpu::print_status() $/;"	f	class:Cpu	typeref:typename:void
 reset	src/m6502.cpp	/^void Cpu::reset() $/;"	f	class:Cpu	typeref:typename:void
@@ -153,4 +155,4 @@ u16	src/typedefs.h	/^typedef uint16_t u16; $/;"	t	typeref:typename:uint16_t
 u32	src/typedefs.h	/^typedef uint32_t u32; $/;"	t	typeref:typename:uint32_t
 u64	src/typedefs.h	/^typedef uint64_t u64; $/;"	t	typeref:typename:uint64_t
 u8	src/typedefs.h	/^typedef uint8_t   u8; $/;"	t	typeref:typename:uint8_t
-~Memory	src/memory.h	/^    ~Memory()$/;"	f	struct:Memory
+~Memory	src/memory.cpp	/^Memory::~Memory()$/;"	f	class:Memory

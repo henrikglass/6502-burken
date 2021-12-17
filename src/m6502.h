@@ -13,7 +13,7 @@
 #ifndef M6502_H
 #define M6502_H
 
-#include <string.h>
+#include <string>
 
 #include "typedefs.h"
 #include "memory.h"

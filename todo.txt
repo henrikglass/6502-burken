@@ -1,0 +1,6 @@
+1. Move memory layout constants to its own header
+2. display functionality
+3. "cassette" loading
+4. timers + interrupts
+5. implement test all instructions
+6. check #cycles are correct for all instructions

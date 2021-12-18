@@ -58,7 +58,7 @@ const u8 BIT_N      = 7; // Negative
  */
 struct Cpu 
 {
-    Cpu();
+    Cpu(Memory &mem);
 
     // Program counter
     u16 PC = 0x00;
@@ -72,10 +72,10 @@ struct Cpu
     // Stack pointer
     u16 SP = 0x0000;
 
-    // Memory is included for simplicity.
-    Memory mem;
+    // Memory
+    Memory &mem;
 
-    // reset
+    // Reset
     void reset();
 
     // Execute a single instruction, returning the # of cycles taken
@@ -162,7 +162,7 @@ u8 op_eor(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Exclusive or
 u8 op_inx(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Increment Cpu->X
 u8 op_iny(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Increment Cpu->Y
 u8 op_dex(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Decrement Cpu->X
-u8 op_dey(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Decrement Cpu->Y
+u8 op_bit(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Bit test8 op_dey(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Decrement Cpu->Y
 
 /*
  * Memory
@@ -181,8 +181,8 @@ u8 op_txa(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Transfer Cpu->X     
 u8 op_tya(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Transfer Cpu->Y     --> Cpu->ACC
 u8 op_tax(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Transfer Cpu->ACC   --> Cpu->X
 u8 op_tay(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Transfer Cpu->ACC   --> Cpu->Y
-u8 op_txs(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Transfer Cpu->X     --> $(Cpu->SP)
-u8 op_tsx(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Transfer $(Cpu->SP) --> Cpu->X
+u8 op_txs(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Transfer Cpu->X     --> Cpu->SP
+u8 op_tsx(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Transfer Cpu->SP    --> Cpu->X
 
 /*
  * Branching, jumps...
@@ -215,7 +215,6 @@ u8 op_cli(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Clear interrupt disa
  * Misc.
  */
 u8 op_brk(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Break 
-u8 op_bit(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Bit test
 u8 op_nop(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // No operation 
 u8 OP_INVALID(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)); // Special naughty instruction
 

@@ -1,10 +1,12 @@
+#include "m6502.h" 
+#include "layout.h"
+
+#include <bitset>
 #include <iostream>
 
-#include "m6502.h" 
-#include <bitset>
-
-Cpu::Cpu() {
+Cpu::Cpu(Memory &mem) : mem(mem) {
     populate_instruction_table();
+    this->reset();
 }
 
 void Cpu::reset() 

@@ -1,4 +1,5 @@
 #include "memory.h"
+#include "layout.h"
 
 #include <iostream>
 #include <string.h>
@@ -7,8 +8,6 @@ Memory::Memory()
 {
     data = new u8[MEM_SIZE];
     memset(data, 0, MEM_SIZE * sizeof(u8)); // Not really neccessary.
-    //data[RESET_VECTOR]     =  FREE_ROM_LOW & 0x00FF; // by default entry point is at 0x8000
-    //data[RESET_VECTOR + 1] = (FREE_ROM_LOW & 0xFF00) >> 8; 
 }
 
 Memory::~Memory()

@@ -111,7 +111,7 @@ AddrModeRet addr_abs_Y(Cpu *cpu);
 AddrModeRet addr_imm(Cpu *cpu);
 AddrModeRet addr_impl(Cpu *cpu);
 AddrModeRet addr_ind(Cpu *cpu);
-AddrModeRet addr_X_ind(Cpu *cpu);
+AddrModeRet addr_ind_X(Cpu *cpu);
 AddrModeRet addr_ind_Y(Cpu *cpu);
 AddrModeRet addr_rel(Cpu *cpu);
 AddrModeRet addr_zpg(Cpu *cpu);
@@ -128,17 +128,20 @@ AddrModeRet addr_zpg_Y(Cpu *cpu);
  * Represents a table entry in the Instruction table. The first element is a 
  * function pointer to an operation function. The second element is a 
  * function pointer to an addressing mode function. The third element is
- * a mnemonic.
+ * a mnemonic. The fourth element specifies the min # of cycles for the 
+ * instruction (additional cycles may result from the addressign modes,
+ * these are returned from the addressing mode function and subsequently
+ * from the operation function).
  */
 struct Instruction
 {
     u8 (*op)(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu * cpu)); // instr.
     AddrModeRet (*addr_mode)(Cpu *cpu); // addressing mode.
     std::string mnemonic;
+    u8 n_cycles;
     u8 execute(Cpu *cpu) 
     {
-        return op(cpu, addr_mode); // Apply operation with chosen addressing mode
-                                   // to the Cpu.
+        return n_cycles + op(cpu, addr_mode); // Apply operation with chosen addressing mode
     }
 };
 

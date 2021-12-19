@@ -66,13 +66,13 @@ ZERO_PAGE_HIGH	src/layout.h	/^const u16 ZERO_PAGE_HIGH     = 0x00FF;$/;"	v	typer
 ZERO_PAGE_LOW	src/layout.h	/^const u16 ZERO_PAGE_LOW      = 0x0000;$/;"	v	typeref:typename:const u16
 __anon256972060102	src/memory.cpp	/^{$/;"	f	file:
 additional_cycles	src/m6502.h	/^    u8  additional_cycles;$/;"	m	struct:AddrModeRet	typeref:typename:u8
-addr_X_ind	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_X_ind(Cpu *cpu)$/;"	f	typeref:typename:AddrModeRet
 addr_abs	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_abs(Cpu *cpu)$/;"	f	typeref:typename:AddrModeRet
 addr_abs_X	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_abs_X(Cpu *cpu)$/;"	f	typeref:typename:AddrModeRet
 addr_abs_Y	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_abs_Y(Cpu *cpu)$/;"	f	typeref:typename:AddrModeRet
 addr_acc	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_acc(Cpu *cpu)$/;"	f	typeref:typename:AddrModeRet
 addr_imm	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_imm(Cpu *cpu)$/;"	f	typeref:typename:AddrModeRet
 addr_ind	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_ind(Cpu *cpu)$/;"	f	typeref:typename:AddrModeRet
+addr_ind_X	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_ind_X(Cpu *cpu)$/;"	f	typeref:typename:AddrModeRet
 addr_ind_Y	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_ind_Y(Cpu *cpu)$/;"	f	typeref:typename:AddrModeRet
 addr_mode	src/m6502.h	/^    AddrModeRet (*addr_mode)(Cpu *cpu); \/\/ addressing mode.$/;"	m	struct:Instruction	typeref:typename:AddrModeRet (*)(Cpu * cpu)
 addr_rel	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_rel(Cpu *cpu)$/;"	f	typeref:typename:AddrModeRet
@@ -97,6 +97,7 @@ load_from_file	src/memory.cpp	/^int Memory::load_from_file(const std::string &pa
 main	src/main.cpp	/^int main() $/;"	f	typeref:typename:int
 mem	src/m6502.h	/^    Memory &mem;$/;"	m	struct:Cpu	typeref:typename:Memory &
 mnemonic	src/m6502.h	/^    std::string mnemonic;$/;"	m	struct:Instruction	typeref:typename:std::string
+n_cycles	src/m6502.h	/^    u8 n_cycles;$/;"	m	struct:Instruction	typeref:typename:u8
 not_implemented	src/m6502_instructions.cpp	/^void not_implemented() $/;"	f	typeref:typename:void
 op	src/m6502.h	/^    u8 (*op)(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu * cpu)); \/\/ instr.$/;"	m	struct:Instruction	typeref:typename:u8 (*)(Cpu * cpu,AddrModeRet (* addr_mode)(Cpu * cpu))
 op_adc	src/m6502_instructions.cpp	/^u8 op_adc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) $/;"	f	typeref:typename:u8

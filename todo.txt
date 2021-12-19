@@ -4,3 +4,5 @@
 4. timers + interrupts
 5. implement test all instructions
 6. check #cycles are correct for all instructions
+7. check #cycles for branch instructions and instructions using abs,X and abs,Y 
+8. CPU register monitoring using that cool opengl lib

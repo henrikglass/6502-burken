@@ -31,7 +31,7 @@ int main()
     // enter infinite fetch (decode) execute loop
     for(;;) {
         u8 cycles = cpu.fetch_execute_next();
-        std::this_thread::sleep_for(std::chrono::milliseconds(cycles*5));
+        std::this_thread::sleep_for(std::chrono::milliseconds(cycles*20));
     }
 
 }

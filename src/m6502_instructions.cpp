@@ -2,19 +2,8 @@
 #include "m6502.h"
 
 /*
- * Temporary. TODO remove.
- */
-void not_implemented() 
-{
-    printf("Instruction not yet implemented. Exiting.");
-    exit(0);
-}
-
-/*
  * Few helper functions and constants
  */
-const u8 MSB_MASK = 0b1000000;
-const u8 LSB_MASK = 0b0000001;
 
 u8 get_status_bit(Cpu *cpu, u8 bit_pos) 
 {
@@ -75,8 +64,8 @@ u8 op_adc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     u16 res = a + m + c;
 
     set_status_bit(cpu, BIT_C, (res >> 8));
-    set_status_bit(cpu, BIT_N, ((res && 0xFF) >> 7));
-    set_status_bit(cpu, BIT_Z, ((res && 0xFF) == 0));
+    set_status_bit(cpu, BIT_N, ((res & 0xFF) >> 7));
+    set_status_bit(cpu, BIT_Z, ((res & 0xFF) == 0));
     set_status_bit(cpu, BIT_V, ((~(a ^ m)) & (a ^ c) & 0x80)); // Thanks https://stackoverflow.com/a/16861251/5350029
 
     cpu->ACC = (u8) (res & 0xFF);
@@ -96,8 +85,8 @@ u8 op_sbc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     u16 res = a + (m ^ 0xFF) + c;
 
     set_status_bit(cpu, BIT_C, (res >> 8));
-    set_status_bit(cpu, BIT_N, ((res && 0xFF) >> 7));
-    set_status_bit(cpu, BIT_Z, ((res && 0xFF) == 0));
+    set_status_bit(cpu, BIT_N, ((res & 0xFF) >> 7));
+    set_status_bit(cpu, BIT_Z, ((res & 0xFF) == 0));
     set_status_bit(cpu, BIT_V, ((~(a ^ m)) & (a ^ c) & 0x80)); // Thanks https://stackoverflow.com/a/16861251/5350029
     cpu->ACC = (u8) (res & 0xFF);
 
@@ -115,8 +104,8 @@ u8 op_asl(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     u16 res = m << 1;
 
     set_status_bit(cpu, BIT_C, (res >> 8));
-    set_status_bit(cpu, BIT_N, ((res && 0xFF) >> 7));
-    set_status_bit(cpu, BIT_Z, ((res && 0xFF) == 0));
+    set_status_bit(cpu, BIT_N, ((res & 0xFF) >> 7));
+    set_status_bit(cpu, BIT_Z, ((res & 0xFF) == 0));
     *(fetched.data_ptr) = (u8) (res & 0xFF);
 
     return fetched.additional_cycles;
@@ -152,8 +141,8 @@ u8 op_rol(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     u16 res = (m << 1) + c;
 
     set_status_bit(cpu, BIT_C, (res >> 8));
-    set_status_bit(cpu, BIT_N, ((res && 0xFF) >> 7));
-    set_status_bit(cpu, BIT_Z, ((res && 0xFF) == 0));
+    set_status_bit(cpu, BIT_N, ((res & 0xFF) >> 7));
+    set_status_bit(cpu, BIT_Z, ((res & 0xFF) == 0));
     *(fetched.data_ptr) = (u8) (res & 0xFF);
 
     return fetched.additional_cycles;

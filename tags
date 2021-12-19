@@ -39,11 +39,9 @@ LDA_I	src/m6502.h	/^    LDA_I   = 0xA9,$/;"	e	enum:TTInstruction
 LDX_I	src/m6502.h	/^    LDX_I   = 0xA2,$/;"	e	enum:TTInstruction
 LDY_I	src/m6502.h	/^    LDY_I   = 0xA0,$/;"	e	enum:TTInstruction
 LOW	src/typedefs.h	/^const bool LOW  = false;$/;"	v	typeref:typename:const bool
-LSB_MASK	src/m6502_instructions.cpp	/^const u8 LSB_MASK = 0b0000001;$/;"	v	typeref:typename:const u8
 M6502_H	src/m6502.h	/^#define M6502_H$/;"	d
 MEMORY_H	src/memory.h	/^#define MEMORY_H$/;"	d
 MEM_SIZE	src/layout.h	/^const u32 MEM_SIZE = 0x10000;$/;"	v	typeref:typename:const u32
-MSB_MASK	src/m6502_instructions.cpp	/^const u8 MSB_MASK = 0b1000000;$/;"	v	typeref:typename:const u8
 Memory	src/memory.cpp	/^Memory::Memory()$/;"	f	class:Memory
 Memory	src/memory.h	/^struct Memory $/;"	s
 NMI_VECTOR	src/layout.h	/^const u16 NMI_VECTOR         = 0xFFFA; $/;"	v	typeref:typename:const u16
@@ -98,7 +96,6 @@ main	src/main.cpp	/^int main() $/;"	f	typeref:typename:int
 mem	src/m6502.h	/^    Memory &mem;$/;"	m	struct:Cpu	typeref:typename:Memory &
 mnemonic	src/m6502.h	/^    std::string mnemonic;$/;"	m	struct:Instruction	typeref:typename:std::string
 n_cycles	src/m6502.h	/^    u8 n_cycles;$/;"	m	struct:Instruction	typeref:typename:u8
-not_implemented	src/m6502_instructions.cpp	/^void not_implemented() $/;"	f	typeref:typename:void
 op	src/m6502.h	/^    u8 (*op)(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu * cpu)); \/\/ instr.$/;"	m	struct:Instruction	typeref:typename:u8 (*)(Cpu * cpu,AddrModeRet (* addr_mode)(Cpu * cpu))
 op_adc	src/m6502_instructions.cpp	/^u8 op_adc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) $/;"	f	typeref:typename:u8
 op_and	src/m6502_instructions.cpp	/^u8 op_and(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) $/;"	f	typeref:typename:u8

@@ -576,7 +576,7 @@ u8 op_beq(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     u8 z = get_status_bit(cpu, BIT_Z);
     if (z == 1)
         cpu->PC = fetched.address;
-    return 2; // TODO
+    return 2 + fetched.additional_cycles; // TODO
 }
 
 // Branch on not equal
@@ -587,7 +587,7 @@ u8 op_bne(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     u8 z = get_status_bit(cpu, BIT_Z);
     if (z == 0)
         cpu->PC = fetched.address;
-    return 2; // TODO
+    return 2 + fetched.additional_cycles; // TODO
 }
 
 // Branch on overflow set
@@ -598,7 +598,7 @@ u8 op_bvs(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     u8 v = get_status_bit(cpu, BIT_V);
     if (v == 1)
         cpu->PC = fetched.address;
-    return 2; // TODO
+    return 2 + fetched.additional_cycles; // TODO
 }
 
 // Branch on overflow clear
@@ -609,7 +609,7 @@ u8 op_bvc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     u8 v = get_status_bit(cpu, BIT_V);
     if (v == 0)
         cpu->PC = fetched.address;
-    return 2; // TODO
+    return 2 + fetched.additional_cycles; // TODO
 }
 
 // Branch on plus 
@@ -620,7 +620,7 @@ u8 op_bpl(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     u8 n = get_status_bit(cpu, BIT_N);
     if (n == 0)
         cpu->PC = fetched.address;
-    return 2; // TODO
+    return 2 + fetched.additional_cycles; // TODO
 }
 
 // Branch on minus 
@@ -631,7 +631,7 @@ u8 op_bmi(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     u8 n = get_status_bit(cpu, BIT_N);
     if (n == 1)
         cpu->PC = fetched.address;
-    return 2; // TODO
+    return 2 + fetched.additional_cycles; // TODO
 }
 
 // Branch on carry set
@@ -642,7 +642,7 @@ u8 op_bcs(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     u8 c = get_status_bit(cpu, BIT_C);
     if (c == 1)
         cpu->PC = fetched.address;
-    return 2; // TODO
+    return 2 + fetched.additional_cycles; // TODO
 }
 
 // Branch on carry clear
@@ -653,7 +653,7 @@ u8 op_bcc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     u8 c = get_status_bit(cpu, BIT_C);
     if (c == 0)
         cpu->PC = fetched.address;
-    return 2; // TODO
+    return 2 + fetched.additional_cycles; // TODO
 }
 
 // Return from interrupt

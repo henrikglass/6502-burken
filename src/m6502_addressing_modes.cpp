@@ -135,10 +135,13 @@ AddrModeRet addr_ind_Y(Cpu *cpu)
  */
 AddrModeRet addr_rel(Cpu *cpu)
 {
-    u8 offset = cpu->mem[cpu->PC++];
+    u16 offset = (u16) cpu->mem[cpu->PC++]; // TODO signed unsigned addition
+    if (offset & (1 << 7))
+        offset |= 0xFF00; 
     u16 addr = cpu->PC + offset;        // last PC or cpu? 
     u8 *data_ptr = &(cpu->mem[addr]); // TODO 
-    return {0, data_ptr, addr}; // TODO # cycles
+    u8 additional_cycles = (((cpu->PC) & 0xFF00) != (addr & 0xFF00)) ? 1 : 0;
+    return {additional_cycles, data_ptr, addr}; // TODO # cycles
 }
 
 /*

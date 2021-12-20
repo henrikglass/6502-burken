@@ -34,6 +34,20 @@ u8 generic_compare(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu), u8 register_val
     return fetched.additional_cycles;
 }
 
+u8 generic_branch(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu), u8 bit, bool value)
+{
+    // TODO test
+    auto fetched = addr_mode(cpu);
+    u8 b = get_status_bit(cpu, bit);
+    if (b == value) {
+        cpu->PC = fetched.address;
+        // 1 extra cycle if branch occurs to same page
+        // 2 extra cycles if branch occurs to different page
+        return 1 + fetched.additional_cycles;
+    }
+    return 0;
+}
+
 void stack_push(Cpu *cpu, u8 byte)
 {
     cpu->mem[cpu->SP--] = byte; 
@@ -537,7 +551,7 @@ u8 op_jmp(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     // TODO test
     auto fetched = addr_mode(cpu);
     cpu->PC = fetched.address;
-    return fetched.additional_cycles; // TODO check ??
+    return 0; // TODO check ??
 }
 
 // Jump subroutine
@@ -554,95 +568,55 @@ u8 op_jsr(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     // jump
     cpu->PC = fetched.address;
 
-    return fetched.additional_cycles;
+    return 0;
 }
 
 // Branch on equal
 u8 op_beq(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    // TODO test
-    auto fetched = addr_mode(cpu);
-    u8 z = get_status_bit(cpu, BIT_Z);
-    if (z == 1)
-        cpu->PC = fetched.address;
-    return fetched.additional_cycles; // TODO
+    return generic_branch(cpu, addr_mode, BIT_Z, HIGH);
 }
 
 // Branch on not equal
 u8 op_bne(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    // TODO test
-    auto fetched = addr_mode(cpu);
-    u8 z = get_status_bit(cpu, BIT_Z);
-    if (z == 0)
-        cpu->PC = fetched.address;
-    return fetched.additional_cycles; // TODO
+    return generic_branch(cpu, addr_mode, BIT_Z, LOW);
 }
 
 // Branch on overflow set
 u8 op_bvs(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    // TODO test
-    auto fetched = addr_mode(cpu);
-    u8 v = get_status_bit(cpu, BIT_V);
-    if (v == 1)
-        cpu->PC = fetched.address;
-    return fetched.additional_cycles; // TODO
+    return generic_branch(cpu, addr_mode, BIT_V, HIGH);
 }
 
 // Branch on overflow clear
 u8 op_bvc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    // TODO test
-    auto fetched = addr_mode(cpu);
-    u8 v = get_status_bit(cpu, BIT_V);
-    if (v == 0)
-        cpu->PC = fetched.address;
-    return fetched.additional_cycles; // TODO
+    return generic_branch(cpu, addr_mode, BIT_V, LOW);
 }
 
 // Branch on plus 
 u8 op_bpl(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    // TODO test
-    auto fetched = addr_mode(cpu);
-    u8 n = get_status_bit(cpu, BIT_N);
-    if (n == 0)
-        cpu->PC = fetched.address;
-    return fetched.additional_cycles; // TODO
+    return generic_branch(cpu, addr_mode, BIT_N, LOW);
 }
 
 // Branch on minus 
 u8 op_bmi(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    // TODO test
-    auto fetched = addr_mode(cpu);
-    u8 n = get_status_bit(cpu, BIT_N);
-    if (n == 1)
-        cpu->PC = fetched.address;
-    return fetched.additional_cycles; // TODO
+    return generic_branch(cpu, addr_mode, BIT_N, HIGH);
 }
 
 // Branch on carry set
 u8 op_bcs(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    // TODO test
-    auto fetched = addr_mode(cpu);
-    u8 c = get_status_bit(cpu, BIT_C);
-    if (c == 1)
-        cpu->PC = fetched.address;
-    return fetched.additional_cycles; // TODO
+    return generic_branch(cpu, addr_mode, BIT_C, HIGH);
 }
 
 // Branch on carry clear
 u8 op_bcc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    // TODO test
-    auto fetched = addr_mode(cpu);
-    u8 c = get_status_bit(cpu, BIT_C);
-    if (c == 0)
-        cpu->PC = fetched.address;
-    return fetched.additional_cycles; // TODO
+    return generic_branch(cpu, addr_mode, BIT_C, LOW);
 }
 
 // Return from interrupt

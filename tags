@@ -20,18 +20,43 @@ Cpu	src/m6502.cpp	/^Cpu::Cpu(Memory &mem) : mem(mem) {$/;"	f	class:Cpu
 Cpu	src/m6502.h	/^struct Cpu $/;"	s
 DISPLAY_DATA_HIGH	src/layout.h	/^const u16 DISPLAY_DATA_HIGH  = 0x03FF;$/;"	v	typeref:typename:const u16
 DISPLAY_DATA_LOW	src/layout.h	/^const u16 DISPLAY_DATA_LOW   = 0x0200;$/;"	v	typeref:typename:const u16
+DISPLAY_H	src/display.h	/^#define DISPLAY_H$/;"	d
 DISPLAY_TILES_HIGH	src/layout.h	/^const u16 DISPLAY_TILES_HIGH = 0x04FF;$/;"	v	typeref:typename:const u16
 DISPLAY_TILES_LOW	src/layout.h	/^const u16 DISPLAY_TILES_LOW  = 0x0400;$/;"	v	typeref:typename:const u16
+Display	src/display.h	/^    Display(const Cpu &cpu, const Memory &mem) : cpu(cpu), mem(mem) $/;"	f	struct:Display
+Display	src/display.h	/^struct Display $/;"	s
 FREE_RAM_HIGH	src/layout.h	/^const u16 FREE_RAM_HIGH      = 0x3FFF;$/;"	v	typeref:typename:const u16
 FREE_RAM_LOW	src/layout.h	/^const u16 FREE_RAM_LOW       = 0x0600;$/;"	v	typeref:typename:const u16
 FREE_ROM_HIGH	src/layout.h	/^const u16 FREE_ROM_HIGH      = 0xFFF9;$/;"	v	typeref:typename:const u16
 FREE_ROM_LOW	src/layout.h	/^const u16 FREE_ROM_LOW       = 0x8000;$/;"	v	typeref:typename:const u16
+GLAD_GL_VERSION_1_0	src/glad.cpp	/^int GLAD_GL_VERSION_1_0 = 0;$/;"	v	typeref:typename:int
+GLAD_GL_VERSION_1_1	src/glad.cpp	/^int GLAD_GL_VERSION_1_1 = 0;$/;"	v	typeref:typename:int
+GLAD_GL_VERSION_1_2	src/glad.cpp	/^int GLAD_GL_VERSION_1_2 = 0;$/;"	v	typeref:typename:int
+GLAD_GL_VERSION_1_3	src/glad.cpp	/^int GLAD_GL_VERSION_1_3 = 0;$/;"	v	typeref:typename:int
+GLAD_GL_VERSION_1_4	src/glad.cpp	/^int GLAD_GL_VERSION_1_4 = 0;$/;"	v	typeref:typename:int
+GLAD_GL_VERSION_1_5	src/glad.cpp	/^int GLAD_GL_VERSION_1_5 = 0;$/;"	v	typeref:typename:int
+GLAD_GL_VERSION_2_0	src/glad.cpp	/^int GLAD_GL_VERSION_2_0 = 0;$/;"	v	typeref:typename:int
+GLAD_GL_VERSION_2_1	src/glad.cpp	/^int GLAD_GL_VERSION_2_1 = 0;$/;"	v	typeref:typename:int
+GLAD_GL_VERSION_3_0	src/glad.cpp	/^int GLAD_GL_VERSION_3_0 = 0;$/;"	v	typeref:typename:int
+GLAD_GL_VERSION_3_1	src/glad.cpp	/^int GLAD_GL_VERSION_3_1 = 0;$/;"	v	typeref:typename:int
+GLAD_GL_VERSION_3_2	src/glad.cpp	/^int GLAD_GL_VERSION_3_2 = 0;$/;"	v	typeref:typename:int
+GLAD_GL_VERSION_3_3	src/glad.cpp	/^int GLAD_GL_VERSION_3_3 = 0;$/;"	v	typeref:typename:int
+GLAD_GL_VERSION_4_0	src/glad.cpp	/^int GLAD_GL_VERSION_4_0 = 0;$/;"	v	typeref:typename:int
+GLAD_GL_VERSION_4_1	src/glad.cpp	/^int GLAD_GL_VERSION_4_1 = 0;$/;"	v	typeref:typename:int
+GLAD_GL_VERSION_4_2	src/glad.cpp	/^int GLAD_GL_VERSION_4_2 = 0;$/;"	v	typeref:typename:int
+GLAD_GL_VERSION_4_3	src/glad.cpp	/^int GLAD_GL_VERSION_4_3 = 0;$/;"	v	typeref:typename:int
+GLAD_GL_VERSION_4_4	src/glad.cpp	/^int GLAD_GL_VERSION_4_4 = 0;$/;"	v	typeref:typename:int
+GLAD_GL_VERSION_4_5	src/glad.cpp	/^int GLAD_GL_VERSION_4_5 = 0;$/;"	v	typeref:typename:int
+GLVersion	src/glad.cpp	/^struct gladGLversionStruct GLVersion = { 0, 0 };$/;"	v	typeref:struct:gladGLversionStruct
+HAVE_WINAPIFAMILY	src/glad.cpp	/^    #define HAVE_WINAPIFAMILY /;"	d	file:
+HAVE_WINAPIFAMILY	src/glad.cpp	/^  #define HAVE_WINAPIFAMILY /;"	d	file:
 HIGH	src/typedefs.h	/^const bool HIGH = true;$/;"	v	typeref:typename:const bool
 IO_MEM_HIGH	src/layout.h	/^const u16 IO_MEM_HIGH        = 0x7FFF;$/;"	v	typeref:typename:const u16
 IO_MEM_LOW	src/layout.h	/^const u16 IO_MEM_LOW         = 0x4000;$/;"	v	typeref:typename:const u16
 IO_PAGE_HIGH	src/layout.h	/^const u16 IO_PAGE_HIGH       = 0x05FF;$/;"	v	typeref:typename:const u16
 IO_PAGE_LOW	src/layout.h	/^const u16 IO_PAGE_LOW        = 0x0500;$/;"	v	typeref:typename:const u16
 IRQ_BRK_VECTOR	src/layout.h	/^const u16 IRQ_BRK_VECTOR     = 0xFFFE;$/;"	v	typeref:typename:const u16
+IS_UWP	src/glad.cpp	/^    #define IS_UWP /;"	d	file:
 Instruction	src/m6502.h	/^struct Instruction$/;"	s
 JMP_ABS	src/m6502.h	/^    JMP_ABS = 0x4c$/;"	e	enum:TTInstruction
 LAYOUT_H	src/layout.h	/^#define LAYOUT_H$/;"	d
@@ -48,6 +73,8 @@ NMI_VECTOR	src/layout.h	/^const u16 NMI_VECTOR         = 0xFFFA; $/;"	v	typeref:
 NOP	src/m6502.h	/^    NOP     = 0xEA,$/;"	e	enum:TTInstruction
 OP_INVALID	src/m6502_instructions.cpp	/^u8 OP_INVALID(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) $/;"	f	typeref:typename:u8
 PC	src/m6502.h	/^    u16 PC = 0x00;$/;"	m	struct:Cpu	typeref:typename:u16
+PFNGLXGETPROCADDRESSPROC_PRIVATE	src/glad.cpp	/^typedef void* (APIENTRYP PFNGLXGETPROCADDRESSPROC_PRIVATE)(const char*);$/;"	t	typeref:typename:void * (APIENTRYP)(const char *)	file:
+PFNWGLGETPROCADDRESSPROC_PRIVATE	src/glad.cpp	/^typedef void* (APIENTRYP PFNWGLGETPROCADDRESSPROC_PRIVATE)(const char*);$/;"	t	typeref:typename:void * (APIENTRYP)(const char *)	file:
 PHA	src/m6502.h	/^    PHA     = 0x48,$/;"	e	enum:TTInstruction
 RESET_VECTOR	src/layout.h	/^const u16 RESET_VECTOR       = 0xFFFC; \/\/ TODO implement at 0xFCE2;$/;"	v	typeref:typename:const u16
 SP	src/m6502.h	/^    u16 SP = 0x0000;$/;"	m	struct:Cpu	typeref:typename:u16
@@ -62,6 +89,7 @@ X	src/m6502.h	/^    u8 ACC = 0x00, X = 0x00, Y = 0x00;$/;"	m	struct:Cpu	typeref:
 Y	src/m6502.h	/^    u8 ACC = 0x00, X = 0x00, Y = 0x00;$/;"	m	struct:Cpu	typeref:typename:u8
 ZERO_PAGE_HIGH	src/layout.h	/^const u16 ZERO_PAGE_HIGH     = 0x00FF;$/;"	v	typeref:typename:const u16
 ZERO_PAGE_LOW	src/layout.h	/^const u16 ZERO_PAGE_LOW      = 0x0000;$/;"	v	typeref:typename:const u16
+_GLAD_IS_SOME_NEW_VERSION	src/glad.cpp	/^#define _GLAD_IS_SOME_NEW_VERSION /;"	d	file:
 __anon256972060102	src/memory.cpp	/^{$/;"	f	file:
 additional_cycles	src/m6502.h	/^    u8  additional_cycles;$/;"	m	struct:AddrModeRet	typeref:typename:u8
 addr_abs	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_abs(Cpu *cpu)$/;"	f	typeref:typename:AddrModeRet
@@ -78,24 +106,760 @@ addr_zpg	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_zpg(Cpu *cpu)$/;"	f	t
 addr_zpg_X	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_zpg_X(Cpu *cpu)$/;"	f	typeref:typename:AddrModeRet
 addr_zpg_Y	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_zpg_Y(Cpu *cpu)$/;"	f	typeref:typename:AddrModeRet
 address	src/m6502.h	/^    u16 address;$/;"	m	struct:AddrModeRet	typeref:typename:u16
+close_gl	src/glad.cpp	/^void close_gl(void) {$/;"	f	typeref:typename:void	file:
+cpu	src/display.h	/^    const Cpu &cpu;$/;"	m	struct:Display	typeref:typename:const Cpu &
 data	src/memory.h	/^    u8 *data;$/;"	m	struct:Memory	typeref:typename:u8 *
 data_ptr	src/m6502.h	/^    u8 *data_ptr;$/;"	m	struct:AddrModeRet	typeref:typename:u8 *
 execute	src/m6502.h	/^    u8 execute(Cpu *cpu) $/;"	f	struct:Instruction	typeref:typename:u8
+exts	src/glad.cpp	/^static const char *exts = NULL;$/;"	v	typeref:typename:const char *	file:
+exts_i	src/glad.cpp	/^static char **exts_i = NULL;$/;"	v	typeref:typename:char **	file:
 f32	src/typedefs.h	/^typedef float    f32;$/;"	t	typeref:typename:float
 f64	src/typedefs.h	/^typedef double   f64;$/;"	t	typeref:typename:double
 fetch_execute_next	src/m6502.cpp	/^u8 Cpu::fetch_execute_next() $/;"	f	class:Cpu	typeref:typename:u8
+find_coreGL	src/glad.cpp	/^static void find_coreGL(void) {$/;"	f	typeref:typename:void	file:
+find_extensionsGL	src/glad.cpp	/^static int find_extensionsGL(void) {$/;"	f	typeref:typename:int	file:
+frag_shader_source	src/display.h	/^    const char *frag_shader_source =$/;"	m	struct:Display	typeref:typename:const char *
+framebuffer_size_callback	src/display.cpp	/^void framebuffer_size_callback(GLFWwindow* window, int width, int height)$/;"	f	typeref:typename:void
+free_exts	src/glad.cpp	/^static void free_exts(void) {$/;"	f	typeref:typename:void	file:
+generic_branch	src/m6502_instructions.cpp	/^u8 generic_branch(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu), u8 bit, bool value)$/;"	f	typeref:typename:u8
 generic_compare	src/m6502_instructions.cpp	/^u8 generic_compare(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu), u8 register_value)$/;"	f	typeref:typename:u8
+get_exts	src/glad.cpp	/^static int get_exts(void) {$/;"	f	typeref:typename:int	file:
+get_proc	src/glad.cpp	/^void* get_proc(const char *namez) {$/;"	f	typeref:typename:void *	file:
 get_status_bit	src/m6502_instructions.cpp	/^u8 get_status_bit(Cpu *cpu, u8 bit_pos) $/;"	f	typeref:typename:u8
+gladGetProcAddressPtr	src/glad.cpp	/^static PFNGLXGETPROCADDRESSPROC_PRIVATE gladGetProcAddressPtr;$/;"	v	typeref:typename:PFNGLXGETPROCADDRESSPROC_PRIVATE	file:
+gladGetProcAddressPtr	src/glad.cpp	/^static PFNWGLGETPROCADDRESSPROC_PRIVATE gladGetProcAddressPtr;$/;"	v	typeref:typename:PFNWGLGETPROCADDRESSPROC_PRIVATE	file:
+gladLoadGL	src/glad.cpp	/^int gladLoadGL(void) {$/;"	f	typeref:typename:int
+gladLoadGLLoader	src/glad.cpp	/^int gladLoadGLLoader(GLADloadproc load) {$/;"	f	typeref:typename:int
+glad_glActiveShaderProgram	src/glad.cpp	/^PFNGLACTIVESHADERPROGRAMPROC glad_glActiveShaderProgram = NULL;$/;"	v	typeref:typename:PFNGLACTIVESHADERPROGRAMPROC
+glad_glActiveTexture	src/glad.cpp	/^PFNGLACTIVETEXTUREPROC glad_glActiveTexture = NULL;$/;"	v	typeref:typename:PFNGLACTIVETEXTUREPROC
+glad_glAttachShader	src/glad.cpp	/^PFNGLATTACHSHADERPROC glad_glAttachShader = NULL;$/;"	v	typeref:typename:PFNGLATTACHSHADERPROC
+glad_glBeginConditionalRender	src/glad.cpp	/^PFNGLBEGINCONDITIONALRENDERPROC glad_glBeginConditionalRender = NULL;$/;"	v	typeref:typename:PFNGLBEGINCONDITIONALRENDERPROC
+glad_glBeginQuery	src/glad.cpp	/^PFNGLBEGINQUERYPROC glad_glBeginQuery = NULL;$/;"	v	typeref:typename:PFNGLBEGINQUERYPROC
+glad_glBeginQueryIndexed	src/glad.cpp	/^PFNGLBEGINQUERYINDEXEDPROC glad_glBeginQueryIndexed = NULL;$/;"	v	typeref:typename:PFNGLBEGINQUERYINDEXEDPROC
+glad_glBeginTransformFeedback	src/glad.cpp	/^PFNGLBEGINTRANSFORMFEEDBACKPROC glad_glBeginTransformFeedback = NULL;$/;"	v	typeref:typename:PFNGLBEGINTRANSFORMFEEDBACKPROC
+glad_glBindAttribLocation	src/glad.cpp	/^PFNGLBINDATTRIBLOCATIONPROC glad_glBindAttribLocation = NULL;$/;"	v	typeref:typename:PFNGLBINDATTRIBLOCATIONPROC
+glad_glBindBuffer	src/glad.cpp	/^PFNGLBINDBUFFERPROC glad_glBindBuffer = NULL;$/;"	v	typeref:typename:PFNGLBINDBUFFERPROC
+glad_glBindBufferBase	src/glad.cpp	/^PFNGLBINDBUFFERBASEPROC glad_glBindBufferBase = NULL;$/;"	v	typeref:typename:PFNGLBINDBUFFERBASEPROC
+glad_glBindBufferRange	src/glad.cpp	/^PFNGLBINDBUFFERRANGEPROC glad_glBindBufferRange = NULL;$/;"	v	typeref:typename:PFNGLBINDBUFFERRANGEPROC
+glad_glBindBuffersBase	src/glad.cpp	/^PFNGLBINDBUFFERSBASEPROC glad_glBindBuffersBase = NULL;$/;"	v	typeref:typename:PFNGLBINDBUFFERSBASEPROC
+glad_glBindBuffersRange	src/glad.cpp	/^PFNGLBINDBUFFERSRANGEPROC glad_glBindBuffersRange = NULL;$/;"	v	typeref:typename:PFNGLBINDBUFFERSRANGEPROC
+glad_glBindFragDataLocation	src/glad.cpp	/^PFNGLBINDFRAGDATALOCATIONPROC glad_glBindFragDataLocation = NULL;$/;"	v	typeref:typename:PFNGLBINDFRAGDATALOCATIONPROC
+glad_glBindFragDataLocationIndexed	src/glad.cpp	/^PFNGLBINDFRAGDATALOCATIONINDEXEDPROC glad_glBindFragDataLocationIndexed = NULL;$/;"	v	typeref:typename:PFNGLBINDFRAGDATALOCATIONINDEXEDPROC
+glad_glBindFramebuffer	src/glad.cpp	/^PFNGLBINDFRAMEBUFFERPROC glad_glBindFramebuffer = NULL;$/;"	v	typeref:typename:PFNGLBINDFRAMEBUFFERPROC
+glad_glBindImageTexture	src/glad.cpp	/^PFNGLBINDIMAGETEXTUREPROC glad_glBindImageTexture = NULL;$/;"	v	typeref:typename:PFNGLBINDIMAGETEXTUREPROC
+glad_glBindImageTextures	src/glad.cpp	/^PFNGLBINDIMAGETEXTURESPROC glad_glBindImageTextures = NULL;$/;"	v	typeref:typename:PFNGLBINDIMAGETEXTURESPROC
+glad_glBindProgramPipeline	src/glad.cpp	/^PFNGLBINDPROGRAMPIPELINEPROC glad_glBindProgramPipeline = NULL;$/;"	v	typeref:typename:PFNGLBINDPROGRAMPIPELINEPROC
+glad_glBindRenderbuffer	src/glad.cpp	/^PFNGLBINDRENDERBUFFERPROC glad_glBindRenderbuffer = NULL;$/;"	v	typeref:typename:PFNGLBINDRENDERBUFFERPROC
+glad_glBindSampler	src/glad.cpp	/^PFNGLBINDSAMPLERPROC glad_glBindSampler = NULL;$/;"	v	typeref:typename:PFNGLBINDSAMPLERPROC
+glad_glBindSamplers	src/glad.cpp	/^PFNGLBINDSAMPLERSPROC glad_glBindSamplers = NULL;$/;"	v	typeref:typename:PFNGLBINDSAMPLERSPROC
+glad_glBindTexture	src/glad.cpp	/^PFNGLBINDTEXTUREPROC glad_glBindTexture = NULL;$/;"	v	typeref:typename:PFNGLBINDTEXTUREPROC
+glad_glBindTextureUnit	src/glad.cpp	/^PFNGLBINDTEXTUREUNITPROC glad_glBindTextureUnit = NULL;$/;"	v	typeref:typename:PFNGLBINDTEXTUREUNITPROC
+glad_glBindTextures	src/glad.cpp	/^PFNGLBINDTEXTURESPROC glad_glBindTextures = NULL;$/;"	v	typeref:typename:PFNGLBINDTEXTURESPROC
+glad_glBindTransformFeedback	src/glad.cpp	/^PFNGLBINDTRANSFORMFEEDBACKPROC glad_glBindTransformFeedback = NULL;$/;"	v	typeref:typename:PFNGLBINDTRANSFORMFEEDBACKPROC
+glad_glBindVertexArray	src/glad.cpp	/^PFNGLBINDVERTEXARRAYPROC glad_glBindVertexArray = NULL;$/;"	v	typeref:typename:PFNGLBINDVERTEXARRAYPROC
+glad_glBindVertexBuffer	src/glad.cpp	/^PFNGLBINDVERTEXBUFFERPROC glad_glBindVertexBuffer = NULL;$/;"	v	typeref:typename:PFNGLBINDVERTEXBUFFERPROC
+glad_glBindVertexBuffers	src/glad.cpp	/^PFNGLBINDVERTEXBUFFERSPROC glad_glBindVertexBuffers = NULL;$/;"	v	typeref:typename:PFNGLBINDVERTEXBUFFERSPROC
+glad_glBlendColor	src/glad.cpp	/^PFNGLBLENDCOLORPROC glad_glBlendColor = NULL;$/;"	v	typeref:typename:PFNGLBLENDCOLORPROC
+glad_glBlendEquation	src/glad.cpp	/^PFNGLBLENDEQUATIONPROC glad_glBlendEquation = NULL;$/;"	v	typeref:typename:PFNGLBLENDEQUATIONPROC
+glad_glBlendEquationSeparate	src/glad.cpp	/^PFNGLBLENDEQUATIONSEPARATEPROC glad_glBlendEquationSeparate = NULL;$/;"	v	typeref:typename:PFNGLBLENDEQUATIONSEPARATEPROC
+glad_glBlendEquationSeparatei	src/glad.cpp	/^PFNGLBLENDEQUATIONSEPARATEIPROC glad_glBlendEquationSeparatei = NULL;$/;"	v	typeref:typename:PFNGLBLENDEQUATIONSEPARATEIPROC
+glad_glBlendEquationi	src/glad.cpp	/^PFNGLBLENDEQUATIONIPROC glad_glBlendEquationi = NULL;$/;"	v	typeref:typename:PFNGLBLENDEQUATIONIPROC
+glad_glBlendFunc	src/glad.cpp	/^PFNGLBLENDFUNCPROC glad_glBlendFunc = NULL;$/;"	v	typeref:typename:PFNGLBLENDFUNCPROC
+glad_glBlendFuncSeparate	src/glad.cpp	/^PFNGLBLENDFUNCSEPARATEPROC glad_glBlendFuncSeparate = NULL;$/;"	v	typeref:typename:PFNGLBLENDFUNCSEPARATEPROC
+glad_glBlendFuncSeparatei	src/glad.cpp	/^PFNGLBLENDFUNCSEPARATEIPROC glad_glBlendFuncSeparatei = NULL;$/;"	v	typeref:typename:PFNGLBLENDFUNCSEPARATEIPROC
+glad_glBlendFunci	src/glad.cpp	/^PFNGLBLENDFUNCIPROC glad_glBlendFunci = NULL;$/;"	v	typeref:typename:PFNGLBLENDFUNCIPROC
+glad_glBlitFramebuffer	src/glad.cpp	/^PFNGLBLITFRAMEBUFFERPROC glad_glBlitFramebuffer = NULL;$/;"	v	typeref:typename:PFNGLBLITFRAMEBUFFERPROC
+glad_glBlitNamedFramebuffer	src/glad.cpp	/^PFNGLBLITNAMEDFRAMEBUFFERPROC glad_glBlitNamedFramebuffer = NULL;$/;"	v	typeref:typename:PFNGLBLITNAMEDFRAMEBUFFERPROC
+glad_glBufferData	src/glad.cpp	/^PFNGLBUFFERDATAPROC glad_glBufferData = NULL;$/;"	v	typeref:typename:PFNGLBUFFERDATAPROC
+glad_glBufferStorage	src/glad.cpp	/^PFNGLBUFFERSTORAGEPROC glad_glBufferStorage = NULL;$/;"	v	typeref:typename:PFNGLBUFFERSTORAGEPROC
+glad_glBufferSubData	src/glad.cpp	/^PFNGLBUFFERSUBDATAPROC glad_glBufferSubData = NULL;$/;"	v	typeref:typename:PFNGLBUFFERSUBDATAPROC
+glad_glCheckFramebufferStatus	src/glad.cpp	/^PFNGLCHECKFRAMEBUFFERSTATUSPROC glad_glCheckFramebufferStatus = NULL;$/;"	v	typeref:typename:PFNGLCHECKFRAMEBUFFERSTATUSPROC
+glad_glCheckNamedFramebufferStatus	src/glad.cpp	/^PFNGLCHECKNAMEDFRAMEBUFFERSTATUSPROC glad_glCheckNamedFramebufferStatus = NULL;$/;"	v	typeref:typename:PFNGLCHECKNAMEDFRAMEBUFFERSTATUSPROC
+glad_glClampColor	src/glad.cpp	/^PFNGLCLAMPCOLORPROC glad_glClampColor = NULL;$/;"	v	typeref:typename:PFNGLCLAMPCOLORPROC
+glad_glClear	src/glad.cpp	/^PFNGLCLEARPROC glad_glClear = NULL;$/;"	v	typeref:typename:PFNGLCLEARPROC
+glad_glClearBufferData	src/glad.cpp	/^PFNGLCLEARBUFFERDATAPROC glad_glClearBufferData = NULL;$/;"	v	typeref:typename:PFNGLCLEARBUFFERDATAPROC
+glad_glClearBufferSubData	src/glad.cpp	/^PFNGLCLEARBUFFERSUBDATAPROC glad_glClearBufferSubData = NULL;$/;"	v	typeref:typename:PFNGLCLEARBUFFERSUBDATAPROC
+glad_glClearBufferfi	src/glad.cpp	/^PFNGLCLEARBUFFERFIPROC glad_glClearBufferfi = NULL;$/;"	v	typeref:typename:PFNGLCLEARBUFFERFIPROC
+glad_glClearBufferfv	src/glad.cpp	/^PFNGLCLEARBUFFERFVPROC glad_glClearBufferfv = NULL;$/;"	v	typeref:typename:PFNGLCLEARBUFFERFVPROC
+glad_glClearBufferiv	src/glad.cpp	/^PFNGLCLEARBUFFERIVPROC glad_glClearBufferiv = NULL;$/;"	v	typeref:typename:PFNGLCLEARBUFFERIVPROC
+glad_glClearBufferuiv	src/glad.cpp	/^PFNGLCLEARBUFFERUIVPROC glad_glClearBufferuiv = NULL;$/;"	v	typeref:typename:PFNGLCLEARBUFFERUIVPROC
+glad_glClearColor	src/glad.cpp	/^PFNGLCLEARCOLORPROC glad_glClearColor = NULL;$/;"	v	typeref:typename:PFNGLCLEARCOLORPROC
+glad_glClearDepth	src/glad.cpp	/^PFNGLCLEARDEPTHPROC glad_glClearDepth = NULL;$/;"	v	typeref:typename:PFNGLCLEARDEPTHPROC
+glad_glClearDepthf	src/glad.cpp	/^PFNGLCLEARDEPTHFPROC glad_glClearDepthf = NULL;$/;"	v	typeref:typename:PFNGLCLEARDEPTHFPROC
+glad_glClearNamedBufferData	src/glad.cpp	/^PFNGLCLEARNAMEDBUFFERDATAPROC glad_glClearNamedBufferData = NULL;$/;"	v	typeref:typename:PFNGLCLEARNAMEDBUFFERDATAPROC
+glad_glClearNamedBufferSubData	src/glad.cpp	/^PFNGLCLEARNAMEDBUFFERSUBDATAPROC glad_glClearNamedBufferSubData = NULL;$/;"	v	typeref:typename:PFNGLCLEARNAMEDBUFFERSUBDATAPROC
+glad_glClearNamedFramebufferfi	src/glad.cpp	/^PFNGLCLEARNAMEDFRAMEBUFFERFIPROC glad_glClearNamedFramebufferfi = NULL;$/;"	v	typeref:typename:PFNGLCLEARNAMEDFRAMEBUFFERFIPROC
+glad_glClearNamedFramebufferfv	src/glad.cpp	/^PFNGLCLEARNAMEDFRAMEBUFFERFVPROC glad_glClearNamedFramebufferfv = NULL;$/;"	v	typeref:typename:PFNGLCLEARNAMEDFRAMEBUFFERFVPROC
+glad_glClearNamedFramebufferiv	src/glad.cpp	/^PFNGLCLEARNAMEDFRAMEBUFFERIVPROC glad_glClearNamedFramebufferiv = NULL;$/;"	v	typeref:typename:PFNGLCLEARNAMEDFRAMEBUFFERIVPROC
+glad_glClearNamedFramebufferuiv	src/glad.cpp	/^PFNGLCLEARNAMEDFRAMEBUFFERUIVPROC glad_glClearNamedFramebufferuiv = NULL;$/;"	v	typeref:typename:PFNGLCLEARNAMEDFRAMEBUFFERUIVPROC
+glad_glClearStencil	src/glad.cpp	/^PFNGLCLEARSTENCILPROC glad_glClearStencil = NULL;$/;"	v	typeref:typename:PFNGLCLEARSTENCILPROC
+glad_glClearTexImage	src/glad.cpp	/^PFNGLCLEARTEXIMAGEPROC glad_glClearTexImage = NULL;$/;"	v	typeref:typename:PFNGLCLEARTEXIMAGEPROC
+glad_glClearTexSubImage	src/glad.cpp	/^PFNGLCLEARTEXSUBIMAGEPROC glad_glClearTexSubImage = NULL;$/;"	v	typeref:typename:PFNGLCLEARTEXSUBIMAGEPROC
+glad_glClientWaitSync	src/glad.cpp	/^PFNGLCLIENTWAITSYNCPROC glad_glClientWaitSync = NULL;$/;"	v	typeref:typename:PFNGLCLIENTWAITSYNCPROC
+glad_glClipControl	src/glad.cpp	/^PFNGLCLIPCONTROLPROC glad_glClipControl = NULL;$/;"	v	typeref:typename:PFNGLCLIPCONTROLPROC
+glad_glColorMask	src/glad.cpp	/^PFNGLCOLORMASKPROC glad_glColorMask = NULL;$/;"	v	typeref:typename:PFNGLCOLORMASKPROC
+glad_glColorMaski	src/glad.cpp	/^PFNGLCOLORMASKIPROC glad_glColorMaski = NULL;$/;"	v	typeref:typename:PFNGLCOLORMASKIPROC
+glad_glColorP3ui	src/glad.cpp	/^PFNGLCOLORP3UIPROC glad_glColorP3ui = NULL;$/;"	v	typeref:typename:PFNGLCOLORP3UIPROC
+glad_glColorP3uiv	src/glad.cpp	/^PFNGLCOLORP3UIVPROC glad_glColorP3uiv = NULL;$/;"	v	typeref:typename:PFNGLCOLORP3UIVPROC
+glad_glColorP4ui	src/glad.cpp	/^PFNGLCOLORP4UIPROC glad_glColorP4ui = NULL;$/;"	v	typeref:typename:PFNGLCOLORP4UIPROC
+glad_glColorP4uiv	src/glad.cpp	/^PFNGLCOLORP4UIVPROC glad_glColorP4uiv = NULL;$/;"	v	typeref:typename:PFNGLCOLORP4UIVPROC
+glad_glCompileShader	src/glad.cpp	/^PFNGLCOMPILESHADERPROC glad_glCompileShader = NULL;$/;"	v	typeref:typename:PFNGLCOMPILESHADERPROC
+glad_glCompressedTexImage1D	src/glad.cpp	/^PFNGLCOMPRESSEDTEXIMAGE1DPROC glad_glCompressedTexImage1D = NULL;$/;"	v	typeref:typename:PFNGLCOMPRESSEDTEXIMAGE1DPROC
+glad_glCompressedTexImage2D	src/glad.cpp	/^PFNGLCOMPRESSEDTEXIMAGE2DPROC glad_glCompressedTexImage2D = NULL;$/;"	v	typeref:typename:PFNGLCOMPRESSEDTEXIMAGE2DPROC
+glad_glCompressedTexImage3D	src/glad.cpp	/^PFNGLCOMPRESSEDTEXIMAGE3DPROC glad_glCompressedTexImage3D = NULL;$/;"	v	typeref:typename:PFNGLCOMPRESSEDTEXIMAGE3DPROC
+glad_glCompressedTexSubImage1D	src/glad.cpp	/^PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC glad_glCompressedTexSubImage1D = NULL;$/;"	v	typeref:typename:PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC
+glad_glCompressedTexSubImage2D	src/glad.cpp	/^PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC glad_glCompressedTexSubImage2D = NULL;$/;"	v	typeref:typename:PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC
+glad_glCompressedTexSubImage3D	src/glad.cpp	/^PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC glad_glCompressedTexSubImage3D = NULL;$/;"	v	typeref:typename:PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC
+glad_glCompressedTextureSubImage1D	src/glad.cpp	/^PFNGLCOMPRESSEDTEXTURESUBIMAGE1DPROC glad_glCompressedTextureSubImage1D = NULL;$/;"	v	typeref:typename:PFNGLCOMPRESSEDTEXTURESUBIMAGE1DPROC
+glad_glCompressedTextureSubImage2D	src/glad.cpp	/^PFNGLCOMPRESSEDTEXTURESUBIMAGE2DPROC glad_glCompressedTextureSubImage2D = NULL;$/;"	v	typeref:typename:PFNGLCOMPRESSEDTEXTURESUBIMAGE2DPROC
+glad_glCompressedTextureSubImage3D	src/glad.cpp	/^PFNGLCOMPRESSEDTEXTURESUBIMAGE3DPROC glad_glCompressedTextureSubImage3D = NULL;$/;"	v	typeref:typename:PFNGLCOMPRESSEDTEXTURESUBIMAGE3DPROC
+glad_glCopyBufferSubData	src/glad.cpp	/^PFNGLCOPYBUFFERSUBDATAPROC glad_glCopyBufferSubData = NULL;$/;"	v	typeref:typename:PFNGLCOPYBUFFERSUBDATAPROC
+glad_glCopyImageSubData	src/glad.cpp	/^PFNGLCOPYIMAGESUBDATAPROC glad_glCopyImageSubData = NULL;$/;"	v	typeref:typename:PFNGLCOPYIMAGESUBDATAPROC
+glad_glCopyNamedBufferSubData	src/glad.cpp	/^PFNGLCOPYNAMEDBUFFERSUBDATAPROC glad_glCopyNamedBufferSubData = NULL;$/;"	v	typeref:typename:PFNGLCOPYNAMEDBUFFERSUBDATAPROC
+glad_glCopyTexImage1D	src/glad.cpp	/^PFNGLCOPYTEXIMAGE1DPROC glad_glCopyTexImage1D = NULL;$/;"	v	typeref:typename:PFNGLCOPYTEXIMAGE1DPROC
+glad_glCopyTexImage2D	src/glad.cpp	/^PFNGLCOPYTEXIMAGE2DPROC glad_glCopyTexImage2D = NULL;$/;"	v	typeref:typename:PFNGLCOPYTEXIMAGE2DPROC
+glad_glCopyTexSubImage1D	src/glad.cpp	/^PFNGLCOPYTEXSUBIMAGE1DPROC glad_glCopyTexSubImage1D = NULL;$/;"	v	typeref:typename:PFNGLCOPYTEXSUBIMAGE1DPROC
+glad_glCopyTexSubImage2D	src/glad.cpp	/^PFNGLCOPYTEXSUBIMAGE2DPROC glad_glCopyTexSubImage2D = NULL;$/;"	v	typeref:typename:PFNGLCOPYTEXSUBIMAGE2DPROC
+glad_glCopyTexSubImage3D	src/glad.cpp	/^PFNGLCOPYTEXSUBIMAGE3DPROC glad_glCopyTexSubImage3D = NULL;$/;"	v	typeref:typename:PFNGLCOPYTEXSUBIMAGE3DPROC
+glad_glCopyTextureSubImage1D	src/glad.cpp	/^PFNGLCOPYTEXTURESUBIMAGE1DPROC glad_glCopyTextureSubImage1D = NULL;$/;"	v	typeref:typename:PFNGLCOPYTEXTURESUBIMAGE1DPROC
+glad_glCopyTextureSubImage2D	src/glad.cpp	/^PFNGLCOPYTEXTURESUBIMAGE2DPROC glad_glCopyTextureSubImage2D = NULL;$/;"	v	typeref:typename:PFNGLCOPYTEXTURESUBIMAGE2DPROC
+glad_glCopyTextureSubImage3D	src/glad.cpp	/^PFNGLCOPYTEXTURESUBIMAGE3DPROC glad_glCopyTextureSubImage3D = NULL;$/;"	v	typeref:typename:PFNGLCOPYTEXTURESUBIMAGE3DPROC
+glad_glCreateBuffers	src/glad.cpp	/^PFNGLCREATEBUFFERSPROC glad_glCreateBuffers = NULL;$/;"	v	typeref:typename:PFNGLCREATEBUFFERSPROC
+glad_glCreateFramebuffers	src/glad.cpp	/^PFNGLCREATEFRAMEBUFFERSPROC glad_glCreateFramebuffers = NULL;$/;"	v	typeref:typename:PFNGLCREATEFRAMEBUFFERSPROC
+glad_glCreateProgram	src/glad.cpp	/^PFNGLCREATEPROGRAMPROC glad_glCreateProgram = NULL;$/;"	v	typeref:typename:PFNGLCREATEPROGRAMPROC
+glad_glCreateProgramPipelines	src/glad.cpp	/^PFNGLCREATEPROGRAMPIPELINESPROC glad_glCreateProgramPipelines = NULL;$/;"	v	typeref:typename:PFNGLCREATEPROGRAMPIPELINESPROC
+glad_glCreateQueries	src/glad.cpp	/^PFNGLCREATEQUERIESPROC glad_glCreateQueries = NULL;$/;"	v	typeref:typename:PFNGLCREATEQUERIESPROC
+glad_glCreateRenderbuffers	src/glad.cpp	/^PFNGLCREATERENDERBUFFERSPROC glad_glCreateRenderbuffers = NULL;$/;"	v	typeref:typename:PFNGLCREATERENDERBUFFERSPROC
+glad_glCreateSamplers	src/glad.cpp	/^PFNGLCREATESAMPLERSPROC glad_glCreateSamplers = NULL;$/;"	v	typeref:typename:PFNGLCREATESAMPLERSPROC
+glad_glCreateShader	src/glad.cpp	/^PFNGLCREATESHADERPROC glad_glCreateShader = NULL;$/;"	v	typeref:typename:PFNGLCREATESHADERPROC
+glad_glCreateShaderProgramv	src/glad.cpp	/^PFNGLCREATESHADERPROGRAMVPROC glad_glCreateShaderProgramv = NULL;$/;"	v	typeref:typename:PFNGLCREATESHADERPROGRAMVPROC
+glad_glCreateTextures	src/glad.cpp	/^PFNGLCREATETEXTURESPROC glad_glCreateTextures = NULL;$/;"	v	typeref:typename:PFNGLCREATETEXTURESPROC
+glad_glCreateTransformFeedbacks	src/glad.cpp	/^PFNGLCREATETRANSFORMFEEDBACKSPROC glad_glCreateTransformFeedbacks = NULL;$/;"	v	typeref:typename:PFNGLCREATETRANSFORMFEEDBACKSPROC
+glad_glCreateVertexArrays	src/glad.cpp	/^PFNGLCREATEVERTEXARRAYSPROC glad_glCreateVertexArrays = NULL;$/;"	v	typeref:typename:PFNGLCREATEVERTEXARRAYSPROC
+glad_glCullFace	src/glad.cpp	/^PFNGLCULLFACEPROC glad_glCullFace = NULL;$/;"	v	typeref:typename:PFNGLCULLFACEPROC
+glad_glDebugMessageCallback	src/glad.cpp	/^PFNGLDEBUGMESSAGECALLBACKPROC glad_glDebugMessageCallback = NULL;$/;"	v	typeref:typename:PFNGLDEBUGMESSAGECALLBACKPROC
+glad_glDebugMessageControl	src/glad.cpp	/^PFNGLDEBUGMESSAGECONTROLPROC glad_glDebugMessageControl = NULL;$/;"	v	typeref:typename:PFNGLDEBUGMESSAGECONTROLPROC
+glad_glDebugMessageInsert	src/glad.cpp	/^PFNGLDEBUGMESSAGEINSERTPROC glad_glDebugMessageInsert = NULL;$/;"	v	typeref:typename:PFNGLDEBUGMESSAGEINSERTPROC
+glad_glDeleteBuffers	src/glad.cpp	/^PFNGLDELETEBUFFERSPROC glad_glDeleteBuffers = NULL;$/;"	v	typeref:typename:PFNGLDELETEBUFFERSPROC
+glad_glDeleteFramebuffers	src/glad.cpp	/^PFNGLDELETEFRAMEBUFFERSPROC glad_glDeleteFramebuffers = NULL;$/;"	v	typeref:typename:PFNGLDELETEFRAMEBUFFERSPROC
+glad_glDeleteProgram	src/glad.cpp	/^PFNGLDELETEPROGRAMPROC glad_glDeleteProgram = NULL;$/;"	v	typeref:typename:PFNGLDELETEPROGRAMPROC
+glad_glDeleteProgramPipelines	src/glad.cpp	/^PFNGLDELETEPROGRAMPIPELINESPROC glad_glDeleteProgramPipelines = NULL;$/;"	v	typeref:typename:PFNGLDELETEPROGRAMPIPELINESPROC
+glad_glDeleteQueries	src/glad.cpp	/^PFNGLDELETEQUERIESPROC glad_glDeleteQueries = NULL;$/;"	v	typeref:typename:PFNGLDELETEQUERIESPROC
+glad_glDeleteRenderbuffers	src/glad.cpp	/^PFNGLDELETERENDERBUFFERSPROC glad_glDeleteRenderbuffers = NULL;$/;"	v	typeref:typename:PFNGLDELETERENDERBUFFERSPROC
+glad_glDeleteSamplers	src/glad.cpp	/^PFNGLDELETESAMPLERSPROC glad_glDeleteSamplers = NULL;$/;"	v	typeref:typename:PFNGLDELETESAMPLERSPROC
+glad_glDeleteShader	src/glad.cpp	/^PFNGLDELETESHADERPROC glad_glDeleteShader = NULL;$/;"	v	typeref:typename:PFNGLDELETESHADERPROC
+glad_glDeleteSync	src/glad.cpp	/^PFNGLDELETESYNCPROC glad_glDeleteSync = NULL;$/;"	v	typeref:typename:PFNGLDELETESYNCPROC
+glad_glDeleteTextures	src/glad.cpp	/^PFNGLDELETETEXTURESPROC glad_glDeleteTextures = NULL;$/;"	v	typeref:typename:PFNGLDELETETEXTURESPROC
+glad_glDeleteTransformFeedbacks	src/glad.cpp	/^PFNGLDELETETRANSFORMFEEDBACKSPROC glad_glDeleteTransformFeedbacks = NULL;$/;"	v	typeref:typename:PFNGLDELETETRANSFORMFEEDBACKSPROC
+glad_glDeleteVertexArrays	src/glad.cpp	/^PFNGLDELETEVERTEXARRAYSPROC glad_glDeleteVertexArrays = NULL;$/;"	v	typeref:typename:PFNGLDELETEVERTEXARRAYSPROC
+glad_glDepthFunc	src/glad.cpp	/^PFNGLDEPTHFUNCPROC glad_glDepthFunc = NULL;$/;"	v	typeref:typename:PFNGLDEPTHFUNCPROC
+glad_glDepthMask	src/glad.cpp	/^PFNGLDEPTHMASKPROC glad_glDepthMask = NULL;$/;"	v	typeref:typename:PFNGLDEPTHMASKPROC
+glad_glDepthRange	src/glad.cpp	/^PFNGLDEPTHRANGEPROC glad_glDepthRange = NULL;$/;"	v	typeref:typename:PFNGLDEPTHRANGEPROC
+glad_glDepthRangeArrayv	src/glad.cpp	/^PFNGLDEPTHRANGEARRAYVPROC glad_glDepthRangeArrayv = NULL;$/;"	v	typeref:typename:PFNGLDEPTHRANGEARRAYVPROC
+glad_glDepthRangeIndexed	src/glad.cpp	/^PFNGLDEPTHRANGEINDEXEDPROC glad_glDepthRangeIndexed = NULL;$/;"	v	typeref:typename:PFNGLDEPTHRANGEINDEXEDPROC
+glad_glDepthRangef	src/glad.cpp	/^PFNGLDEPTHRANGEFPROC glad_glDepthRangef = NULL;$/;"	v	typeref:typename:PFNGLDEPTHRANGEFPROC
+glad_glDetachShader	src/glad.cpp	/^PFNGLDETACHSHADERPROC glad_glDetachShader = NULL;$/;"	v	typeref:typename:PFNGLDETACHSHADERPROC
+glad_glDisable	src/glad.cpp	/^PFNGLDISABLEPROC glad_glDisable = NULL;$/;"	v	typeref:typename:PFNGLDISABLEPROC
+glad_glDisableVertexArrayAttrib	src/glad.cpp	/^PFNGLDISABLEVERTEXARRAYATTRIBPROC glad_glDisableVertexArrayAttrib = NULL;$/;"	v	typeref:typename:PFNGLDISABLEVERTEXARRAYATTRIBPROC
+glad_glDisableVertexAttribArray	src/glad.cpp	/^PFNGLDISABLEVERTEXATTRIBARRAYPROC glad_glDisableVertexAttribArray = NULL;$/;"	v	typeref:typename:PFNGLDISABLEVERTEXATTRIBARRAYPROC
+glad_glDisablei	src/glad.cpp	/^PFNGLDISABLEIPROC glad_glDisablei = NULL;$/;"	v	typeref:typename:PFNGLDISABLEIPROC
+glad_glDispatchCompute	src/glad.cpp	/^PFNGLDISPATCHCOMPUTEPROC glad_glDispatchCompute = NULL;$/;"	v	typeref:typename:PFNGLDISPATCHCOMPUTEPROC
+glad_glDispatchComputeIndirect	src/glad.cpp	/^PFNGLDISPATCHCOMPUTEINDIRECTPROC glad_glDispatchComputeIndirect = NULL;$/;"	v	typeref:typename:PFNGLDISPATCHCOMPUTEINDIRECTPROC
+glad_glDrawArrays	src/glad.cpp	/^PFNGLDRAWARRAYSPROC glad_glDrawArrays = NULL;$/;"	v	typeref:typename:PFNGLDRAWARRAYSPROC
+glad_glDrawArraysIndirect	src/glad.cpp	/^PFNGLDRAWARRAYSINDIRECTPROC glad_glDrawArraysIndirect = NULL;$/;"	v	typeref:typename:PFNGLDRAWARRAYSINDIRECTPROC
+glad_glDrawArraysInstanced	src/glad.cpp	/^PFNGLDRAWARRAYSINSTANCEDPROC glad_glDrawArraysInstanced = NULL;$/;"	v	typeref:typename:PFNGLDRAWARRAYSINSTANCEDPROC
+glad_glDrawArraysInstancedBaseInstance	src/glad.cpp	/^PFNGLDRAWARRAYSINSTANCEDBASEINSTANCEPROC glad_glDrawArraysInstancedBaseInstance = NULL;$/;"	v	typeref:typename:PFNGLDRAWARRAYSINSTANCEDBASEINSTANCEPROC
+glad_glDrawBuffer	src/glad.cpp	/^PFNGLDRAWBUFFERPROC glad_glDrawBuffer = NULL;$/;"	v	typeref:typename:PFNGLDRAWBUFFERPROC
+glad_glDrawBuffers	src/glad.cpp	/^PFNGLDRAWBUFFERSPROC glad_glDrawBuffers = NULL;$/;"	v	typeref:typename:PFNGLDRAWBUFFERSPROC
+glad_glDrawElements	src/glad.cpp	/^PFNGLDRAWELEMENTSPROC glad_glDrawElements = NULL;$/;"	v	typeref:typename:PFNGLDRAWELEMENTSPROC
+glad_glDrawElementsBaseVertex	src/glad.cpp	/^PFNGLDRAWELEMENTSBASEVERTEXPROC glad_glDrawElementsBaseVertex = NULL;$/;"	v	typeref:typename:PFNGLDRAWELEMENTSBASEVERTEXPROC
+glad_glDrawElementsIndirect	src/glad.cpp	/^PFNGLDRAWELEMENTSINDIRECTPROC glad_glDrawElementsIndirect = NULL;$/;"	v	typeref:typename:PFNGLDRAWELEMENTSINDIRECTPROC
+glad_glDrawElementsInstanced	src/glad.cpp	/^PFNGLDRAWELEMENTSINSTANCEDPROC glad_glDrawElementsInstanced = NULL;$/;"	v	typeref:typename:PFNGLDRAWELEMENTSINSTANCEDPROC
+glad_glDrawElementsInstancedBaseInstance	src/glad.cpp	/^PFNGLDRAWELEMENTSINSTANCEDBASEINSTANCEPROC glad_glDrawElementsInstancedBaseInstance = NULL;$/;"	v	typeref:typename:PFNGLDRAWELEMENTSINSTANCEDBASEINSTANCEPROC
+glad_glDrawElementsInstancedBaseVertex	src/glad.cpp	/^PFNGLDRAWELEMENTSINSTANCEDBASEVERTEXPROC glad_glDrawElementsInstancedBaseVertex = NULL;$/;"	v	typeref:typename:PFNGLDRAWELEMENTSINSTANCEDBASEVERTEXPROC
+glad_glDrawElementsInstancedBaseVertexBaseInstance	src/glad.cpp	/^PFNGLDRAWELEMENTSINSTANCEDBASEVERTEXBASEINSTANCEPROC glad_glDrawElementsInstancedBaseVertexBaseI/;"	v	typeref:typename:PFNGLDRAWELEMENTSINSTANCEDBASEVERTEXBASEINSTANCEPROC
+glad_glDrawRangeElements	src/glad.cpp	/^PFNGLDRAWRANGEELEMENTSPROC glad_glDrawRangeElements = NULL;$/;"	v	typeref:typename:PFNGLDRAWRANGEELEMENTSPROC
+glad_glDrawRangeElementsBaseVertex	src/glad.cpp	/^PFNGLDRAWRANGEELEMENTSBASEVERTEXPROC glad_glDrawRangeElementsBaseVertex = NULL;$/;"	v	typeref:typename:PFNGLDRAWRANGEELEMENTSBASEVERTEXPROC
+glad_glDrawTransformFeedback	src/glad.cpp	/^PFNGLDRAWTRANSFORMFEEDBACKPROC glad_glDrawTransformFeedback = NULL;$/;"	v	typeref:typename:PFNGLDRAWTRANSFORMFEEDBACKPROC
+glad_glDrawTransformFeedbackInstanced	src/glad.cpp	/^PFNGLDRAWTRANSFORMFEEDBACKINSTANCEDPROC glad_glDrawTransformFeedbackInstanced = NULL;$/;"	v	typeref:typename:PFNGLDRAWTRANSFORMFEEDBACKINSTANCEDPROC
+glad_glDrawTransformFeedbackStream	src/glad.cpp	/^PFNGLDRAWTRANSFORMFEEDBACKSTREAMPROC glad_glDrawTransformFeedbackStream = NULL;$/;"	v	typeref:typename:PFNGLDRAWTRANSFORMFEEDBACKSTREAMPROC
+glad_glDrawTransformFeedbackStreamInstanced	src/glad.cpp	/^PFNGLDRAWTRANSFORMFEEDBACKSTREAMINSTANCEDPROC glad_glDrawTransformFeedbackStreamInstanced = NULL/;"	v	typeref:typename:PFNGLDRAWTRANSFORMFEEDBACKSTREAMINSTANCEDPROC
+glad_glEnable	src/glad.cpp	/^PFNGLENABLEPROC glad_glEnable = NULL;$/;"	v	typeref:typename:PFNGLENABLEPROC
+glad_glEnableVertexArrayAttrib	src/glad.cpp	/^PFNGLENABLEVERTEXARRAYATTRIBPROC glad_glEnableVertexArrayAttrib = NULL;$/;"	v	typeref:typename:PFNGLENABLEVERTEXARRAYATTRIBPROC
+glad_glEnableVertexAttribArray	src/glad.cpp	/^PFNGLENABLEVERTEXATTRIBARRAYPROC glad_glEnableVertexAttribArray = NULL;$/;"	v	typeref:typename:PFNGLENABLEVERTEXATTRIBARRAYPROC
+glad_glEnablei	src/glad.cpp	/^PFNGLENABLEIPROC glad_glEnablei = NULL;$/;"	v	typeref:typename:PFNGLENABLEIPROC
+glad_glEndConditionalRender	src/glad.cpp	/^PFNGLENDCONDITIONALRENDERPROC glad_glEndConditionalRender = NULL;$/;"	v	typeref:typename:PFNGLENDCONDITIONALRENDERPROC
+glad_glEndQuery	src/glad.cpp	/^PFNGLENDQUERYPROC glad_glEndQuery = NULL;$/;"	v	typeref:typename:PFNGLENDQUERYPROC
+glad_glEndQueryIndexed	src/glad.cpp	/^PFNGLENDQUERYINDEXEDPROC glad_glEndQueryIndexed = NULL;$/;"	v	typeref:typename:PFNGLENDQUERYINDEXEDPROC
+glad_glEndTransformFeedback	src/glad.cpp	/^PFNGLENDTRANSFORMFEEDBACKPROC glad_glEndTransformFeedback = NULL;$/;"	v	typeref:typename:PFNGLENDTRANSFORMFEEDBACKPROC
+glad_glFenceSync	src/glad.cpp	/^PFNGLFENCESYNCPROC glad_glFenceSync = NULL;$/;"	v	typeref:typename:PFNGLFENCESYNCPROC
+glad_glFinish	src/glad.cpp	/^PFNGLFINISHPROC glad_glFinish = NULL;$/;"	v	typeref:typename:PFNGLFINISHPROC
+glad_glFlush	src/glad.cpp	/^PFNGLFLUSHPROC glad_glFlush = NULL;$/;"	v	typeref:typename:PFNGLFLUSHPROC
+glad_glFlushMappedBufferRange	src/glad.cpp	/^PFNGLFLUSHMAPPEDBUFFERRANGEPROC glad_glFlushMappedBufferRange = NULL;$/;"	v	typeref:typename:PFNGLFLUSHMAPPEDBUFFERRANGEPROC
+glad_glFlushMappedNamedBufferRange	src/glad.cpp	/^PFNGLFLUSHMAPPEDNAMEDBUFFERRANGEPROC glad_glFlushMappedNamedBufferRange = NULL;$/;"	v	typeref:typename:PFNGLFLUSHMAPPEDNAMEDBUFFERRANGEPROC
+glad_glFramebufferParameteri	src/glad.cpp	/^PFNGLFRAMEBUFFERPARAMETERIPROC glad_glFramebufferParameteri = NULL;$/;"	v	typeref:typename:PFNGLFRAMEBUFFERPARAMETERIPROC
+glad_glFramebufferRenderbuffer	src/glad.cpp	/^PFNGLFRAMEBUFFERRENDERBUFFERPROC glad_glFramebufferRenderbuffer = NULL;$/;"	v	typeref:typename:PFNGLFRAMEBUFFERRENDERBUFFERPROC
+glad_glFramebufferTexture	src/glad.cpp	/^PFNGLFRAMEBUFFERTEXTUREPROC glad_glFramebufferTexture = NULL;$/;"	v	typeref:typename:PFNGLFRAMEBUFFERTEXTUREPROC
+glad_glFramebufferTexture1D	src/glad.cpp	/^PFNGLFRAMEBUFFERTEXTURE1DPROC glad_glFramebufferTexture1D = NULL;$/;"	v	typeref:typename:PFNGLFRAMEBUFFERTEXTURE1DPROC
+glad_glFramebufferTexture2D	src/glad.cpp	/^PFNGLFRAMEBUFFERTEXTURE2DPROC glad_glFramebufferTexture2D = NULL;$/;"	v	typeref:typename:PFNGLFRAMEBUFFERTEXTURE2DPROC
+glad_glFramebufferTexture3D	src/glad.cpp	/^PFNGLFRAMEBUFFERTEXTURE3DPROC glad_glFramebufferTexture3D = NULL;$/;"	v	typeref:typename:PFNGLFRAMEBUFFERTEXTURE3DPROC
+glad_glFramebufferTextureLayer	src/glad.cpp	/^PFNGLFRAMEBUFFERTEXTURELAYERPROC glad_glFramebufferTextureLayer = NULL;$/;"	v	typeref:typename:PFNGLFRAMEBUFFERTEXTURELAYERPROC
+glad_glFrontFace	src/glad.cpp	/^PFNGLFRONTFACEPROC glad_glFrontFace = NULL;$/;"	v	typeref:typename:PFNGLFRONTFACEPROC
+glad_glGenBuffers	src/glad.cpp	/^PFNGLGENBUFFERSPROC glad_glGenBuffers = NULL;$/;"	v	typeref:typename:PFNGLGENBUFFERSPROC
+glad_glGenFramebuffers	src/glad.cpp	/^PFNGLGENFRAMEBUFFERSPROC glad_glGenFramebuffers = NULL;$/;"	v	typeref:typename:PFNGLGENFRAMEBUFFERSPROC
+glad_glGenProgramPipelines	src/glad.cpp	/^PFNGLGENPROGRAMPIPELINESPROC glad_glGenProgramPipelines = NULL;$/;"	v	typeref:typename:PFNGLGENPROGRAMPIPELINESPROC
+glad_glGenQueries	src/glad.cpp	/^PFNGLGENQUERIESPROC glad_glGenQueries = NULL;$/;"	v	typeref:typename:PFNGLGENQUERIESPROC
+glad_glGenRenderbuffers	src/glad.cpp	/^PFNGLGENRENDERBUFFERSPROC glad_glGenRenderbuffers = NULL;$/;"	v	typeref:typename:PFNGLGENRENDERBUFFERSPROC
+glad_glGenSamplers	src/glad.cpp	/^PFNGLGENSAMPLERSPROC glad_glGenSamplers = NULL;$/;"	v	typeref:typename:PFNGLGENSAMPLERSPROC
+glad_glGenTextures	src/glad.cpp	/^PFNGLGENTEXTURESPROC glad_glGenTextures = NULL;$/;"	v	typeref:typename:PFNGLGENTEXTURESPROC
+glad_glGenTransformFeedbacks	src/glad.cpp	/^PFNGLGENTRANSFORMFEEDBACKSPROC glad_glGenTransformFeedbacks = NULL;$/;"	v	typeref:typename:PFNGLGENTRANSFORMFEEDBACKSPROC
+glad_glGenVertexArrays	src/glad.cpp	/^PFNGLGENVERTEXARRAYSPROC glad_glGenVertexArrays = NULL;$/;"	v	typeref:typename:PFNGLGENVERTEXARRAYSPROC
+glad_glGenerateMipmap	src/glad.cpp	/^PFNGLGENERATEMIPMAPPROC glad_glGenerateMipmap = NULL;$/;"	v	typeref:typename:PFNGLGENERATEMIPMAPPROC
+glad_glGenerateTextureMipmap	src/glad.cpp	/^PFNGLGENERATETEXTUREMIPMAPPROC glad_glGenerateTextureMipmap = NULL;$/;"	v	typeref:typename:PFNGLGENERATETEXTUREMIPMAPPROC
+glad_glGetActiveAtomicCounterBufferiv	src/glad.cpp	/^PFNGLGETACTIVEATOMICCOUNTERBUFFERIVPROC glad_glGetActiveAtomicCounterBufferiv = NULL;$/;"	v	typeref:typename:PFNGLGETACTIVEATOMICCOUNTERBUFFERIVPROC
+glad_glGetActiveAttrib	src/glad.cpp	/^PFNGLGETACTIVEATTRIBPROC glad_glGetActiveAttrib = NULL;$/;"	v	typeref:typename:PFNGLGETACTIVEATTRIBPROC
+glad_glGetActiveSubroutineName	src/glad.cpp	/^PFNGLGETACTIVESUBROUTINENAMEPROC glad_glGetActiveSubroutineName = NULL;$/;"	v	typeref:typename:PFNGLGETACTIVESUBROUTINENAMEPROC
+glad_glGetActiveSubroutineUniformName	src/glad.cpp	/^PFNGLGETACTIVESUBROUTINEUNIFORMNAMEPROC glad_glGetActiveSubroutineUniformName = NULL;$/;"	v	typeref:typename:PFNGLGETACTIVESUBROUTINEUNIFORMNAMEPROC
+glad_glGetActiveSubroutineUniformiv	src/glad.cpp	/^PFNGLGETACTIVESUBROUTINEUNIFORMIVPROC glad_glGetActiveSubroutineUniformiv = NULL;$/;"	v	typeref:typename:PFNGLGETACTIVESUBROUTINEUNIFORMIVPROC
+glad_glGetActiveUniform	src/glad.cpp	/^PFNGLGETACTIVEUNIFORMPROC glad_glGetActiveUniform = NULL;$/;"	v	typeref:typename:PFNGLGETACTIVEUNIFORMPROC
+glad_glGetActiveUniformBlockName	src/glad.cpp	/^PFNGLGETACTIVEUNIFORMBLOCKNAMEPROC glad_glGetActiveUniformBlockName = NULL;$/;"	v	typeref:typename:PFNGLGETACTIVEUNIFORMBLOCKNAMEPROC
+glad_glGetActiveUniformBlockiv	src/glad.cpp	/^PFNGLGETACTIVEUNIFORMBLOCKIVPROC glad_glGetActiveUniformBlockiv = NULL;$/;"	v	typeref:typename:PFNGLGETACTIVEUNIFORMBLOCKIVPROC
+glad_glGetActiveUniformName	src/glad.cpp	/^PFNGLGETACTIVEUNIFORMNAMEPROC glad_glGetActiveUniformName = NULL;$/;"	v	typeref:typename:PFNGLGETACTIVEUNIFORMNAMEPROC
+glad_glGetActiveUniformsiv	src/glad.cpp	/^PFNGLGETACTIVEUNIFORMSIVPROC glad_glGetActiveUniformsiv = NULL;$/;"	v	typeref:typename:PFNGLGETACTIVEUNIFORMSIVPROC
+glad_glGetAttachedShaders	src/glad.cpp	/^PFNGLGETATTACHEDSHADERSPROC glad_glGetAttachedShaders = NULL;$/;"	v	typeref:typename:PFNGLGETATTACHEDSHADERSPROC
+glad_glGetAttribLocation	src/glad.cpp	/^PFNGLGETATTRIBLOCATIONPROC glad_glGetAttribLocation = NULL;$/;"	v	typeref:typename:PFNGLGETATTRIBLOCATIONPROC
+glad_glGetBooleani_v	src/glad.cpp	/^PFNGLGETBOOLEANI_VPROC glad_glGetBooleani_v = NULL;$/;"	v	typeref:typename:PFNGLGETBOOLEANI_VPROC
+glad_glGetBooleanv	src/glad.cpp	/^PFNGLGETBOOLEANVPROC glad_glGetBooleanv = NULL;$/;"	v	typeref:typename:PFNGLGETBOOLEANVPROC
+glad_glGetBufferParameteri64v	src/glad.cpp	/^PFNGLGETBUFFERPARAMETERI64VPROC glad_glGetBufferParameteri64v = NULL;$/;"	v	typeref:typename:PFNGLGETBUFFERPARAMETERI64VPROC
+glad_glGetBufferParameteriv	src/glad.cpp	/^PFNGLGETBUFFERPARAMETERIVPROC glad_glGetBufferParameteriv = NULL;$/;"	v	typeref:typename:PFNGLGETBUFFERPARAMETERIVPROC
+glad_glGetBufferPointerv	src/glad.cpp	/^PFNGLGETBUFFERPOINTERVPROC glad_glGetBufferPointerv = NULL;$/;"	v	typeref:typename:PFNGLGETBUFFERPOINTERVPROC
+glad_glGetBufferSubData	src/glad.cpp	/^PFNGLGETBUFFERSUBDATAPROC glad_glGetBufferSubData = NULL;$/;"	v	typeref:typename:PFNGLGETBUFFERSUBDATAPROC
+glad_glGetCompressedTexImage	src/glad.cpp	/^PFNGLGETCOMPRESSEDTEXIMAGEPROC glad_glGetCompressedTexImage = NULL;$/;"	v	typeref:typename:PFNGLGETCOMPRESSEDTEXIMAGEPROC
+glad_glGetCompressedTextureImage	src/glad.cpp	/^PFNGLGETCOMPRESSEDTEXTUREIMAGEPROC glad_glGetCompressedTextureImage = NULL;$/;"	v	typeref:typename:PFNGLGETCOMPRESSEDTEXTUREIMAGEPROC
+glad_glGetCompressedTextureSubImage	src/glad.cpp	/^PFNGLGETCOMPRESSEDTEXTURESUBIMAGEPROC glad_glGetCompressedTextureSubImage = NULL;$/;"	v	typeref:typename:PFNGLGETCOMPRESSEDTEXTURESUBIMAGEPROC
+glad_glGetDebugMessageLog	src/glad.cpp	/^PFNGLGETDEBUGMESSAGELOGPROC glad_glGetDebugMessageLog = NULL;$/;"	v	typeref:typename:PFNGLGETDEBUGMESSAGELOGPROC
+glad_glGetDoublei_v	src/glad.cpp	/^PFNGLGETDOUBLEI_VPROC glad_glGetDoublei_v = NULL;$/;"	v	typeref:typename:PFNGLGETDOUBLEI_VPROC
+glad_glGetDoublev	src/glad.cpp	/^PFNGLGETDOUBLEVPROC glad_glGetDoublev = NULL;$/;"	v	typeref:typename:PFNGLGETDOUBLEVPROC
+glad_glGetError	src/glad.cpp	/^PFNGLGETERRORPROC glad_glGetError = NULL;$/;"	v	typeref:typename:PFNGLGETERRORPROC
+glad_glGetFloati_v	src/glad.cpp	/^PFNGLGETFLOATI_VPROC glad_glGetFloati_v = NULL;$/;"	v	typeref:typename:PFNGLGETFLOATI_VPROC
+glad_glGetFloatv	src/glad.cpp	/^PFNGLGETFLOATVPROC glad_glGetFloatv = NULL;$/;"	v	typeref:typename:PFNGLGETFLOATVPROC
+glad_glGetFragDataIndex	src/glad.cpp	/^PFNGLGETFRAGDATAINDEXPROC glad_glGetFragDataIndex = NULL;$/;"	v	typeref:typename:PFNGLGETFRAGDATAINDEXPROC
+glad_glGetFragDataLocation	src/glad.cpp	/^PFNGLGETFRAGDATALOCATIONPROC glad_glGetFragDataLocation = NULL;$/;"	v	typeref:typename:PFNGLGETFRAGDATALOCATIONPROC
+glad_glGetFramebufferAttachmentParameteriv	src/glad.cpp	/^PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC glad_glGetFramebufferAttachmentParameteriv = NULL;$/;"	v	typeref:typename:PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC
+glad_glGetFramebufferParameteriv	src/glad.cpp	/^PFNGLGETFRAMEBUFFERPARAMETERIVPROC glad_glGetFramebufferParameteriv = NULL;$/;"	v	typeref:typename:PFNGLGETFRAMEBUFFERPARAMETERIVPROC
+glad_glGetGraphicsResetStatus	src/glad.cpp	/^PFNGLGETGRAPHICSRESETSTATUSPROC glad_glGetGraphicsResetStatus = NULL;$/;"	v	typeref:typename:PFNGLGETGRAPHICSRESETSTATUSPROC
+glad_glGetInteger64i_v	src/glad.cpp	/^PFNGLGETINTEGER64I_VPROC glad_glGetInteger64i_v = NULL;$/;"	v	typeref:typename:PFNGLGETINTEGER64I_VPROC
+glad_glGetInteger64v	src/glad.cpp	/^PFNGLGETINTEGER64VPROC glad_glGetInteger64v = NULL;$/;"	v	typeref:typename:PFNGLGETINTEGER64VPROC
+glad_glGetIntegeri_v	src/glad.cpp	/^PFNGLGETINTEGERI_VPROC glad_glGetIntegeri_v = NULL;$/;"	v	typeref:typename:PFNGLGETINTEGERI_VPROC
+glad_glGetIntegerv	src/glad.cpp	/^PFNGLGETINTEGERVPROC glad_glGetIntegerv = NULL;$/;"	v	typeref:typename:PFNGLGETINTEGERVPROC
+glad_glGetInternalformati64v	src/glad.cpp	/^PFNGLGETINTERNALFORMATI64VPROC glad_glGetInternalformati64v = NULL;$/;"	v	typeref:typename:PFNGLGETINTERNALFORMATI64VPROC
+glad_glGetInternalformativ	src/glad.cpp	/^PFNGLGETINTERNALFORMATIVPROC glad_glGetInternalformativ = NULL;$/;"	v	typeref:typename:PFNGLGETINTERNALFORMATIVPROC
+glad_glGetMultisamplefv	src/glad.cpp	/^PFNGLGETMULTISAMPLEFVPROC glad_glGetMultisamplefv = NULL;$/;"	v	typeref:typename:PFNGLGETMULTISAMPLEFVPROC
+glad_glGetNamedBufferParameteri64v	src/glad.cpp	/^PFNGLGETNAMEDBUFFERPARAMETERI64VPROC glad_glGetNamedBufferParameteri64v = NULL;$/;"	v	typeref:typename:PFNGLGETNAMEDBUFFERPARAMETERI64VPROC
+glad_glGetNamedBufferParameteriv	src/glad.cpp	/^PFNGLGETNAMEDBUFFERPARAMETERIVPROC glad_glGetNamedBufferParameteriv = NULL;$/;"	v	typeref:typename:PFNGLGETNAMEDBUFFERPARAMETERIVPROC
+glad_glGetNamedBufferPointerv	src/glad.cpp	/^PFNGLGETNAMEDBUFFERPOINTERVPROC glad_glGetNamedBufferPointerv = NULL;$/;"	v	typeref:typename:PFNGLGETNAMEDBUFFERPOINTERVPROC
+glad_glGetNamedBufferSubData	src/glad.cpp	/^PFNGLGETNAMEDBUFFERSUBDATAPROC glad_glGetNamedBufferSubData = NULL;$/;"	v	typeref:typename:PFNGLGETNAMEDBUFFERSUBDATAPROC
+glad_glGetNamedFramebufferAttachmentParameteriv	src/glad.cpp	/^PFNGLGETNAMEDFRAMEBUFFERATTACHMENTPARAMETERIVPROC glad_glGetNamedFramebufferAttachmentParameteri/;"	v	typeref:typename:PFNGLGETNAMEDFRAMEBUFFERATTACHMENTPARAMETERIVPROC
+glad_glGetNamedFramebufferParameteriv	src/glad.cpp	/^PFNGLGETNAMEDFRAMEBUFFERPARAMETERIVPROC glad_glGetNamedFramebufferParameteriv = NULL;$/;"	v	typeref:typename:PFNGLGETNAMEDFRAMEBUFFERPARAMETERIVPROC
+glad_glGetNamedRenderbufferParameteriv	src/glad.cpp	/^PFNGLGETNAMEDRENDERBUFFERPARAMETERIVPROC glad_glGetNamedRenderbufferParameteriv = NULL;$/;"	v	typeref:typename:PFNGLGETNAMEDRENDERBUFFERPARAMETERIVPROC
+glad_glGetObjectLabel	src/glad.cpp	/^PFNGLGETOBJECTLABELPROC glad_glGetObjectLabel = NULL;$/;"	v	typeref:typename:PFNGLGETOBJECTLABELPROC
+glad_glGetObjectPtrLabel	src/glad.cpp	/^PFNGLGETOBJECTPTRLABELPROC glad_glGetObjectPtrLabel = NULL;$/;"	v	typeref:typename:PFNGLGETOBJECTPTRLABELPROC
+glad_glGetPointerv	src/glad.cpp	/^PFNGLGETPOINTERVPROC glad_glGetPointerv = NULL;$/;"	v	typeref:typename:PFNGLGETPOINTERVPROC
+glad_glGetProgramBinary	src/glad.cpp	/^PFNGLGETPROGRAMBINARYPROC glad_glGetProgramBinary = NULL;$/;"	v	typeref:typename:PFNGLGETPROGRAMBINARYPROC
+glad_glGetProgramInfoLog	src/glad.cpp	/^PFNGLGETPROGRAMINFOLOGPROC glad_glGetProgramInfoLog = NULL;$/;"	v	typeref:typename:PFNGLGETPROGRAMINFOLOGPROC
+glad_glGetProgramInterfaceiv	src/glad.cpp	/^PFNGLGETPROGRAMINTERFACEIVPROC glad_glGetProgramInterfaceiv = NULL;$/;"	v	typeref:typename:PFNGLGETPROGRAMINTERFACEIVPROC
+glad_glGetProgramPipelineInfoLog	src/glad.cpp	/^PFNGLGETPROGRAMPIPELINEINFOLOGPROC glad_glGetProgramPipelineInfoLog = NULL;$/;"	v	typeref:typename:PFNGLGETPROGRAMPIPELINEINFOLOGPROC
+glad_glGetProgramPipelineiv	src/glad.cpp	/^PFNGLGETPROGRAMPIPELINEIVPROC glad_glGetProgramPipelineiv = NULL;$/;"	v	typeref:typename:PFNGLGETPROGRAMPIPELINEIVPROC
+glad_glGetProgramResourceIndex	src/glad.cpp	/^PFNGLGETPROGRAMRESOURCEINDEXPROC glad_glGetProgramResourceIndex = NULL;$/;"	v	typeref:typename:PFNGLGETPROGRAMRESOURCEINDEXPROC
+glad_glGetProgramResourceLocation	src/glad.cpp	/^PFNGLGETPROGRAMRESOURCELOCATIONPROC glad_glGetProgramResourceLocation = NULL;$/;"	v	typeref:typename:PFNGLGETPROGRAMRESOURCELOCATIONPROC
+glad_glGetProgramResourceLocationIndex	src/glad.cpp	/^PFNGLGETPROGRAMRESOURCELOCATIONINDEXPROC glad_glGetProgramResourceLocationIndex = NULL;$/;"	v	typeref:typename:PFNGLGETPROGRAMRESOURCELOCATIONINDEXPROC
+glad_glGetProgramResourceName	src/glad.cpp	/^PFNGLGETPROGRAMRESOURCENAMEPROC glad_glGetProgramResourceName = NULL;$/;"	v	typeref:typename:PFNGLGETPROGRAMRESOURCENAMEPROC
+glad_glGetProgramResourceiv	src/glad.cpp	/^PFNGLGETPROGRAMRESOURCEIVPROC glad_glGetProgramResourceiv = NULL;$/;"	v	typeref:typename:PFNGLGETPROGRAMRESOURCEIVPROC
+glad_glGetProgramStageiv	src/glad.cpp	/^PFNGLGETPROGRAMSTAGEIVPROC glad_glGetProgramStageiv = NULL;$/;"	v	typeref:typename:PFNGLGETPROGRAMSTAGEIVPROC
+glad_glGetProgramiv	src/glad.cpp	/^PFNGLGETPROGRAMIVPROC glad_glGetProgramiv = NULL;$/;"	v	typeref:typename:PFNGLGETPROGRAMIVPROC
+glad_glGetQueryBufferObjecti64v	src/glad.cpp	/^PFNGLGETQUERYBUFFEROBJECTI64VPROC glad_glGetQueryBufferObjecti64v = NULL;$/;"	v	typeref:typename:PFNGLGETQUERYBUFFEROBJECTI64VPROC
+glad_glGetQueryBufferObjectiv	src/glad.cpp	/^PFNGLGETQUERYBUFFEROBJECTIVPROC glad_glGetQueryBufferObjectiv = NULL;$/;"	v	typeref:typename:PFNGLGETQUERYBUFFEROBJECTIVPROC
+glad_glGetQueryBufferObjectui64v	src/glad.cpp	/^PFNGLGETQUERYBUFFEROBJECTUI64VPROC glad_glGetQueryBufferObjectui64v = NULL;$/;"	v	typeref:typename:PFNGLGETQUERYBUFFEROBJECTUI64VPROC
+glad_glGetQueryBufferObjectuiv	src/glad.cpp	/^PFNGLGETQUERYBUFFEROBJECTUIVPROC glad_glGetQueryBufferObjectuiv = NULL;$/;"	v	typeref:typename:PFNGLGETQUERYBUFFEROBJECTUIVPROC
+glad_glGetQueryIndexediv	src/glad.cpp	/^PFNGLGETQUERYINDEXEDIVPROC glad_glGetQueryIndexediv = NULL;$/;"	v	typeref:typename:PFNGLGETQUERYINDEXEDIVPROC
+glad_glGetQueryObjecti64v	src/glad.cpp	/^PFNGLGETQUERYOBJECTI64VPROC glad_glGetQueryObjecti64v = NULL;$/;"	v	typeref:typename:PFNGLGETQUERYOBJECTI64VPROC
+glad_glGetQueryObjectiv	src/glad.cpp	/^PFNGLGETQUERYOBJECTIVPROC glad_glGetQueryObjectiv = NULL;$/;"	v	typeref:typename:PFNGLGETQUERYOBJECTIVPROC
+glad_glGetQueryObjectui64v	src/glad.cpp	/^PFNGLGETQUERYOBJECTUI64VPROC glad_glGetQueryObjectui64v = NULL;$/;"	v	typeref:typename:PFNGLGETQUERYOBJECTUI64VPROC
+glad_glGetQueryObjectuiv	src/glad.cpp	/^PFNGLGETQUERYOBJECTUIVPROC glad_glGetQueryObjectuiv = NULL;$/;"	v	typeref:typename:PFNGLGETQUERYOBJECTUIVPROC
+glad_glGetQueryiv	src/glad.cpp	/^PFNGLGETQUERYIVPROC glad_glGetQueryiv = NULL;$/;"	v	typeref:typename:PFNGLGETQUERYIVPROC
+glad_glGetRenderbufferParameteriv	src/glad.cpp	/^PFNGLGETRENDERBUFFERPARAMETERIVPROC glad_glGetRenderbufferParameteriv = NULL;$/;"	v	typeref:typename:PFNGLGETRENDERBUFFERPARAMETERIVPROC
+glad_glGetSamplerParameterIiv	src/glad.cpp	/^PFNGLGETSAMPLERPARAMETERIIVPROC glad_glGetSamplerParameterIiv = NULL;$/;"	v	typeref:typename:PFNGLGETSAMPLERPARAMETERIIVPROC
+glad_glGetSamplerParameterIuiv	src/glad.cpp	/^PFNGLGETSAMPLERPARAMETERIUIVPROC glad_glGetSamplerParameterIuiv = NULL;$/;"	v	typeref:typename:PFNGLGETSAMPLERPARAMETERIUIVPROC
+glad_glGetSamplerParameterfv	src/glad.cpp	/^PFNGLGETSAMPLERPARAMETERFVPROC glad_glGetSamplerParameterfv = NULL;$/;"	v	typeref:typename:PFNGLGETSAMPLERPARAMETERFVPROC
+glad_glGetSamplerParameteriv	src/glad.cpp	/^PFNGLGETSAMPLERPARAMETERIVPROC glad_glGetSamplerParameteriv = NULL;$/;"	v	typeref:typename:PFNGLGETSAMPLERPARAMETERIVPROC
+glad_glGetShaderInfoLog	src/glad.cpp	/^PFNGLGETSHADERINFOLOGPROC glad_glGetShaderInfoLog = NULL;$/;"	v	typeref:typename:PFNGLGETSHADERINFOLOGPROC
+glad_glGetShaderPrecisionFormat	src/glad.cpp	/^PFNGLGETSHADERPRECISIONFORMATPROC glad_glGetShaderPrecisionFormat = NULL;$/;"	v	typeref:typename:PFNGLGETSHADERPRECISIONFORMATPROC
+glad_glGetShaderSource	src/glad.cpp	/^PFNGLGETSHADERSOURCEPROC glad_glGetShaderSource = NULL;$/;"	v	typeref:typename:PFNGLGETSHADERSOURCEPROC
+glad_glGetShaderiv	src/glad.cpp	/^PFNGLGETSHADERIVPROC glad_glGetShaderiv = NULL;$/;"	v	typeref:typename:PFNGLGETSHADERIVPROC
+glad_glGetString	src/glad.cpp	/^PFNGLGETSTRINGPROC glad_glGetString = NULL;$/;"	v	typeref:typename:PFNGLGETSTRINGPROC
+glad_glGetStringi	src/glad.cpp	/^PFNGLGETSTRINGIPROC glad_glGetStringi = NULL;$/;"	v	typeref:typename:PFNGLGETSTRINGIPROC
+glad_glGetSubroutineIndex	src/glad.cpp	/^PFNGLGETSUBROUTINEINDEXPROC glad_glGetSubroutineIndex = NULL;$/;"	v	typeref:typename:PFNGLGETSUBROUTINEINDEXPROC
+glad_glGetSubroutineUniformLocation	src/glad.cpp	/^PFNGLGETSUBROUTINEUNIFORMLOCATIONPROC glad_glGetSubroutineUniformLocation = NULL;$/;"	v	typeref:typename:PFNGLGETSUBROUTINEUNIFORMLOCATIONPROC
+glad_glGetSynciv	src/glad.cpp	/^PFNGLGETSYNCIVPROC glad_glGetSynciv = NULL;$/;"	v	typeref:typename:PFNGLGETSYNCIVPROC
+glad_glGetTexImage	src/glad.cpp	/^PFNGLGETTEXIMAGEPROC glad_glGetTexImage = NULL;$/;"	v	typeref:typename:PFNGLGETTEXIMAGEPROC
+glad_glGetTexLevelParameterfv	src/glad.cpp	/^PFNGLGETTEXLEVELPARAMETERFVPROC glad_glGetTexLevelParameterfv = NULL;$/;"	v	typeref:typename:PFNGLGETTEXLEVELPARAMETERFVPROC
+glad_glGetTexLevelParameteriv	src/glad.cpp	/^PFNGLGETTEXLEVELPARAMETERIVPROC glad_glGetTexLevelParameteriv = NULL;$/;"	v	typeref:typename:PFNGLGETTEXLEVELPARAMETERIVPROC
+glad_glGetTexParameterIiv	src/glad.cpp	/^PFNGLGETTEXPARAMETERIIVPROC glad_glGetTexParameterIiv = NULL;$/;"	v	typeref:typename:PFNGLGETTEXPARAMETERIIVPROC
+glad_glGetTexParameterIuiv	src/glad.cpp	/^PFNGLGETTEXPARAMETERIUIVPROC glad_glGetTexParameterIuiv = NULL;$/;"	v	typeref:typename:PFNGLGETTEXPARAMETERIUIVPROC
+glad_glGetTexParameterfv	src/glad.cpp	/^PFNGLGETTEXPARAMETERFVPROC glad_glGetTexParameterfv = NULL;$/;"	v	typeref:typename:PFNGLGETTEXPARAMETERFVPROC
+glad_glGetTexParameteriv	src/glad.cpp	/^PFNGLGETTEXPARAMETERIVPROC glad_glGetTexParameteriv = NULL;$/;"	v	typeref:typename:PFNGLGETTEXPARAMETERIVPROC
+glad_glGetTextureImage	src/glad.cpp	/^PFNGLGETTEXTUREIMAGEPROC glad_glGetTextureImage = NULL;$/;"	v	typeref:typename:PFNGLGETTEXTUREIMAGEPROC
+glad_glGetTextureLevelParameterfv	src/glad.cpp	/^PFNGLGETTEXTURELEVELPARAMETERFVPROC glad_glGetTextureLevelParameterfv = NULL;$/;"	v	typeref:typename:PFNGLGETTEXTURELEVELPARAMETERFVPROC
+glad_glGetTextureLevelParameteriv	src/glad.cpp	/^PFNGLGETTEXTURELEVELPARAMETERIVPROC glad_glGetTextureLevelParameteriv = NULL;$/;"	v	typeref:typename:PFNGLGETTEXTURELEVELPARAMETERIVPROC
+glad_glGetTextureParameterIiv	src/glad.cpp	/^PFNGLGETTEXTUREPARAMETERIIVPROC glad_glGetTextureParameterIiv = NULL;$/;"	v	typeref:typename:PFNGLGETTEXTUREPARAMETERIIVPROC
+glad_glGetTextureParameterIuiv	src/glad.cpp	/^PFNGLGETTEXTUREPARAMETERIUIVPROC glad_glGetTextureParameterIuiv = NULL;$/;"	v	typeref:typename:PFNGLGETTEXTUREPARAMETERIUIVPROC
+glad_glGetTextureParameterfv	src/glad.cpp	/^PFNGLGETTEXTUREPARAMETERFVPROC glad_glGetTextureParameterfv = NULL;$/;"	v	typeref:typename:PFNGLGETTEXTUREPARAMETERFVPROC
+glad_glGetTextureParameteriv	src/glad.cpp	/^PFNGLGETTEXTUREPARAMETERIVPROC glad_glGetTextureParameteriv = NULL;$/;"	v	typeref:typename:PFNGLGETTEXTUREPARAMETERIVPROC
+glad_glGetTextureSubImage	src/glad.cpp	/^PFNGLGETTEXTURESUBIMAGEPROC glad_glGetTextureSubImage = NULL;$/;"	v	typeref:typename:PFNGLGETTEXTURESUBIMAGEPROC
+glad_glGetTransformFeedbackVarying	src/glad.cpp	/^PFNGLGETTRANSFORMFEEDBACKVARYINGPROC glad_glGetTransformFeedbackVarying = NULL;$/;"	v	typeref:typename:PFNGLGETTRANSFORMFEEDBACKVARYINGPROC
+glad_glGetTransformFeedbacki64_v	src/glad.cpp	/^PFNGLGETTRANSFORMFEEDBACKI64_VPROC glad_glGetTransformFeedbacki64_v = NULL;$/;"	v	typeref:typename:PFNGLGETTRANSFORMFEEDBACKI64_VPROC
+glad_glGetTransformFeedbacki_v	src/glad.cpp	/^PFNGLGETTRANSFORMFEEDBACKI_VPROC glad_glGetTransformFeedbacki_v = NULL;$/;"	v	typeref:typename:PFNGLGETTRANSFORMFEEDBACKI_VPROC
+glad_glGetTransformFeedbackiv	src/glad.cpp	/^PFNGLGETTRANSFORMFEEDBACKIVPROC glad_glGetTransformFeedbackiv = NULL;$/;"	v	typeref:typename:PFNGLGETTRANSFORMFEEDBACKIVPROC
+glad_glGetUniformBlockIndex	src/glad.cpp	/^PFNGLGETUNIFORMBLOCKINDEXPROC glad_glGetUniformBlockIndex = NULL;$/;"	v	typeref:typename:PFNGLGETUNIFORMBLOCKINDEXPROC
+glad_glGetUniformIndices	src/glad.cpp	/^PFNGLGETUNIFORMINDICESPROC glad_glGetUniformIndices = NULL;$/;"	v	typeref:typename:PFNGLGETUNIFORMINDICESPROC
+glad_glGetUniformLocation	src/glad.cpp	/^PFNGLGETUNIFORMLOCATIONPROC glad_glGetUniformLocation = NULL;$/;"	v	typeref:typename:PFNGLGETUNIFORMLOCATIONPROC
+glad_glGetUniformSubroutineuiv	src/glad.cpp	/^PFNGLGETUNIFORMSUBROUTINEUIVPROC glad_glGetUniformSubroutineuiv = NULL;$/;"	v	typeref:typename:PFNGLGETUNIFORMSUBROUTINEUIVPROC
+glad_glGetUniformdv	src/glad.cpp	/^PFNGLGETUNIFORMDVPROC glad_glGetUniformdv = NULL;$/;"	v	typeref:typename:PFNGLGETUNIFORMDVPROC
+glad_glGetUniformfv	src/glad.cpp	/^PFNGLGETUNIFORMFVPROC glad_glGetUniformfv = NULL;$/;"	v	typeref:typename:PFNGLGETUNIFORMFVPROC
+glad_glGetUniformiv	src/glad.cpp	/^PFNGLGETUNIFORMIVPROC glad_glGetUniformiv = NULL;$/;"	v	typeref:typename:PFNGLGETUNIFORMIVPROC
+glad_glGetUniformuiv	src/glad.cpp	/^PFNGLGETUNIFORMUIVPROC glad_glGetUniformuiv = NULL;$/;"	v	typeref:typename:PFNGLGETUNIFORMUIVPROC
+glad_glGetVertexArrayIndexed64iv	src/glad.cpp	/^PFNGLGETVERTEXARRAYINDEXED64IVPROC glad_glGetVertexArrayIndexed64iv = NULL;$/;"	v	typeref:typename:PFNGLGETVERTEXARRAYINDEXED64IVPROC
+glad_glGetVertexArrayIndexediv	src/glad.cpp	/^PFNGLGETVERTEXARRAYINDEXEDIVPROC glad_glGetVertexArrayIndexediv = NULL;$/;"	v	typeref:typename:PFNGLGETVERTEXARRAYINDEXEDIVPROC
+glad_glGetVertexArrayiv	src/glad.cpp	/^PFNGLGETVERTEXARRAYIVPROC glad_glGetVertexArrayiv = NULL;$/;"	v	typeref:typename:PFNGLGETVERTEXARRAYIVPROC
+glad_glGetVertexAttribIiv	src/glad.cpp	/^PFNGLGETVERTEXATTRIBIIVPROC glad_glGetVertexAttribIiv = NULL;$/;"	v	typeref:typename:PFNGLGETVERTEXATTRIBIIVPROC
+glad_glGetVertexAttribIuiv	src/glad.cpp	/^PFNGLGETVERTEXATTRIBIUIVPROC glad_glGetVertexAttribIuiv = NULL;$/;"	v	typeref:typename:PFNGLGETVERTEXATTRIBIUIVPROC
+glad_glGetVertexAttribLdv	src/glad.cpp	/^PFNGLGETVERTEXATTRIBLDVPROC glad_glGetVertexAttribLdv = NULL;$/;"	v	typeref:typename:PFNGLGETVERTEXATTRIBLDVPROC
+glad_glGetVertexAttribPointerv	src/glad.cpp	/^PFNGLGETVERTEXATTRIBPOINTERVPROC glad_glGetVertexAttribPointerv = NULL;$/;"	v	typeref:typename:PFNGLGETVERTEXATTRIBPOINTERVPROC
+glad_glGetVertexAttribdv	src/glad.cpp	/^PFNGLGETVERTEXATTRIBDVPROC glad_glGetVertexAttribdv = NULL;$/;"	v	typeref:typename:PFNGLGETVERTEXATTRIBDVPROC
+glad_glGetVertexAttribfv	src/glad.cpp	/^PFNGLGETVERTEXATTRIBFVPROC glad_glGetVertexAttribfv = NULL;$/;"	v	typeref:typename:PFNGLGETVERTEXATTRIBFVPROC
+glad_glGetVertexAttribiv	src/glad.cpp	/^PFNGLGETVERTEXATTRIBIVPROC glad_glGetVertexAttribiv = NULL;$/;"	v	typeref:typename:PFNGLGETVERTEXATTRIBIVPROC
+glad_glGetnColorTable	src/glad.cpp	/^PFNGLGETNCOLORTABLEPROC glad_glGetnColorTable = NULL;$/;"	v	typeref:typename:PFNGLGETNCOLORTABLEPROC
+glad_glGetnCompressedTexImage	src/glad.cpp	/^PFNGLGETNCOMPRESSEDTEXIMAGEPROC glad_glGetnCompressedTexImage = NULL;$/;"	v	typeref:typename:PFNGLGETNCOMPRESSEDTEXIMAGEPROC
+glad_glGetnConvolutionFilter	src/glad.cpp	/^PFNGLGETNCONVOLUTIONFILTERPROC glad_glGetnConvolutionFilter = NULL;$/;"	v	typeref:typename:PFNGLGETNCONVOLUTIONFILTERPROC
+glad_glGetnHistogram	src/glad.cpp	/^PFNGLGETNHISTOGRAMPROC glad_glGetnHistogram = NULL;$/;"	v	typeref:typename:PFNGLGETNHISTOGRAMPROC
+glad_glGetnMapdv	src/glad.cpp	/^PFNGLGETNMAPDVPROC glad_glGetnMapdv = NULL;$/;"	v	typeref:typename:PFNGLGETNMAPDVPROC
+glad_glGetnMapfv	src/glad.cpp	/^PFNGLGETNMAPFVPROC glad_glGetnMapfv = NULL;$/;"	v	typeref:typename:PFNGLGETNMAPFVPROC
+glad_glGetnMapiv	src/glad.cpp	/^PFNGLGETNMAPIVPROC glad_glGetnMapiv = NULL;$/;"	v	typeref:typename:PFNGLGETNMAPIVPROC
+glad_glGetnMinmax	src/glad.cpp	/^PFNGLGETNMINMAXPROC glad_glGetnMinmax = NULL;$/;"	v	typeref:typename:PFNGLGETNMINMAXPROC
+glad_glGetnPixelMapfv	src/glad.cpp	/^PFNGLGETNPIXELMAPFVPROC glad_glGetnPixelMapfv = NULL;$/;"	v	typeref:typename:PFNGLGETNPIXELMAPFVPROC
+glad_glGetnPixelMapuiv	src/glad.cpp	/^PFNGLGETNPIXELMAPUIVPROC glad_glGetnPixelMapuiv = NULL;$/;"	v	typeref:typename:PFNGLGETNPIXELMAPUIVPROC
+glad_glGetnPixelMapusv	src/glad.cpp	/^PFNGLGETNPIXELMAPUSVPROC glad_glGetnPixelMapusv = NULL;$/;"	v	typeref:typename:PFNGLGETNPIXELMAPUSVPROC
+glad_glGetnPolygonStipple	src/glad.cpp	/^PFNGLGETNPOLYGONSTIPPLEPROC glad_glGetnPolygonStipple = NULL;$/;"	v	typeref:typename:PFNGLGETNPOLYGONSTIPPLEPROC
+glad_glGetnSeparableFilter	src/glad.cpp	/^PFNGLGETNSEPARABLEFILTERPROC glad_glGetnSeparableFilter = NULL;$/;"	v	typeref:typename:PFNGLGETNSEPARABLEFILTERPROC
+glad_glGetnTexImage	src/glad.cpp	/^PFNGLGETNTEXIMAGEPROC glad_glGetnTexImage = NULL;$/;"	v	typeref:typename:PFNGLGETNTEXIMAGEPROC
+glad_glGetnUniformdv	src/glad.cpp	/^PFNGLGETNUNIFORMDVPROC glad_glGetnUniformdv = NULL;$/;"	v	typeref:typename:PFNGLGETNUNIFORMDVPROC
+glad_glGetnUniformfv	src/glad.cpp	/^PFNGLGETNUNIFORMFVPROC glad_glGetnUniformfv = NULL;$/;"	v	typeref:typename:PFNGLGETNUNIFORMFVPROC
+glad_glGetnUniformiv	src/glad.cpp	/^PFNGLGETNUNIFORMIVPROC glad_glGetnUniformiv = NULL;$/;"	v	typeref:typename:PFNGLGETNUNIFORMIVPROC
+glad_glGetnUniformuiv	src/glad.cpp	/^PFNGLGETNUNIFORMUIVPROC glad_glGetnUniformuiv = NULL;$/;"	v	typeref:typename:PFNGLGETNUNIFORMUIVPROC
+glad_glHint	src/glad.cpp	/^PFNGLHINTPROC glad_glHint = NULL;$/;"	v	typeref:typename:PFNGLHINTPROC
+glad_glInvalidateBufferData	src/glad.cpp	/^PFNGLINVALIDATEBUFFERDATAPROC glad_glInvalidateBufferData = NULL;$/;"	v	typeref:typename:PFNGLINVALIDATEBUFFERDATAPROC
+glad_glInvalidateBufferSubData	src/glad.cpp	/^PFNGLINVALIDATEBUFFERSUBDATAPROC glad_glInvalidateBufferSubData = NULL;$/;"	v	typeref:typename:PFNGLINVALIDATEBUFFERSUBDATAPROC
+glad_glInvalidateFramebuffer	src/glad.cpp	/^PFNGLINVALIDATEFRAMEBUFFERPROC glad_glInvalidateFramebuffer = NULL;$/;"	v	typeref:typename:PFNGLINVALIDATEFRAMEBUFFERPROC
+glad_glInvalidateNamedFramebufferData	src/glad.cpp	/^PFNGLINVALIDATENAMEDFRAMEBUFFERDATAPROC glad_glInvalidateNamedFramebufferData = NULL;$/;"	v	typeref:typename:PFNGLINVALIDATENAMEDFRAMEBUFFERDATAPROC
+glad_glInvalidateNamedFramebufferSubData	src/glad.cpp	/^PFNGLINVALIDATENAMEDFRAMEBUFFERSUBDATAPROC glad_glInvalidateNamedFramebufferSubData = NULL;$/;"	v	typeref:typename:PFNGLINVALIDATENAMEDFRAMEBUFFERSUBDATAPROC
+glad_glInvalidateSubFramebuffer	src/glad.cpp	/^PFNGLINVALIDATESUBFRAMEBUFFERPROC glad_glInvalidateSubFramebuffer = NULL;$/;"	v	typeref:typename:PFNGLINVALIDATESUBFRAMEBUFFERPROC
+glad_glInvalidateTexImage	src/glad.cpp	/^PFNGLINVALIDATETEXIMAGEPROC glad_glInvalidateTexImage = NULL;$/;"	v	typeref:typename:PFNGLINVALIDATETEXIMAGEPROC
+glad_glInvalidateTexSubImage	src/glad.cpp	/^PFNGLINVALIDATETEXSUBIMAGEPROC glad_glInvalidateTexSubImage = NULL;$/;"	v	typeref:typename:PFNGLINVALIDATETEXSUBIMAGEPROC
+glad_glIsBuffer	src/glad.cpp	/^PFNGLISBUFFERPROC glad_glIsBuffer = NULL;$/;"	v	typeref:typename:PFNGLISBUFFERPROC
+glad_glIsEnabled	src/glad.cpp	/^PFNGLISENABLEDPROC glad_glIsEnabled = NULL;$/;"	v	typeref:typename:PFNGLISENABLEDPROC
+glad_glIsEnabledi	src/glad.cpp	/^PFNGLISENABLEDIPROC glad_glIsEnabledi = NULL;$/;"	v	typeref:typename:PFNGLISENABLEDIPROC
+glad_glIsFramebuffer	src/glad.cpp	/^PFNGLISFRAMEBUFFERPROC glad_glIsFramebuffer = NULL;$/;"	v	typeref:typename:PFNGLISFRAMEBUFFERPROC
+glad_glIsProgram	src/glad.cpp	/^PFNGLISPROGRAMPROC glad_glIsProgram = NULL;$/;"	v	typeref:typename:PFNGLISPROGRAMPROC
+glad_glIsProgramPipeline	src/glad.cpp	/^PFNGLISPROGRAMPIPELINEPROC glad_glIsProgramPipeline = NULL;$/;"	v	typeref:typename:PFNGLISPROGRAMPIPELINEPROC
+glad_glIsQuery	src/glad.cpp	/^PFNGLISQUERYPROC glad_glIsQuery = NULL;$/;"	v	typeref:typename:PFNGLISQUERYPROC
+glad_glIsRenderbuffer	src/glad.cpp	/^PFNGLISRENDERBUFFERPROC glad_glIsRenderbuffer = NULL;$/;"	v	typeref:typename:PFNGLISRENDERBUFFERPROC
+glad_glIsSampler	src/glad.cpp	/^PFNGLISSAMPLERPROC glad_glIsSampler = NULL;$/;"	v	typeref:typename:PFNGLISSAMPLERPROC
+glad_glIsShader	src/glad.cpp	/^PFNGLISSHADERPROC glad_glIsShader = NULL;$/;"	v	typeref:typename:PFNGLISSHADERPROC
+glad_glIsSync	src/glad.cpp	/^PFNGLISSYNCPROC glad_glIsSync = NULL;$/;"	v	typeref:typename:PFNGLISSYNCPROC
+glad_glIsTexture	src/glad.cpp	/^PFNGLISTEXTUREPROC glad_glIsTexture = NULL;$/;"	v	typeref:typename:PFNGLISTEXTUREPROC
+glad_glIsTransformFeedback	src/glad.cpp	/^PFNGLISTRANSFORMFEEDBACKPROC glad_glIsTransformFeedback = NULL;$/;"	v	typeref:typename:PFNGLISTRANSFORMFEEDBACKPROC
+glad_glIsVertexArray	src/glad.cpp	/^PFNGLISVERTEXARRAYPROC glad_glIsVertexArray = NULL;$/;"	v	typeref:typename:PFNGLISVERTEXARRAYPROC
+glad_glLineWidth	src/glad.cpp	/^PFNGLLINEWIDTHPROC glad_glLineWidth = NULL;$/;"	v	typeref:typename:PFNGLLINEWIDTHPROC
+glad_glLinkProgram	src/glad.cpp	/^PFNGLLINKPROGRAMPROC glad_glLinkProgram = NULL;$/;"	v	typeref:typename:PFNGLLINKPROGRAMPROC
+glad_glLogicOp	src/glad.cpp	/^PFNGLLOGICOPPROC glad_glLogicOp = NULL;$/;"	v	typeref:typename:PFNGLLOGICOPPROC
+glad_glMapBuffer	src/glad.cpp	/^PFNGLMAPBUFFERPROC glad_glMapBuffer = NULL;$/;"	v	typeref:typename:PFNGLMAPBUFFERPROC
+glad_glMapBufferRange	src/glad.cpp	/^PFNGLMAPBUFFERRANGEPROC glad_glMapBufferRange = NULL;$/;"	v	typeref:typename:PFNGLMAPBUFFERRANGEPROC
+glad_glMapNamedBuffer	src/glad.cpp	/^PFNGLMAPNAMEDBUFFERPROC glad_glMapNamedBuffer = NULL;$/;"	v	typeref:typename:PFNGLMAPNAMEDBUFFERPROC
+glad_glMapNamedBufferRange	src/glad.cpp	/^PFNGLMAPNAMEDBUFFERRANGEPROC glad_glMapNamedBufferRange = NULL;$/;"	v	typeref:typename:PFNGLMAPNAMEDBUFFERRANGEPROC
+glad_glMemoryBarrier	src/glad.cpp	/^PFNGLMEMORYBARRIERPROC glad_glMemoryBarrier = NULL;$/;"	v	typeref:typename:PFNGLMEMORYBARRIERPROC
+glad_glMemoryBarrierByRegion	src/glad.cpp	/^PFNGLMEMORYBARRIERBYREGIONPROC glad_glMemoryBarrierByRegion = NULL;$/;"	v	typeref:typename:PFNGLMEMORYBARRIERBYREGIONPROC
+glad_glMinSampleShading	src/glad.cpp	/^PFNGLMINSAMPLESHADINGPROC glad_glMinSampleShading = NULL;$/;"	v	typeref:typename:PFNGLMINSAMPLESHADINGPROC
+glad_glMultiDrawArrays	src/glad.cpp	/^PFNGLMULTIDRAWARRAYSPROC glad_glMultiDrawArrays = NULL;$/;"	v	typeref:typename:PFNGLMULTIDRAWARRAYSPROC
+glad_glMultiDrawArraysIndirect	src/glad.cpp	/^PFNGLMULTIDRAWARRAYSINDIRECTPROC glad_glMultiDrawArraysIndirect = NULL;$/;"	v	typeref:typename:PFNGLMULTIDRAWARRAYSINDIRECTPROC
+glad_glMultiDrawElements	src/glad.cpp	/^PFNGLMULTIDRAWELEMENTSPROC glad_glMultiDrawElements = NULL;$/;"	v	typeref:typename:PFNGLMULTIDRAWELEMENTSPROC
+glad_glMultiDrawElementsBaseVertex	src/glad.cpp	/^PFNGLMULTIDRAWELEMENTSBASEVERTEXPROC glad_glMultiDrawElementsBaseVertex = NULL;$/;"	v	typeref:typename:PFNGLMULTIDRAWELEMENTSBASEVERTEXPROC
+glad_glMultiDrawElementsIndirect	src/glad.cpp	/^PFNGLMULTIDRAWELEMENTSINDIRECTPROC glad_glMultiDrawElementsIndirect = NULL;$/;"	v	typeref:typename:PFNGLMULTIDRAWELEMENTSINDIRECTPROC
+glad_glMultiTexCoordP1ui	src/glad.cpp	/^PFNGLMULTITEXCOORDP1UIPROC glad_glMultiTexCoordP1ui = NULL;$/;"	v	typeref:typename:PFNGLMULTITEXCOORDP1UIPROC
+glad_glMultiTexCoordP1uiv	src/glad.cpp	/^PFNGLMULTITEXCOORDP1UIVPROC glad_glMultiTexCoordP1uiv = NULL;$/;"	v	typeref:typename:PFNGLMULTITEXCOORDP1UIVPROC
+glad_glMultiTexCoordP2ui	src/glad.cpp	/^PFNGLMULTITEXCOORDP2UIPROC glad_glMultiTexCoordP2ui = NULL;$/;"	v	typeref:typename:PFNGLMULTITEXCOORDP2UIPROC
+glad_glMultiTexCoordP2uiv	src/glad.cpp	/^PFNGLMULTITEXCOORDP2UIVPROC glad_glMultiTexCoordP2uiv = NULL;$/;"	v	typeref:typename:PFNGLMULTITEXCOORDP2UIVPROC
+glad_glMultiTexCoordP3ui	src/glad.cpp	/^PFNGLMULTITEXCOORDP3UIPROC glad_glMultiTexCoordP3ui = NULL;$/;"	v	typeref:typename:PFNGLMULTITEXCOORDP3UIPROC
+glad_glMultiTexCoordP3uiv	src/glad.cpp	/^PFNGLMULTITEXCOORDP3UIVPROC glad_glMultiTexCoordP3uiv = NULL;$/;"	v	typeref:typename:PFNGLMULTITEXCOORDP3UIVPROC
+glad_glMultiTexCoordP4ui	src/glad.cpp	/^PFNGLMULTITEXCOORDP4UIPROC glad_glMultiTexCoordP4ui = NULL;$/;"	v	typeref:typename:PFNGLMULTITEXCOORDP4UIPROC
+glad_glMultiTexCoordP4uiv	src/glad.cpp	/^PFNGLMULTITEXCOORDP4UIVPROC glad_glMultiTexCoordP4uiv = NULL;$/;"	v	typeref:typename:PFNGLMULTITEXCOORDP4UIVPROC
+glad_glNamedBufferData	src/glad.cpp	/^PFNGLNAMEDBUFFERDATAPROC glad_glNamedBufferData = NULL;$/;"	v	typeref:typename:PFNGLNAMEDBUFFERDATAPROC
+glad_glNamedBufferStorage	src/glad.cpp	/^PFNGLNAMEDBUFFERSTORAGEPROC glad_glNamedBufferStorage = NULL;$/;"	v	typeref:typename:PFNGLNAMEDBUFFERSTORAGEPROC
+glad_glNamedBufferSubData	src/glad.cpp	/^PFNGLNAMEDBUFFERSUBDATAPROC glad_glNamedBufferSubData = NULL;$/;"	v	typeref:typename:PFNGLNAMEDBUFFERSUBDATAPROC
+glad_glNamedFramebufferDrawBuffer	src/glad.cpp	/^PFNGLNAMEDFRAMEBUFFERDRAWBUFFERPROC glad_glNamedFramebufferDrawBuffer = NULL;$/;"	v	typeref:typename:PFNGLNAMEDFRAMEBUFFERDRAWBUFFERPROC
+glad_glNamedFramebufferDrawBuffers	src/glad.cpp	/^PFNGLNAMEDFRAMEBUFFERDRAWBUFFERSPROC glad_glNamedFramebufferDrawBuffers = NULL;$/;"	v	typeref:typename:PFNGLNAMEDFRAMEBUFFERDRAWBUFFERSPROC
+glad_glNamedFramebufferParameteri	src/glad.cpp	/^PFNGLNAMEDFRAMEBUFFERPARAMETERIPROC glad_glNamedFramebufferParameteri = NULL;$/;"	v	typeref:typename:PFNGLNAMEDFRAMEBUFFERPARAMETERIPROC
+glad_glNamedFramebufferReadBuffer	src/glad.cpp	/^PFNGLNAMEDFRAMEBUFFERREADBUFFERPROC glad_glNamedFramebufferReadBuffer = NULL;$/;"	v	typeref:typename:PFNGLNAMEDFRAMEBUFFERREADBUFFERPROC
+glad_glNamedFramebufferRenderbuffer	src/glad.cpp	/^PFNGLNAMEDFRAMEBUFFERRENDERBUFFERPROC glad_glNamedFramebufferRenderbuffer = NULL;$/;"	v	typeref:typename:PFNGLNAMEDFRAMEBUFFERRENDERBUFFERPROC
+glad_glNamedFramebufferTexture	src/glad.cpp	/^PFNGLNAMEDFRAMEBUFFERTEXTUREPROC glad_glNamedFramebufferTexture = NULL;$/;"	v	typeref:typename:PFNGLNAMEDFRAMEBUFFERTEXTUREPROC
+glad_glNamedFramebufferTextureLayer	src/glad.cpp	/^PFNGLNAMEDFRAMEBUFFERTEXTURELAYERPROC glad_glNamedFramebufferTextureLayer = NULL;$/;"	v	typeref:typename:PFNGLNAMEDFRAMEBUFFERTEXTURELAYERPROC
+glad_glNamedRenderbufferStorage	src/glad.cpp	/^PFNGLNAMEDRENDERBUFFERSTORAGEPROC glad_glNamedRenderbufferStorage = NULL;$/;"	v	typeref:typename:PFNGLNAMEDRENDERBUFFERSTORAGEPROC
+glad_glNamedRenderbufferStorageMultisample	src/glad.cpp	/^PFNGLNAMEDRENDERBUFFERSTORAGEMULTISAMPLEPROC glad_glNamedRenderbufferStorageMultisample = NULL;$/;"	v	typeref:typename:PFNGLNAMEDRENDERBUFFERSTORAGEMULTISAMPLEPROC
+glad_glNormalP3ui	src/glad.cpp	/^PFNGLNORMALP3UIPROC glad_glNormalP3ui = NULL;$/;"	v	typeref:typename:PFNGLNORMALP3UIPROC
+glad_glNormalP3uiv	src/glad.cpp	/^PFNGLNORMALP3UIVPROC glad_glNormalP3uiv = NULL;$/;"	v	typeref:typename:PFNGLNORMALP3UIVPROC
+glad_glObjectLabel	src/glad.cpp	/^PFNGLOBJECTLABELPROC glad_glObjectLabel = NULL;$/;"	v	typeref:typename:PFNGLOBJECTLABELPROC
+glad_glObjectPtrLabel	src/glad.cpp	/^PFNGLOBJECTPTRLABELPROC glad_glObjectPtrLabel = NULL;$/;"	v	typeref:typename:PFNGLOBJECTPTRLABELPROC
+glad_glPatchParameterfv	src/glad.cpp	/^PFNGLPATCHPARAMETERFVPROC glad_glPatchParameterfv = NULL;$/;"	v	typeref:typename:PFNGLPATCHPARAMETERFVPROC
+glad_glPatchParameteri	src/glad.cpp	/^PFNGLPATCHPARAMETERIPROC glad_glPatchParameteri = NULL;$/;"	v	typeref:typename:PFNGLPATCHPARAMETERIPROC
+glad_glPauseTransformFeedback	src/glad.cpp	/^PFNGLPAUSETRANSFORMFEEDBACKPROC glad_glPauseTransformFeedback = NULL;$/;"	v	typeref:typename:PFNGLPAUSETRANSFORMFEEDBACKPROC
+glad_glPixelStoref	src/glad.cpp	/^PFNGLPIXELSTOREFPROC glad_glPixelStoref = NULL;$/;"	v	typeref:typename:PFNGLPIXELSTOREFPROC
+glad_glPixelStorei	src/glad.cpp	/^PFNGLPIXELSTOREIPROC glad_glPixelStorei = NULL;$/;"	v	typeref:typename:PFNGLPIXELSTOREIPROC
+glad_glPointParameterf	src/glad.cpp	/^PFNGLPOINTPARAMETERFPROC glad_glPointParameterf = NULL;$/;"	v	typeref:typename:PFNGLPOINTPARAMETERFPROC
+glad_glPointParameterfv	src/glad.cpp	/^PFNGLPOINTPARAMETERFVPROC glad_glPointParameterfv = NULL;$/;"	v	typeref:typename:PFNGLPOINTPARAMETERFVPROC
+glad_glPointParameteri	src/glad.cpp	/^PFNGLPOINTPARAMETERIPROC glad_glPointParameteri = NULL;$/;"	v	typeref:typename:PFNGLPOINTPARAMETERIPROC
+glad_glPointParameteriv	src/glad.cpp	/^PFNGLPOINTPARAMETERIVPROC glad_glPointParameteriv = NULL;$/;"	v	typeref:typename:PFNGLPOINTPARAMETERIVPROC
+glad_glPointSize	src/glad.cpp	/^PFNGLPOINTSIZEPROC glad_glPointSize = NULL;$/;"	v	typeref:typename:PFNGLPOINTSIZEPROC
+glad_glPolygonMode	src/glad.cpp	/^PFNGLPOLYGONMODEPROC glad_glPolygonMode = NULL;$/;"	v	typeref:typename:PFNGLPOLYGONMODEPROC
+glad_glPolygonOffset	src/glad.cpp	/^PFNGLPOLYGONOFFSETPROC glad_glPolygonOffset = NULL;$/;"	v	typeref:typename:PFNGLPOLYGONOFFSETPROC
+glad_glPopDebugGroup	src/glad.cpp	/^PFNGLPOPDEBUGGROUPPROC glad_glPopDebugGroup = NULL;$/;"	v	typeref:typename:PFNGLPOPDEBUGGROUPPROC
+glad_glPrimitiveRestartIndex	src/glad.cpp	/^PFNGLPRIMITIVERESTARTINDEXPROC glad_glPrimitiveRestartIndex = NULL;$/;"	v	typeref:typename:PFNGLPRIMITIVERESTARTINDEXPROC
+glad_glProgramBinary	src/glad.cpp	/^PFNGLPROGRAMBINARYPROC glad_glProgramBinary = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMBINARYPROC
+glad_glProgramParameteri	src/glad.cpp	/^PFNGLPROGRAMPARAMETERIPROC glad_glProgramParameteri = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMPARAMETERIPROC
+glad_glProgramUniform1d	src/glad.cpp	/^PFNGLPROGRAMUNIFORM1DPROC glad_glProgramUniform1d = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM1DPROC
+glad_glProgramUniform1dv	src/glad.cpp	/^PFNGLPROGRAMUNIFORM1DVPROC glad_glProgramUniform1dv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM1DVPROC
+glad_glProgramUniform1f	src/glad.cpp	/^PFNGLPROGRAMUNIFORM1FPROC glad_glProgramUniform1f = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM1FPROC
+glad_glProgramUniform1fv	src/glad.cpp	/^PFNGLPROGRAMUNIFORM1FVPROC glad_glProgramUniform1fv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM1FVPROC
+glad_glProgramUniform1i	src/glad.cpp	/^PFNGLPROGRAMUNIFORM1IPROC glad_glProgramUniform1i = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM1IPROC
+glad_glProgramUniform1iv	src/glad.cpp	/^PFNGLPROGRAMUNIFORM1IVPROC glad_glProgramUniform1iv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM1IVPROC
+glad_glProgramUniform1ui	src/glad.cpp	/^PFNGLPROGRAMUNIFORM1UIPROC glad_glProgramUniform1ui = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM1UIPROC
+glad_glProgramUniform1uiv	src/glad.cpp	/^PFNGLPROGRAMUNIFORM1UIVPROC glad_glProgramUniform1uiv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM1UIVPROC
+glad_glProgramUniform2d	src/glad.cpp	/^PFNGLPROGRAMUNIFORM2DPROC glad_glProgramUniform2d = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM2DPROC
+glad_glProgramUniform2dv	src/glad.cpp	/^PFNGLPROGRAMUNIFORM2DVPROC glad_glProgramUniform2dv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM2DVPROC
+glad_glProgramUniform2f	src/glad.cpp	/^PFNGLPROGRAMUNIFORM2FPROC glad_glProgramUniform2f = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM2FPROC
+glad_glProgramUniform2fv	src/glad.cpp	/^PFNGLPROGRAMUNIFORM2FVPROC glad_glProgramUniform2fv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM2FVPROC
+glad_glProgramUniform2i	src/glad.cpp	/^PFNGLPROGRAMUNIFORM2IPROC glad_glProgramUniform2i = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM2IPROC
+glad_glProgramUniform2iv	src/glad.cpp	/^PFNGLPROGRAMUNIFORM2IVPROC glad_glProgramUniform2iv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM2IVPROC
+glad_glProgramUniform2ui	src/glad.cpp	/^PFNGLPROGRAMUNIFORM2UIPROC glad_glProgramUniform2ui = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM2UIPROC
+glad_glProgramUniform2uiv	src/glad.cpp	/^PFNGLPROGRAMUNIFORM2UIVPROC glad_glProgramUniform2uiv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM2UIVPROC
+glad_glProgramUniform3d	src/glad.cpp	/^PFNGLPROGRAMUNIFORM3DPROC glad_glProgramUniform3d = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM3DPROC
+glad_glProgramUniform3dv	src/glad.cpp	/^PFNGLPROGRAMUNIFORM3DVPROC glad_glProgramUniform3dv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM3DVPROC
+glad_glProgramUniform3f	src/glad.cpp	/^PFNGLPROGRAMUNIFORM3FPROC glad_glProgramUniform3f = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM3FPROC
+glad_glProgramUniform3fv	src/glad.cpp	/^PFNGLPROGRAMUNIFORM3FVPROC glad_glProgramUniform3fv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM3FVPROC
+glad_glProgramUniform3i	src/glad.cpp	/^PFNGLPROGRAMUNIFORM3IPROC glad_glProgramUniform3i = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM3IPROC
+glad_glProgramUniform3iv	src/glad.cpp	/^PFNGLPROGRAMUNIFORM3IVPROC glad_glProgramUniform3iv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM3IVPROC
+glad_glProgramUniform3ui	src/glad.cpp	/^PFNGLPROGRAMUNIFORM3UIPROC glad_glProgramUniform3ui = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM3UIPROC
+glad_glProgramUniform3uiv	src/glad.cpp	/^PFNGLPROGRAMUNIFORM3UIVPROC glad_glProgramUniform3uiv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM3UIVPROC
+glad_glProgramUniform4d	src/glad.cpp	/^PFNGLPROGRAMUNIFORM4DPROC glad_glProgramUniform4d = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM4DPROC
+glad_glProgramUniform4dv	src/glad.cpp	/^PFNGLPROGRAMUNIFORM4DVPROC glad_glProgramUniform4dv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM4DVPROC
+glad_glProgramUniform4f	src/glad.cpp	/^PFNGLPROGRAMUNIFORM4FPROC glad_glProgramUniform4f = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM4FPROC
+glad_glProgramUniform4fv	src/glad.cpp	/^PFNGLPROGRAMUNIFORM4FVPROC glad_glProgramUniform4fv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM4FVPROC
+glad_glProgramUniform4i	src/glad.cpp	/^PFNGLPROGRAMUNIFORM4IPROC glad_glProgramUniform4i = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM4IPROC
+glad_glProgramUniform4iv	src/glad.cpp	/^PFNGLPROGRAMUNIFORM4IVPROC glad_glProgramUniform4iv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM4IVPROC
+glad_glProgramUniform4ui	src/glad.cpp	/^PFNGLPROGRAMUNIFORM4UIPROC glad_glProgramUniform4ui = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM4UIPROC
+glad_glProgramUniform4uiv	src/glad.cpp	/^PFNGLPROGRAMUNIFORM4UIVPROC glad_glProgramUniform4uiv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORM4UIVPROC
+glad_glProgramUniformMatrix2dv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX2DVPROC glad_glProgramUniformMatrix2dv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX2DVPROC
+glad_glProgramUniformMatrix2fv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX2FVPROC glad_glProgramUniformMatrix2fv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX2FVPROC
+glad_glProgramUniformMatrix2x3dv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX2X3DVPROC glad_glProgramUniformMatrix2x3dv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX2X3DVPROC
+glad_glProgramUniformMatrix2x3fv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX2X3FVPROC glad_glProgramUniformMatrix2x3fv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX2X3FVPROC
+glad_glProgramUniformMatrix2x4dv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX2X4DVPROC glad_glProgramUniformMatrix2x4dv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX2X4DVPROC
+glad_glProgramUniformMatrix2x4fv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX2X4FVPROC glad_glProgramUniformMatrix2x4fv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX2X4FVPROC
+glad_glProgramUniformMatrix3dv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX3DVPROC glad_glProgramUniformMatrix3dv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX3DVPROC
+glad_glProgramUniformMatrix3fv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX3FVPROC glad_glProgramUniformMatrix3fv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX3FVPROC
+glad_glProgramUniformMatrix3x2dv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX3X2DVPROC glad_glProgramUniformMatrix3x2dv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX3X2DVPROC
+glad_glProgramUniformMatrix3x2fv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX3X2FVPROC glad_glProgramUniformMatrix3x2fv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX3X2FVPROC
+glad_glProgramUniformMatrix3x4dv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX3X4DVPROC glad_glProgramUniformMatrix3x4dv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX3X4DVPROC
+glad_glProgramUniformMatrix3x4fv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX3X4FVPROC glad_glProgramUniformMatrix3x4fv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX3X4FVPROC
+glad_glProgramUniformMatrix4dv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX4DVPROC glad_glProgramUniformMatrix4dv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX4DVPROC
+glad_glProgramUniformMatrix4fv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX4FVPROC glad_glProgramUniformMatrix4fv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX4FVPROC
+glad_glProgramUniformMatrix4x2dv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX4X2DVPROC glad_glProgramUniformMatrix4x2dv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX4X2DVPROC
+glad_glProgramUniformMatrix4x2fv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX4X2FVPROC glad_glProgramUniformMatrix4x2fv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX4X2FVPROC
+glad_glProgramUniformMatrix4x3dv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX4X3DVPROC glad_glProgramUniformMatrix4x3dv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX4X3DVPROC
+glad_glProgramUniformMatrix4x3fv	src/glad.cpp	/^PFNGLPROGRAMUNIFORMMATRIX4X3FVPROC glad_glProgramUniformMatrix4x3fv = NULL;$/;"	v	typeref:typename:PFNGLPROGRAMUNIFORMMATRIX4X3FVPROC
+glad_glProvokingVertex	src/glad.cpp	/^PFNGLPROVOKINGVERTEXPROC glad_glProvokingVertex = NULL;$/;"	v	typeref:typename:PFNGLPROVOKINGVERTEXPROC
+glad_glPushDebugGroup	src/glad.cpp	/^PFNGLPUSHDEBUGGROUPPROC glad_glPushDebugGroup = NULL;$/;"	v	typeref:typename:PFNGLPUSHDEBUGGROUPPROC
+glad_glQueryCounter	src/glad.cpp	/^PFNGLQUERYCOUNTERPROC glad_glQueryCounter = NULL;$/;"	v	typeref:typename:PFNGLQUERYCOUNTERPROC
+glad_glReadBuffer	src/glad.cpp	/^PFNGLREADBUFFERPROC glad_glReadBuffer = NULL;$/;"	v	typeref:typename:PFNGLREADBUFFERPROC
+glad_glReadPixels	src/glad.cpp	/^PFNGLREADPIXELSPROC glad_glReadPixels = NULL;$/;"	v	typeref:typename:PFNGLREADPIXELSPROC
+glad_glReadnPixels	src/glad.cpp	/^PFNGLREADNPIXELSPROC glad_glReadnPixels = NULL;$/;"	v	typeref:typename:PFNGLREADNPIXELSPROC
+glad_glReleaseShaderCompiler	src/glad.cpp	/^PFNGLRELEASESHADERCOMPILERPROC glad_glReleaseShaderCompiler = NULL;$/;"	v	typeref:typename:PFNGLRELEASESHADERCOMPILERPROC
+glad_glRenderbufferStorage	src/glad.cpp	/^PFNGLRENDERBUFFERSTORAGEPROC glad_glRenderbufferStorage = NULL;$/;"	v	typeref:typename:PFNGLRENDERBUFFERSTORAGEPROC
+glad_glRenderbufferStorageMultisample	src/glad.cpp	/^PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC glad_glRenderbufferStorageMultisample = NULL;$/;"	v	typeref:typename:PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC
+glad_glResumeTransformFeedback	src/glad.cpp	/^PFNGLRESUMETRANSFORMFEEDBACKPROC glad_glResumeTransformFeedback = NULL;$/;"	v	typeref:typename:PFNGLRESUMETRANSFORMFEEDBACKPROC
+glad_glSampleCoverage	src/glad.cpp	/^PFNGLSAMPLECOVERAGEPROC glad_glSampleCoverage = NULL;$/;"	v	typeref:typename:PFNGLSAMPLECOVERAGEPROC
+glad_glSampleMaski	src/glad.cpp	/^PFNGLSAMPLEMASKIPROC glad_glSampleMaski = NULL;$/;"	v	typeref:typename:PFNGLSAMPLEMASKIPROC
+glad_glSamplerParameterIiv	src/glad.cpp	/^PFNGLSAMPLERPARAMETERIIVPROC glad_glSamplerParameterIiv = NULL;$/;"	v	typeref:typename:PFNGLSAMPLERPARAMETERIIVPROC
+glad_glSamplerParameterIuiv	src/glad.cpp	/^PFNGLSAMPLERPARAMETERIUIVPROC glad_glSamplerParameterIuiv = NULL;$/;"	v	typeref:typename:PFNGLSAMPLERPARAMETERIUIVPROC
+glad_glSamplerParameterf	src/glad.cpp	/^PFNGLSAMPLERPARAMETERFPROC glad_glSamplerParameterf = NULL;$/;"	v	typeref:typename:PFNGLSAMPLERPARAMETERFPROC
+glad_glSamplerParameterfv	src/glad.cpp	/^PFNGLSAMPLERPARAMETERFVPROC glad_glSamplerParameterfv = NULL;$/;"	v	typeref:typename:PFNGLSAMPLERPARAMETERFVPROC
+glad_glSamplerParameteri	src/glad.cpp	/^PFNGLSAMPLERPARAMETERIPROC glad_glSamplerParameteri = NULL;$/;"	v	typeref:typename:PFNGLSAMPLERPARAMETERIPROC
+glad_glSamplerParameteriv	src/glad.cpp	/^PFNGLSAMPLERPARAMETERIVPROC glad_glSamplerParameteriv = NULL;$/;"	v	typeref:typename:PFNGLSAMPLERPARAMETERIVPROC
+glad_glScissor	src/glad.cpp	/^PFNGLSCISSORPROC glad_glScissor = NULL;$/;"	v	typeref:typename:PFNGLSCISSORPROC
+glad_glScissorArrayv	src/glad.cpp	/^PFNGLSCISSORARRAYVPROC glad_glScissorArrayv = NULL;$/;"	v	typeref:typename:PFNGLSCISSORARRAYVPROC
+glad_glScissorIndexed	src/glad.cpp	/^PFNGLSCISSORINDEXEDPROC glad_glScissorIndexed = NULL;$/;"	v	typeref:typename:PFNGLSCISSORINDEXEDPROC
+glad_glScissorIndexedv	src/glad.cpp	/^PFNGLSCISSORINDEXEDVPROC glad_glScissorIndexedv = NULL;$/;"	v	typeref:typename:PFNGLSCISSORINDEXEDVPROC
+glad_glSecondaryColorP3ui	src/glad.cpp	/^PFNGLSECONDARYCOLORP3UIPROC glad_glSecondaryColorP3ui = NULL;$/;"	v	typeref:typename:PFNGLSECONDARYCOLORP3UIPROC
+glad_glSecondaryColorP3uiv	src/glad.cpp	/^PFNGLSECONDARYCOLORP3UIVPROC glad_glSecondaryColorP3uiv = NULL;$/;"	v	typeref:typename:PFNGLSECONDARYCOLORP3UIVPROC
+glad_glShaderBinary	src/glad.cpp	/^PFNGLSHADERBINARYPROC glad_glShaderBinary = NULL;$/;"	v	typeref:typename:PFNGLSHADERBINARYPROC
+glad_glShaderSource	src/glad.cpp	/^PFNGLSHADERSOURCEPROC glad_glShaderSource = NULL;$/;"	v	typeref:typename:PFNGLSHADERSOURCEPROC
+glad_glShaderStorageBlockBinding	src/glad.cpp	/^PFNGLSHADERSTORAGEBLOCKBINDINGPROC glad_glShaderStorageBlockBinding = NULL;$/;"	v	typeref:typename:PFNGLSHADERSTORAGEBLOCKBINDINGPROC
+glad_glStencilFunc	src/glad.cpp	/^PFNGLSTENCILFUNCPROC glad_glStencilFunc = NULL;$/;"	v	typeref:typename:PFNGLSTENCILFUNCPROC
+glad_glStencilFuncSeparate	src/glad.cpp	/^PFNGLSTENCILFUNCSEPARATEPROC glad_glStencilFuncSeparate = NULL;$/;"	v	typeref:typename:PFNGLSTENCILFUNCSEPARATEPROC
+glad_glStencilMask	src/glad.cpp	/^PFNGLSTENCILMASKPROC glad_glStencilMask = NULL;$/;"	v	typeref:typename:PFNGLSTENCILMASKPROC
+glad_glStencilMaskSeparate	src/glad.cpp	/^PFNGLSTENCILMASKSEPARATEPROC glad_glStencilMaskSeparate = NULL;$/;"	v	typeref:typename:PFNGLSTENCILMASKSEPARATEPROC
+glad_glStencilOp	src/glad.cpp	/^PFNGLSTENCILOPPROC glad_glStencilOp = NULL;$/;"	v	typeref:typename:PFNGLSTENCILOPPROC
+glad_glStencilOpSeparate	src/glad.cpp	/^PFNGLSTENCILOPSEPARATEPROC glad_glStencilOpSeparate = NULL;$/;"	v	typeref:typename:PFNGLSTENCILOPSEPARATEPROC
+glad_glTexBuffer	src/glad.cpp	/^PFNGLTEXBUFFERPROC glad_glTexBuffer = NULL;$/;"	v	typeref:typename:PFNGLTEXBUFFERPROC
+glad_glTexBufferRange	src/glad.cpp	/^PFNGLTEXBUFFERRANGEPROC glad_glTexBufferRange = NULL;$/;"	v	typeref:typename:PFNGLTEXBUFFERRANGEPROC
+glad_glTexCoordP1ui	src/glad.cpp	/^PFNGLTEXCOORDP1UIPROC glad_glTexCoordP1ui = NULL;$/;"	v	typeref:typename:PFNGLTEXCOORDP1UIPROC
+glad_glTexCoordP1uiv	src/glad.cpp	/^PFNGLTEXCOORDP1UIVPROC glad_glTexCoordP1uiv = NULL;$/;"	v	typeref:typename:PFNGLTEXCOORDP1UIVPROC
+glad_glTexCoordP2ui	src/glad.cpp	/^PFNGLTEXCOORDP2UIPROC glad_glTexCoordP2ui = NULL;$/;"	v	typeref:typename:PFNGLTEXCOORDP2UIPROC
+glad_glTexCoordP2uiv	src/glad.cpp	/^PFNGLTEXCOORDP2UIVPROC glad_glTexCoordP2uiv = NULL;$/;"	v	typeref:typename:PFNGLTEXCOORDP2UIVPROC
+glad_glTexCoordP3ui	src/glad.cpp	/^PFNGLTEXCOORDP3UIPROC glad_glTexCoordP3ui = NULL;$/;"	v	typeref:typename:PFNGLTEXCOORDP3UIPROC
+glad_glTexCoordP3uiv	src/glad.cpp	/^PFNGLTEXCOORDP3UIVPROC glad_glTexCoordP3uiv = NULL;$/;"	v	typeref:typename:PFNGLTEXCOORDP3UIVPROC
+glad_glTexCoordP4ui	src/glad.cpp	/^PFNGLTEXCOORDP4UIPROC glad_glTexCoordP4ui = NULL;$/;"	v	typeref:typename:PFNGLTEXCOORDP4UIPROC
+glad_glTexCoordP4uiv	src/glad.cpp	/^PFNGLTEXCOORDP4UIVPROC glad_glTexCoordP4uiv = NULL;$/;"	v	typeref:typename:PFNGLTEXCOORDP4UIVPROC
+glad_glTexImage1D	src/glad.cpp	/^PFNGLTEXIMAGE1DPROC glad_glTexImage1D = NULL;$/;"	v	typeref:typename:PFNGLTEXIMAGE1DPROC
+glad_glTexImage2D	src/glad.cpp	/^PFNGLTEXIMAGE2DPROC glad_glTexImage2D = NULL;$/;"	v	typeref:typename:PFNGLTEXIMAGE2DPROC
+glad_glTexImage2DMultisample	src/glad.cpp	/^PFNGLTEXIMAGE2DMULTISAMPLEPROC glad_glTexImage2DMultisample = NULL;$/;"	v	typeref:typename:PFNGLTEXIMAGE2DMULTISAMPLEPROC
+glad_glTexImage3D	src/glad.cpp	/^PFNGLTEXIMAGE3DPROC glad_glTexImage3D = NULL;$/;"	v	typeref:typename:PFNGLTEXIMAGE3DPROC
+glad_glTexImage3DMultisample	src/glad.cpp	/^PFNGLTEXIMAGE3DMULTISAMPLEPROC glad_glTexImage3DMultisample = NULL;$/;"	v	typeref:typename:PFNGLTEXIMAGE3DMULTISAMPLEPROC
+glad_glTexParameterIiv	src/glad.cpp	/^PFNGLTEXPARAMETERIIVPROC glad_glTexParameterIiv = NULL;$/;"	v	typeref:typename:PFNGLTEXPARAMETERIIVPROC
+glad_glTexParameterIuiv	src/glad.cpp	/^PFNGLTEXPARAMETERIUIVPROC glad_glTexParameterIuiv = NULL;$/;"	v	typeref:typename:PFNGLTEXPARAMETERIUIVPROC
+glad_glTexParameterf	src/glad.cpp	/^PFNGLTEXPARAMETERFPROC glad_glTexParameterf = NULL;$/;"	v	typeref:typename:PFNGLTEXPARAMETERFPROC
+glad_glTexParameterfv	src/glad.cpp	/^PFNGLTEXPARAMETERFVPROC glad_glTexParameterfv = NULL;$/;"	v	typeref:typename:PFNGLTEXPARAMETERFVPROC
+glad_glTexParameteri	src/glad.cpp	/^PFNGLTEXPARAMETERIPROC glad_glTexParameteri = NULL;$/;"	v	typeref:typename:PFNGLTEXPARAMETERIPROC
+glad_glTexParameteriv	src/glad.cpp	/^PFNGLTEXPARAMETERIVPROC glad_glTexParameteriv = NULL;$/;"	v	typeref:typename:PFNGLTEXPARAMETERIVPROC
+glad_glTexStorage1D	src/glad.cpp	/^PFNGLTEXSTORAGE1DPROC glad_glTexStorage1D = NULL;$/;"	v	typeref:typename:PFNGLTEXSTORAGE1DPROC
+glad_glTexStorage2D	src/glad.cpp	/^PFNGLTEXSTORAGE2DPROC glad_glTexStorage2D = NULL;$/;"	v	typeref:typename:PFNGLTEXSTORAGE2DPROC
+glad_glTexStorage2DMultisample	src/glad.cpp	/^PFNGLTEXSTORAGE2DMULTISAMPLEPROC glad_glTexStorage2DMultisample = NULL;$/;"	v	typeref:typename:PFNGLTEXSTORAGE2DMULTISAMPLEPROC
+glad_glTexStorage3D	src/glad.cpp	/^PFNGLTEXSTORAGE3DPROC glad_glTexStorage3D = NULL;$/;"	v	typeref:typename:PFNGLTEXSTORAGE3DPROC
+glad_glTexStorage3DMultisample	src/glad.cpp	/^PFNGLTEXSTORAGE3DMULTISAMPLEPROC glad_glTexStorage3DMultisample = NULL;$/;"	v	typeref:typename:PFNGLTEXSTORAGE3DMULTISAMPLEPROC
+glad_glTexSubImage1D	src/glad.cpp	/^PFNGLTEXSUBIMAGE1DPROC glad_glTexSubImage1D = NULL;$/;"	v	typeref:typename:PFNGLTEXSUBIMAGE1DPROC
+glad_glTexSubImage2D	src/glad.cpp	/^PFNGLTEXSUBIMAGE2DPROC glad_glTexSubImage2D = NULL;$/;"	v	typeref:typename:PFNGLTEXSUBIMAGE2DPROC
+glad_glTexSubImage3D	src/glad.cpp	/^PFNGLTEXSUBIMAGE3DPROC glad_glTexSubImage3D = NULL;$/;"	v	typeref:typename:PFNGLTEXSUBIMAGE3DPROC
+glad_glTextureBarrier	src/glad.cpp	/^PFNGLTEXTUREBARRIERPROC glad_glTextureBarrier = NULL;$/;"	v	typeref:typename:PFNGLTEXTUREBARRIERPROC
+glad_glTextureBuffer	src/glad.cpp	/^PFNGLTEXTUREBUFFERPROC glad_glTextureBuffer = NULL;$/;"	v	typeref:typename:PFNGLTEXTUREBUFFERPROC
+glad_glTextureBufferRange	src/glad.cpp	/^PFNGLTEXTUREBUFFERRANGEPROC glad_glTextureBufferRange = NULL;$/;"	v	typeref:typename:PFNGLTEXTUREBUFFERRANGEPROC
+glad_glTextureParameterIiv	src/glad.cpp	/^PFNGLTEXTUREPARAMETERIIVPROC glad_glTextureParameterIiv = NULL;$/;"	v	typeref:typename:PFNGLTEXTUREPARAMETERIIVPROC
+glad_glTextureParameterIuiv	src/glad.cpp	/^PFNGLTEXTUREPARAMETERIUIVPROC glad_glTextureParameterIuiv = NULL;$/;"	v	typeref:typename:PFNGLTEXTUREPARAMETERIUIVPROC
+glad_glTextureParameterf	src/glad.cpp	/^PFNGLTEXTUREPARAMETERFPROC glad_glTextureParameterf = NULL;$/;"	v	typeref:typename:PFNGLTEXTUREPARAMETERFPROC
+glad_glTextureParameterfv	src/glad.cpp	/^PFNGLTEXTUREPARAMETERFVPROC glad_glTextureParameterfv = NULL;$/;"	v	typeref:typename:PFNGLTEXTUREPARAMETERFVPROC
+glad_glTextureParameteri	src/glad.cpp	/^PFNGLTEXTUREPARAMETERIPROC glad_glTextureParameteri = NULL;$/;"	v	typeref:typename:PFNGLTEXTUREPARAMETERIPROC
+glad_glTextureParameteriv	src/glad.cpp	/^PFNGLTEXTUREPARAMETERIVPROC glad_glTextureParameteriv = NULL;$/;"	v	typeref:typename:PFNGLTEXTUREPARAMETERIVPROC
+glad_glTextureStorage1D	src/glad.cpp	/^PFNGLTEXTURESTORAGE1DPROC glad_glTextureStorage1D = NULL;$/;"	v	typeref:typename:PFNGLTEXTURESTORAGE1DPROC
+glad_glTextureStorage2D	src/glad.cpp	/^PFNGLTEXTURESTORAGE2DPROC glad_glTextureStorage2D = NULL;$/;"	v	typeref:typename:PFNGLTEXTURESTORAGE2DPROC
+glad_glTextureStorage2DMultisample	src/glad.cpp	/^PFNGLTEXTURESTORAGE2DMULTISAMPLEPROC glad_glTextureStorage2DMultisample = NULL;$/;"	v	typeref:typename:PFNGLTEXTURESTORAGE2DMULTISAMPLEPROC
+glad_glTextureStorage3D	src/glad.cpp	/^PFNGLTEXTURESTORAGE3DPROC glad_glTextureStorage3D = NULL;$/;"	v	typeref:typename:PFNGLTEXTURESTORAGE3DPROC
+glad_glTextureStorage3DMultisample	src/glad.cpp	/^PFNGLTEXTURESTORAGE3DMULTISAMPLEPROC glad_glTextureStorage3DMultisample = NULL;$/;"	v	typeref:typename:PFNGLTEXTURESTORAGE3DMULTISAMPLEPROC
+glad_glTextureSubImage1D	src/glad.cpp	/^PFNGLTEXTURESUBIMAGE1DPROC glad_glTextureSubImage1D = NULL;$/;"	v	typeref:typename:PFNGLTEXTURESUBIMAGE1DPROC
+glad_glTextureSubImage2D	src/glad.cpp	/^PFNGLTEXTURESUBIMAGE2DPROC glad_glTextureSubImage2D = NULL;$/;"	v	typeref:typename:PFNGLTEXTURESUBIMAGE2DPROC
+glad_glTextureSubImage3D	src/glad.cpp	/^PFNGLTEXTURESUBIMAGE3DPROC glad_glTextureSubImage3D = NULL;$/;"	v	typeref:typename:PFNGLTEXTURESUBIMAGE3DPROC
+glad_glTextureView	src/glad.cpp	/^PFNGLTEXTUREVIEWPROC glad_glTextureView = NULL;$/;"	v	typeref:typename:PFNGLTEXTUREVIEWPROC
+glad_glTransformFeedbackBufferBase	src/glad.cpp	/^PFNGLTRANSFORMFEEDBACKBUFFERBASEPROC glad_glTransformFeedbackBufferBase = NULL;$/;"	v	typeref:typename:PFNGLTRANSFORMFEEDBACKBUFFERBASEPROC
+glad_glTransformFeedbackBufferRange	src/glad.cpp	/^PFNGLTRANSFORMFEEDBACKBUFFERRANGEPROC glad_glTransformFeedbackBufferRange = NULL;$/;"	v	typeref:typename:PFNGLTRANSFORMFEEDBACKBUFFERRANGEPROC
+glad_glTransformFeedbackVaryings	src/glad.cpp	/^PFNGLTRANSFORMFEEDBACKVARYINGSPROC glad_glTransformFeedbackVaryings = NULL;$/;"	v	typeref:typename:PFNGLTRANSFORMFEEDBACKVARYINGSPROC
+glad_glUniform1d	src/glad.cpp	/^PFNGLUNIFORM1DPROC glad_glUniform1d = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM1DPROC
+glad_glUniform1dv	src/glad.cpp	/^PFNGLUNIFORM1DVPROC glad_glUniform1dv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM1DVPROC
+glad_glUniform1f	src/glad.cpp	/^PFNGLUNIFORM1FPROC glad_glUniform1f = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM1FPROC
+glad_glUniform1fv	src/glad.cpp	/^PFNGLUNIFORM1FVPROC glad_glUniform1fv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM1FVPROC
+glad_glUniform1i	src/glad.cpp	/^PFNGLUNIFORM1IPROC glad_glUniform1i = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM1IPROC
+glad_glUniform1iv	src/glad.cpp	/^PFNGLUNIFORM1IVPROC glad_glUniform1iv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM1IVPROC
+glad_glUniform1ui	src/glad.cpp	/^PFNGLUNIFORM1UIPROC glad_glUniform1ui = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM1UIPROC
+glad_glUniform1uiv	src/glad.cpp	/^PFNGLUNIFORM1UIVPROC glad_glUniform1uiv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM1UIVPROC
+glad_glUniform2d	src/glad.cpp	/^PFNGLUNIFORM2DPROC glad_glUniform2d = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM2DPROC
+glad_glUniform2dv	src/glad.cpp	/^PFNGLUNIFORM2DVPROC glad_glUniform2dv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM2DVPROC
+glad_glUniform2f	src/glad.cpp	/^PFNGLUNIFORM2FPROC glad_glUniform2f = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM2FPROC
+glad_glUniform2fv	src/glad.cpp	/^PFNGLUNIFORM2FVPROC glad_glUniform2fv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM2FVPROC
+glad_glUniform2i	src/glad.cpp	/^PFNGLUNIFORM2IPROC glad_glUniform2i = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM2IPROC
+glad_glUniform2iv	src/glad.cpp	/^PFNGLUNIFORM2IVPROC glad_glUniform2iv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM2IVPROC
+glad_glUniform2ui	src/glad.cpp	/^PFNGLUNIFORM2UIPROC glad_glUniform2ui = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM2UIPROC
+glad_glUniform2uiv	src/glad.cpp	/^PFNGLUNIFORM2UIVPROC glad_glUniform2uiv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM2UIVPROC
+glad_glUniform3d	src/glad.cpp	/^PFNGLUNIFORM3DPROC glad_glUniform3d = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM3DPROC
+glad_glUniform3dv	src/glad.cpp	/^PFNGLUNIFORM3DVPROC glad_glUniform3dv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM3DVPROC
+glad_glUniform3f	src/glad.cpp	/^PFNGLUNIFORM3FPROC glad_glUniform3f = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM3FPROC
+glad_glUniform3fv	src/glad.cpp	/^PFNGLUNIFORM3FVPROC glad_glUniform3fv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM3FVPROC
+glad_glUniform3i	src/glad.cpp	/^PFNGLUNIFORM3IPROC glad_glUniform3i = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM3IPROC
+glad_glUniform3iv	src/glad.cpp	/^PFNGLUNIFORM3IVPROC glad_glUniform3iv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM3IVPROC
+glad_glUniform3ui	src/glad.cpp	/^PFNGLUNIFORM3UIPROC glad_glUniform3ui = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM3UIPROC
+glad_glUniform3uiv	src/glad.cpp	/^PFNGLUNIFORM3UIVPROC glad_glUniform3uiv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM3UIVPROC
+glad_glUniform4d	src/glad.cpp	/^PFNGLUNIFORM4DPROC glad_glUniform4d = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM4DPROC
+glad_glUniform4dv	src/glad.cpp	/^PFNGLUNIFORM4DVPROC glad_glUniform4dv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM4DVPROC
+glad_glUniform4f	src/glad.cpp	/^PFNGLUNIFORM4FPROC glad_glUniform4f = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM4FPROC
+glad_glUniform4fv	src/glad.cpp	/^PFNGLUNIFORM4FVPROC glad_glUniform4fv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM4FVPROC
+glad_glUniform4i	src/glad.cpp	/^PFNGLUNIFORM4IPROC glad_glUniform4i = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM4IPROC
+glad_glUniform4iv	src/glad.cpp	/^PFNGLUNIFORM4IVPROC glad_glUniform4iv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM4IVPROC
+glad_glUniform4ui	src/glad.cpp	/^PFNGLUNIFORM4UIPROC glad_glUniform4ui = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM4UIPROC
+glad_glUniform4uiv	src/glad.cpp	/^PFNGLUNIFORM4UIVPROC glad_glUniform4uiv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORM4UIVPROC
+glad_glUniformBlockBinding	src/glad.cpp	/^PFNGLUNIFORMBLOCKBINDINGPROC glad_glUniformBlockBinding = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMBLOCKBINDINGPROC
+glad_glUniformMatrix2dv	src/glad.cpp	/^PFNGLUNIFORMMATRIX2DVPROC glad_glUniformMatrix2dv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX2DVPROC
+glad_glUniformMatrix2fv	src/glad.cpp	/^PFNGLUNIFORMMATRIX2FVPROC glad_glUniformMatrix2fv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX2FVPROC
+glad_glUniformMatrix2x3dv	src/glad.cpp	/^PFNGLUNIFORMMATRIX2X3DVPROC glad_glUniformMatrix2x3dv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX2X3DVPROC
+glad_glUniformMatrix2x3fv	src/glad.cpp	/^PFNGLUNIFORMMATRIX2X3FVPROC glad_glUniformMatrix2x3fv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX2X3FVPROC
+glad_glUniformMatrix2x4dv	src/glad.cpp	/^PFNGLUNIFORMMATRIX2X4DVPROC glad_glUniformMatrix2x4dv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX2X4DVPROC
+glad_glUniformMatrix2x4fv	src/glad.cpp	/^PFNGLUNIFORMMATRIX2X4FVPROC glad_glUniformMatrix2x4fv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX2X4FVPROC
+glad_glUniformMatrix3dv	src/glad.cpp	/^PFNGLUNIFORMMATRIX3DVPROC glad_glUniformMatrix3dv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX3DVPROC
+glad_glUniformMatrix3fv	src/glad.cpp	/^PFNGLUNIFORMMATRIX3FVPROC glad_glUniformMatrix3fv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX3FVPROC
+glad_glUniformMatrix3x2dv	src/glad.cpp	/^PFNGLUNIFORMMATRIX3X2DVPROC glad_glUniformMatrix3x2dv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX3X2DVPROC
+glad_glUniformMatrix3x2fv	src/glad.cpp	/^PFNGLUNIFORMMATRIX3X2FVPROC glad_glUniformMatrix3x2fv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX3X2FVPROC
+glad_glUniformMatrix3x4dv	src/glad.cpp	/^PFNGLUNIFORMMATRIX3X4DVPROC glad_glUniformMatrix3x4dv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX3X4DVPROC
+glad_glUniformMatrix3x4fv	src/glad.cpp	/^PFNGLUNIFORMMATRIX3X4FVPROC glad_glUniformMatrix3x4fv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX3X4FVPROC
+glad_glUniformMatrix4dv	src/glad.cpp	/^PFNGLUNIFORMMATRIX4DVPROC glad_glUniformMatrix4dv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX4DVPROC
+glad_glUniformMatrix4fv	src/glad.cpp	/^PFNGLUNIFORMMATRIX4FVPROC glad_glUniformMatrix4fv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX4FVPROC
+glad_glUniformMatrix4x2dv	src/glad.cpp	/^PFNGLUNIFORMMATRIX4X2DVPROC glad_glUniformMatrix4x2dv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX4X2DVPROC
+glad_glUniformMatrix4x2fv	src/glad.cpp	/^PFNGLUNIFORMMATRIX4X2FVPROC glad_glUniformMatrix4x2fv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX4X2FVPROC
+glad_glUniformMatrix4x3dv	src/glad.cpp	/^PFNGLUNIFORMMATRIX4X3DVPROC glad_glUniformMatrix4x3dv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX4X3DVPROC
+glad_glUniformMatrix4x3fv	src/glad.cpp	/^PFNGLUNIFORMMATRIX4X3FVPROC glad_glUniformMatrix4x3fv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMMATRIX4X3FVPROC
+glad_glUniformSubroutinesuiv	src/glad.cpp	/^PFNGLUNIFORMSUBROUTINESUIVPROC glad_glUniformSubroutinesuiv = NULL;$/;"	v	typeref:typename:PFNGLUNIFORMSUBROUTINESUIVPROC
+glad_glUnmapBuffer	src/glad.cpp	/^PFNGLUNMAPBUFFERPROC glad_glUnmapBuffer = NULL;$/;"	v	typeref:typename:PFNGLUNMAPBUFFERPROC
+glad_glUnmapNamedBuffer	src/glad.cpp	/^PFNGLUNMAPNAMEDBUFFERPROC glad_glUnmapNamedBuffer = NULL;$/;"	v	typeref:typename:PFNGLUNMAPNAMEDBUFFERPROC
+glad_glUseProgram	src/glad.cpp	/^PFNGLUSEPROGRAMPROC glad_glUseProgram = NULL;$/;"	v	typeref:typename:PFNGLUSEPROGRAMPROC
+glad_glUseProgramStages	src/glad.cpp	/^PFNGLUSEPROGRAMSTAGESPROC glad_glUseProgramStages = NULL;$/;"	v	typeref:typename:PFNGLUSEPROGRAMSTAGESPROC
+glad_glValidateProgram	src/glad.cpp	/^PFNGLVALIDATEPROGRAMPROC glad_glValidateProgram = NULL;$/;"	v	typeref:typename:PFNGLVALIDATEPROGRAMPROC
+glad_glValidateProgramPipeline	src/glad.cpp	/^PFNGLVALIDATEPROGRAMPIPELINEPROC glad_glValidateProgramPipeline = NULL;$/;"	v	typeref:typename:PFNGLVALIDATEPROGRAMPIPELINEPROC
+glad_glVertexArrayAttribBinding	src/glad.cpp	/^PFNGLVERTEXARRAYATTRIBBINDINGPROC glad_glVertexArrayAttribBinding = NULL;$/;"	v	typeref:typename:PFNGLVERTEXARRAYATTRIBBINDINGPROC
+glad_glVertexArrayAttribFormat	src/glad.cpp	/^PFNGLVERTEXARRAYATTRIBFORMATPROC glad_glVertexArrayAttribFormat = NULL;$/;"	v	typeref:typename:PFNGLVERTEXARRAYATTRIBFORMATPROC
+glad_glVertexArrayAttribIFormat	src/glad.cpp	/^PFNGLVERTEXARRAYATTRIBIFORMATPROC glad_glVertexArrayAttribIFormat = NULL;$/;"	v	typeref:typename:PFNGLVERTEXARRAYATTRIBIFORMATPROC
+glad_glVertexArrayAttribLFormat	src/glad.cpp	/^PFNGLVERTEXARRAYATTRIBLFORMATPROC glad_glVertexArrayAttribLFormat = NULL;$/;"	v	typeref:typename:PFNGLVERTEXARRAYATTRIBLFORMATPROC
+glad_glVertexArrayBindingDivisor	src/glad.cpp	/^PFNGLVERTEXARRAYBINDINGDIVISORPROC glad_glVertexArrayBindingDivisor = NULL;$/;"	v	typeref:typename:PFNGLVERTEXARRAYBINDINGDIVISORPROC
+glad_glVertexArrayElementBuffer	src/glad.cpp	/^PFNGLVERTEXARRAYELEMENTBUFFERPROC glad_glVertexArrayElementBuffer = NULL;$/;"	v	typeref:typename:PFNGLVERTEXARRAYELEMENTBUFFERPROC
+glad_glVertexArrayVertexBuffer	src/glad.cpp	/^PFNGLVERTEXARRAYVERTEXBUFFERPROC glad_glVertexArrayVertexBuffer = NULL;$/;"	v	typeref:typename:PFNGLVERTEXARRAYVERTEXBUFFERPROC
+glad_glVertexArrayVertexBuffers	src/glad.cpp	/^PFNGLVERTEXARRAYVERTEXBUFFERSPROC glad_glVertexArrayVertexBuffers = NULL;$/;"	v	typeref:typename:PFNGLVERTEXARRAYVERTEXBUFFERSPROC
+glad_glVertexAttrib1d	src/glad.cpp	/^PFNGLVERTEXATTRIB1DPROC glad_glVertexAttrib1d = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB1DPROC
+glad_glVertexAttrib1dv	src/glad.cpp	/^PFNGLVERTEXATTRIB1DVPROC glad_glVertexAttrib1dv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB1DVPROC
+glad_glVertexAttrib1f	src/glad.cpp	/^PFNGLVERTEXATTRIB1FPROC glad_glVertexAttrib1f = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB1FPROC
+glad_glVertexAttrib1fv	src/glad.cpp	/^PFNGLVERTEXATTRIB1FVPROC glad_glVertexAttrib1fv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB1FVPROC
+glad_glVertexAttrib1s	src/glad.cpp	/^PFNGLVERTEXATTRIB1SPROC glad_glVertexAttrib1s = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB1SPROC
+glad_glVertexAttrib1sv	src/glad.cpp	/^PFNGLVERTEXATTRIB1SVPROC glad_glVertexAttrib1sv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB1SVPROC
+glad_glVertexAttrib2d	src/glad.cpp	/^PFNGLVERTEXATTRIB2DPROC glad_glVertexAttrib2d = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB2DPROC
+glad_glVertexAttrib2dv	src/glad.cpp	/^PFNGLVERTEXATTRIB2DVPROC glad_glVertexAttrib2dv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB2DVPROC
+glad_glVertexAttrib2f	src/glad.cpp	/^PFNGLVERTEXATTRIB2FPROC glad_glVertexAttrib2f = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB2FPROC
+glad_glVertexAttrib2fv	src/glad.cpp	/^PFNGLVERTEXATTRIB2FVPROC glad_glVertexAttrib2fv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB2FVPROC
+glad_glVertexAttrib2s	src/glad.cpp	/^PFNGLVERTEXATTRIB2SPROC glad_glVertexAttrib2s = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB2SPROC
+glad_glVertexAttrib2sv	src/glad.cpp	/^PFNGLVERTEXATTRIB2SVPROC glad_glVertexAttrib2sv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB2SVPROC
+glad_glVertexAttrib3d	src/glad.cpp	/^PFNGLVERTEXATTRIB3DPROC glad_glVertexAttrib3d = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB3DPROC
+glad_glVertexAttrib3dv	src/glad.cpp	/^PFNGLVERTEXATTRIB3DVPROC glad_glVertexAttrib3dv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB3DVPROC
+glad_glVertexAttrib3f	src/glad.cpp	/^PFNGLVERTEXATTRIB3FPROC glad_glVertexAttrib3f = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB3FPROC
+glad_glVertexAttrib3fv	src/glad.cpp	/^PFNGLVERTEXATTRIB3FVPROC glad_glVertexAttrib3fv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB3FVPROC
+glad_glVertexAttrib3s	src/glad.cpp	/^PFNGLVERTEXATTRIB3SPROC glad_glVertexAttrib3s = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB3SPROC
+glad_glVertexAttrib3sv	src/glad.cpp	/^PFNGLVERTEXATTRIB3SVPROC glad_glVertexAttrib3sv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB3SVPROC
+glad_glVertexAttrib4Nbv	src/glad.cpp	/^PFNGLVERTEXATTRIB4NBVPROC glad_glVertexAttrib4Nbv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4NBVPROC
+glad_glVertexAttrib4Niv	src/glad.cpp	/^PFNGLVERTEXATTRIB4NIVPROC glad_glVertexAttrib4Niv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4NIVPROC
+glad_glVertexAttrib4Nsv	src/glad.cpp	/^PFNGLVERTEXATTRIB4NSVPROC glad_glVertexAttrib4Nsv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4NSVPROC
+glad_glVertexAttrib4Nub	src/glad.cpp	/^PFNGLVERTEXATTRIB4NUBPROC glad_glVertexAttrib4Nub = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4NUBPROC
+glad_glVertexAttrib4Nubv	src/glad.cpp	/^PFNGLVERTEXATTRIB4NUBVPROC glad_glVertexAttrib4Nubv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4NUBVPROC
+glad_glVertexAttrib4Nuiv	src/glad.cpp	/^PFNGLVERTEXATTRIB4NUIVPROC glad_glVertexAttrib4Nuiv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4NUIVPROC
+glad_glVertexAttrib4Nusv	src/glad.cpp	/^PFNGLVERTEXATTRIB4NUSVPROC glad_glVertexAttrib4Nusv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4NUSVPROC
+glad_glVertexAttrib4bv	src/glad.cpp	/^PFNGLVERTEXATTRIB4BVPROC glad_glVertexAttrib4bv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4BVPROC
+glad_glVertexAttrib4d	src/glad.cpp	/^PFNGLVERTEXATTRIB4DPROC glad_glVertexAttrib4d = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4DPROC
+glad_glVertexAttrib4dv	src/glad.cpp	/^PFNGLVERTEXATTRIB4DVPROC glad_glVertexAttrib4dv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4DVPROC
+glad_glVertexAttrib4f	src/glad.cpp	/^PFNGLVERTEXATTRIB4FPROC glad_glVertexAttrib4f = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4FPROC
+glad_glVertexAttrib4fv	src/glad.cpp	/^PFNGLVERTEXATTRIB4FVPROC glad_glVertexAttrib4fv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4FVPROC
+glad_glVertexAttrib4iv	src/glad.cpp	/^PFNGLVERTEXATTRIB4IVPROC glad_glVertexAttrib4iv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4IVPROC
+glad_glVertexAttrib4s	src/glad.cpp	/^PFNGLVERTEXATTRIB4SPROC glad_glVertexAttrib4s = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4SPROC
+glad_glVertexAttrib4sv	src/glad.cpp	/^PFNGLVERTEXATTRIB4SVPROC glad_glVertexAttrib4sv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4SVPROC
+glad_glVertexAttrib4ubv	src/glad.cpp	/^PFNGLVERTEXATTRIB4UBVPROC glad_glVertexAttrib4ubv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4UBVPROC
+glad_glVertexAttrib4uiv	src/glad.cpp	/^PFNGLVERTEXATTRIB4UIVPROC glad_glVertexAttrib4uiv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4UIVPROC
+glad_glVertexAttrib4usv	src/glad.cpp	/^PFNGLVERTEXATTRIB4USVPROC glad_glVertexAttrib4usv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIB4USVPROC
+glad_glVertexAttribBinding	src/glad.cpp	/^PFNGLVERTEXATTRIBBINDINGPROC glad_glVertexAttribBinding = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBBINDINGPROC
+glad_glVertexAttribDivisor	src/glad.cpp	/^PFNGLVERTEXATTRIBDIVISORPROC glad_glVertexAttribDivisor = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBDIVISORPROC
+glad_glVertexAttribFormat	src/glad.cpp	/^PFNGLVERTEXATTRIBFORMATPROC glad_glVertexAttribFormat = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBFORMATPROC
+glad_glVertexAttribI1i	src/glad.cpp	/^PFNGLVERTEXATTRIBI1IPROC glad_glVertexAttribI1i = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI1IPROC
+glad_glVertexAttribI1iv	src/glad.cpp	/^PFNGLVERTEXATTRIBI1IVPROC glad_glVertexAttribI1iv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI1IVPROC
+glad_glVertexAttribI1ui	src/glad.cpp	/^PFNGLVERTEXATTRIBI1UIPROC glad_glVertexAttribI1ui = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI1UIPROC
+glad_glVertexAttribI1uiv	src/glad.cpp	/^PFNGLVERTEXATTRIBI1UIVPROC glad_glVertexAttribI1uiv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI1UIVPROC
+glad_glVertexAttribI2i	src/glad.cpp	/^PFNGLVERTEXATTRIBI2IPROC glad_glVertexAttribI2i = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI2IPROC
+glad_glVertexAttribI2iv	src/glad.cpp	/^PFNGLVERTEXATTRIBI2IVPROC glad_glVertexAttribI2iv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI2IVPROC
+glad_glVertexAttribI2ui	src/glad.cpp	/^PFNGLVERTEXATTRIBI2UIPROC glad_glVertexAttribI2ui = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI2UIPROC
+glad_glVertexAttribI2uiv	src/glad.cpp	/^PFNGLVERTEXATTRIBI2UIVPROC glad_glVertexAttribI2uiv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI2UIVPROC
+glad_glVertexAttribI3i	src/glad.cpp	/^PFNGLVERTEXATTRIBI3IPROC glad_glVertexAttribI3i = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI3IPROC
+glad_glVertexAttribI3iv	src/glad.cpp	/^PFNGLVERTEXATTRIBI3IVPROC glad_glVertexAttribI3iv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI3IVPROC
+glad_glVertexAttribI3ui	src/glad.cpp	/^PFNGLVERTEXATTRIBI3UIPROC glad_glVertexAttribI3ui = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI3UIPROC
+glad_glVertexAttribI3uiv	src/glad.cpp	/^PFNGLVERTEXATTRIBI3UIVPROC glad_glVertexAttribI3uiv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI3UIVPROC
+glad_glVertexAttribI4bv	src/glad.cpp	/^PFNGLVERTEXATTRIBI4BVPROC glad_glVertexAttribI4bv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI4BVPROC
+glad_glVertexAttribI4i	src/glad.cpp	/^PFNGLVERTEXATTRIBI4IPROC glad_glVertexAttribI4i = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI4IPROC
+glad_glVertexAttribI4iv	src/glad.cpp	/^PFNGLVERTEXATTRIBI4IVPROC glad_glVertexAttribI4iv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI4IVPROC
+glad_glVertexAttribI4sv	src/glad.cpp	/^PFNGLVERTEXATTRIBI4SVPROC glad_glVertexAttribI4sv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI4SVPROC
+glad_glVertexAttribI4ubv	src/glad.cpp	/^PFNGLVERTEXATTRIBI4UBVPROC glad_glVertexAttribI4ubv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI4UBVPROC
+glad_glVertexAttribI4ui	src/glad.cpp	/^PFNGLVERTEXATTRIBI4UIPROC glad_glVertexAttribI4ui = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI4UIPROC
+glad_glVertexAttribI4uiv	src/glad.cpp	/^PFNGLVERTEXATTRIBI4UIVPROC glad_glVertexAttribI4uiv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI4UIVPROC
+glad_glVertexAttribI4usv	src/glad.cpp	/^PFNGLVERTEXATTRIBI4USVPROC glad_glVertexAttribI4usv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBI4USVPROC
+glad_glVertexAttribIFormat	src/glad.cpp	/^PFNGLVERTEXATTRIBIFORMATPROC glad_glVertexAttribIFormat = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBIFORMATPROC
+glad_glVertexAttribIPointer	src/glad.cpp	/^PFNGLVERTEXATTRIBIPOINTERPROC glad_glVertexAttribIPointer = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBIPOINTERPROC
+glad_glVertexAttribL1d	src/glad.cpp	/^PFNGLVERTEXATTRIBL1DPROC glad_glVertexAttribL1d = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBL1DPROC
+glad_glVertexAttribL1dv	src/glad.cpp	/^PFNGLVERTEXATTRIBL1DVPROC glad_glVertexAttribL1dv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBL1DVPROC
+glad_glVertexAttribL2d	src/glad.cpp	/^PFNGLVERTEXATTRIBL2DPROC glad_glVertexAttribL2d = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBL2DPROC
+glad_glVertexAttribL2dv	src/glad.cpp	/^PFNGLVERTEXATTRIBL2DVPROC glad_glVertexAttribL2dv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBL2DVPROC
+glad_glVertexAttribL3d	src/glad.cpp	/^PFNGLVERTEXATTRIBL3DPROC glad_glVertexAttribL3d = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBL3DPROC
+glad_glVertexAttribL3dv	src/glad.cpp	/^PFNGLVERTEXATTRIBL3DVPROC glad_glVertexAttribL3dv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBL3DVPROC
+glad_glVertexAttribL4d	src/glad.cpp	/^PFNGLVERTEXATTRIBL4DPROC glad_glVertexAttribL4d = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBL4DPROC
+glad_glVertexAttribL4dv	src/glad.cpp	/^PFNGLVERTEXATTRIBL4DVPROC glad_glVertexAttribL4dv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBL4DVPROC
+glad_glVertexAttribLFormat	src/glad.cpp	/^PFNGLVERTEXATTRIBLFORMATPROC glad_glVertexAttribLFormat = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBLFORMATPROC
+glad_glVertexAttribLPointer	src/glad.cpp	/^PFNGLVERTEXATTRIBLPOINTERPROC glad_glVertexAttribLPointer = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBLPOINTERPROC
+glad_glVertexAttribP1ui	src/glad.cpp	/^PFNGLVERTEXATTRIBP1UIPROC glad_glVertexAttribP1ui = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBP1UIPROC
+glad_glVertexAttribP1uiv	src/glad.cpp	/^PFNGLVERTEXATTRIBP1UIVPROC glad_glVertexAttribP1uiv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBP1UIVPROC
+glad_glVertexAttribP2ui	src/glad.cpp	/^PFNGLVERTEXATTRIBP2UIPROC glad_glVertexAttribP2ui = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBP2UIPROC
+glad_glVertexAttribP2uiv	src/glad.cpp	/^PFNGLVERTEXATTRIBP2UIVPROC glad_glVertexAttribP2uiv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBP2UIVPROC
+glad_glVertexAttribP3ui	src/glad.cpp	/^PFNGLVERTEXATTRIBP3UIPROC glad_glVertexAttribP3ui = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBP3UIPROC
+glad_glVertexAttribP3uiv	src/glad.cpp	/^PFNGLVERTEXATTRIBP3UIVPROC glad_glVertexAttribP3uiv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBP3UIVPROC
+glad_glVertexAttribP4ui	src/glad.cpp	/^PFNGLVERTEXATTRIBP4UIPROC glad_glVertexAttribP4ui = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBP4UIPROC
+glad_glVertexAttribP4uiv	src/glad.cpp	/^PFNGLVERTEXATTRIBP4UIVPROC glad_glVertexAttribP4uiv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBP4UIVPROC
+glad_glVertexAttribPointer	src/glad.cpp	/^PFNGLVERTEXATTRIBPOINTERPROC glad_glVertexAttribPointer = NULL;$/;"	v	typeref:typename:PFNGLVERTEXATTRIBPOINTERPROC
+glad_glVertexBindingDivisor	src/glad.cpp	/^PFNGLVERTEXBINDINGDIVISORPROC glad_glVertexBindingDivisor = NULL;$/;"	v	typeref:typename:PFNGLVERTEXBINDINGDIVISORPROC
+glad_glVertexP2ui	src/glad.cpp	/^PFNGLVERTEXP2UIPROC glad_glVertexP2ui = NULL;$/;"	v	typeref:typename:PFNGLVERTEXP2UIPROC
+glad_glVertexP2uiv	src/glad.cpp	/^PFNGLVERTEXP2UIVPROC glad_glVertexP2uiv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXP2UIVPROC
+glad_glVertexP3ui	src/glad.cpp	/^PFNGLVERTEXP3UIPROC glad_glVertexP3ui = NULL;$/;"	v	typeref:typename:PFNGLVERTEXP3UIPROC
+glad_glVertexP3uiv	src/glad.cpp	/^PFNGLVERTEXP3UIVPROC glad_glVertexP3uiv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXP3UIVPROC
+glad_glVertexP4ui	src/glad.cpp	/^PFNGLVERTEXP4UIPROC glad_glVertexP4ui = NULL;$/;"	v	typeref:typename:PFNGLVERTEXP4UIPROC
+glad_glVertexP4uiv	src/glad.cpp	/^PFNGLVERTEXP4UIVPROC glad_glVertexP4uiv = NULL;$/;"	v	typeref:typename:PFNGLVERTEXP4UIVPROC
+glad_glViewport	src/glad.cpp	/^PFNGLVIEWPORTPROC glad_glViewport = NULL;$/;"	v	typeref:typename:PFNGLVIEWPORTPROC
+glad_glViewportArrayv	src/glad.cpp	/^PFNGLVIEWPORTARRAYVPROC glad_glViewportArrayv = NULL;$/;"	v	typeref:typename:PFNGLVIEWPORTARRAYVPROC
+glad_glViewportIndexedf	src/glad.cpp	/^PFNGLVIEWPORTINDEXEDFPROC glad_glViewportIndexedf = NULL;$/;"	v	typeref:typename:PFNGLVIEWPORTINDEXEDFPROC
+glad_glViewportIndexedfv	src/glad.cpp	/^PFNGLVIEWPORTINDEXEDFVPROC glad_glViewportIndexedfv = NULL;$/;"	v	typeref:typename:PFNGLVIEWPORTINDEXEDFVPROC
+glad_glWaitSync	src/glad.cpp	/^PFNGLWAITSYNCPROC glad_glWaitSync = NULL;$/;"	v	typeref:typename:PFNGLWAITSYNCPROC
+has_ext	src/glad.cpp	/^static int has_ext(const char *ext) {$/;"	f	typeref:typename:int	file:
 i16	src/typedefs.h	/^typedef int16_t  i16; $/;"	t	typeref:typename:int16_t
 i32	src/typedefs.h	/^typedef int32_t  i32; $/;"	t	typeref:typename:int32_t
 i64	src/typedefs.h	/^typedef int64_t  i64; $/;"	t	typeref:typename:int64_t
 i8	src/typedefs.h	/^typedef int8_t    i8; $/;"	t	typeref:typename:int8_t
 instruction_table	src/m6502_instructions.cpp	/^Instruction instruction_table[256];$/;"	v	typeref:typename:Instruction[256]
+libGL	src/glad.cpp	/^static HMODULE libGL;$/;"	v	typeref:typename:HMODULE	file:
+libGL	src/glad.cpp	/^static void* libGL;$/;"	v	typeref:typename:void *	file:
+load_GL_VERSION_1_0	src/glad.cpp	/^static void load_GL_VERSION_1_0(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
+load_GL_VERSION_1_1	src/glad.cpp	/^static void load_GL_VERSION_1_1(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
+load_GL_VERSION_1_2	src/glad.cpp	/^static void load_GL_VERSION_1_2(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
+load_GL_VERSION_1_3	src/glad.cpp	/^static void load_GL_VERSION_1_3(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
+load_GL_VERSION_1_4	src/glad.cpp	/^static void load_GL_VERSION_1_4(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
+load_GL_VERSION_1_5	src/glad.cpp	/^static void load_GL_VERSION_1_5(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
+load_GL_VERSION_2_0	src/glad.cpp	/^static void load_GL_VERSION_2_0(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
+load_GL_VERSION_2_1	src/glad.cpp	/^static void load_GL_VERSION_2_1(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
+load_GL_VERSION_3_0	src/glad.cpp	/^static void load_GL_VERSION_3_0(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
+load_GL_VERSION_3_1	src/glad.cpp	/^static void load_GL_VERSION_3_1(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
+load_GL_VERSION_3_2	src/glad.cpp	/^static void load_GL_VERSION_3_2(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
+load_GL_VERSION_3_3	src/glad.cpp	/^static void load_GL_VERSION_3_3(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
+load_GL_VERSION_4_0	src/glad.cpp	/^static void load_GL_VERSION_4_0(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
+load_GL_VERSION_4_1	src/glad.cpp	/^static void load_GL_VERSION_4_1(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
+load_GL_VERSION_4_2	src/glad.cpp	/^static void load_GL_VERSION_4_2(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
+load_GL_VERSION_4_3	src/glad.cpp	/^static void load_GL_VERSION_4_3(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
+load_GL_VERSION_4_4	src/glad.cpp	/^static void load_GL_VERSION_4_4(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
+load_GL_VERSION_4_5	src/glad.cpp	/^static void load_GL_VERSION_4_5(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
 load_from_file	src/memory.cpp	/^int Memory::load_from_file(const std::string &path, u16 offset)$/;"	f	class:Memory	typeref:typename:int
 main	src/main.cpp	/^int main() $/;"	f	typeref:typename:int
+max_loaded_major	src/glad.cpp	/^static int max_loaded_major;$/;"	v	typeref:typename:int	file:
+max_loaded_minor	src/glad.cpp	/^static int max_loaded_minor;$/;"	v	typeref:typename:int	file:
+mem	src/display.h	/^    const Memory &mem;$/;"	m	struct:Display	typeref:typename:const Memory &
 mem	src/m6502.h	/^    Memory &mem;$/;"	m	struct:Cpu	typeref:typename:Memory &
 mnemonic	src/m6502.h	/^    std::string mnemonic;$/;"	m	struct:Instruction	typeref:typename:std::string
 n_cycles	src/m6502.h	/^    u8 n_cycles;$/;"	m	struct:Instruction	typeref:typename:u8
+num_exts_i	src/glad.cpp	/^static int num_exts_i = 0;$/;"	v	typeref:typename:int	file:
 op	src/m6502.h	/^    u8 (*op)(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu * cpu)); \/\/ instr.$/;"	m	struct:Instruction	typeref:typename:u8 (*)(Cpu * cpu,AddrModeRet (* addr_mode)(Cpu * cpu))
 op_adc	src/m6502_instructions.cpp	/^u8 op_adc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) $/;"	f	typeref:typename:u8
 op_and	src/m6502_instructions.cpp	/^u8 op_and(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) $/;"	f	typeref:typename:u8
@@ -153,15 +917,22 @@ op_tsx	src/m6502_instructions.cpp	/^u8 op_tsx(Cpu *cpu, AddrModeRet (*addr_mode)
 op_txa	src/m6502_instructions.cpp	/^u8 op_txa(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) $/;"	f	typeref:typename:u8
 op_txs	src/m6502_instructions.cpp	/^u8 op_txs(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) $/;"	f	typeref:typename:u8
 op_tya	src/m6502_instructions.cpp	/^u8 op_tya(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) $/;"	f	typeref:typename:u8
+open_gl	src/glad.cpp	/^int open_gl(void) {$/;"	f	typeref:typename:int	file:
 operator []	src/memory.cpp	/^u8 Memory::operator[](u16 address) const $/;"	f	class:Memory	typeref:typename:u8
 populate_instruction_table	src/m6502_instructions.cpp	/^void populate_instruction_table() $/;"	f	typeref:typename:void
 print_status	src/m6502.cpp	/^void Cpu::print_status() $/;"	f	class:Cpu	typeref:typename:void
+processInput	src/display.cpp	/^void processInput(GLFWwindow *window)$/;"	f	typeref:typename:void
 reset	src/m6502.cpp	/^void Cpu::reset() $/;"	f	class:Cpu	typeref:typename:void
 set_status_bit	src/m6502_instructions.cpp	/^void set_status_bit(Cpu *cpu, u8 bit_pos, bool value) $/;"	f	typeref:typename:void
+setup	src/display.cpp	/^int Display::setup() $/;"	f	class:Display	typeref:typename:int
 stack_pop	src/m6502_instructions.cpp	/^u8 stack_pop(Cpu *cpu)$/;"	f	typeref:typename:u8
 stack_push	src/m6502_instructions.cpp	/^void stack_push(Cpu *cpu, u8 byte)$/;"	f	typeref:typename:void
 u16	src/typedefs.h	/^typedef uint16_t u16; $/;"	t	typeref:typename:uint16_t
 u32	src/typedefs.h	/^typedef uint32_t u32; $/;"	t	typeref:typename:uint32_t
 u64	src/typedefs.h	/^typedef uint64_t u64; $/;"	t	typeref:typename:uint64_t
 u8	src/typedefs.h	/^typedef uint8_t   u8; $/;"	t	typeref:typename:uint8_t
+update	src/display.cpp	/^void Display::update()$/;"	f	class:Display	typeref:typename:void
+vert_shader_source	src/display.h	/^    const char *vert_shader_source =$/;"	m	struct:Display	typeref:typename:const char *
+window	src/display.h	/^    GLFWwindow *window;$/;"	m	struct:Display	typeref:typename:GLFWwindow *
+~Display	src/display.cpp	/^Display::~Display() {$/;"	f	class:Display
 ~Memory	src/memory.cpp	/^Memory::~Memory()$/;"	f	class:Memory

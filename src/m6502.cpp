@@ -31,8 +31,6 @@ u8 Cpu::fetch_execute_next()
     // execute
     u8 cycles_taken = instr.execute(this);
 
-    printf("cc: %d\n", cycles_taken);
-
 #ifdef DEBUG_PRINTS
     this->print_status();
 #endif

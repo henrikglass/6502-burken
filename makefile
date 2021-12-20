@@ -5,12 +5,12 @@ TARGET 	= 6502-burken
 CC 		= g++
 
 # other flags
-CFLAGS 	= -O2 -std=c++2a -Wall -pedantic -march=native #-pg -g
+CFLAGS 	= -Iinclude -lglfw -O2 -std=c++2a -Wall -pedantic -march=native #-pg -g
 DEBUG_FLAGS = -DDEBUG_PRINTS
 
 # linker
 LINKER 	= g++
-LFLAGS 	= -lm #-pg
+LFLAGS 	= -ldl -lglfw -lm #-pg
 
 # directories
 OBJDIR 	= obj

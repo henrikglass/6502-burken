@@ -9,19 +9,6 @@ Cpu::Cpu(Memory &mem) : mem(mem) {
     this->reset();
 }
 
-void Cpu::reset() 
-{
-    printf("CPU reset.\n");
-    // Done at startupt: <https://www.csh.rit.edu/~moffitt/docs/6502.html#BOOT>
-    this->SR |= (1 << BIT_I);                       // ; disable interrupts
-    this->PC  =  this->mem[RESET_VECTOR];           // ; put PC at where reset vector pointed
-    this->PC |= (this->mem[RESET_VECTOR + 1]) << 8;
-    
-    // TODO Do this through a reset routine
-    this->SP  = STACK_PAGE_HIGH;                    // ; init stack pointer to ceiling of stack page ()
-    this->SR &= ~(1 << BIT_I);                      // ; enable interrupts again
-}
-
 u8 Cpu::fetch_execute_next() 
 {
     // fetch
@@ -37,6 +24,33 @@ u8 Cpu::fetch_execute_next()
 
     // return # of elapsed cpu cycles
     return cycles_taken;
+}
+
+void Cpu::reset() 
+{
+    printf("RESET signal\n");
+    // Done at startupt: <https://www.csh.rit.edu/~moffitt/docs/6502.html#BOOT>
+    this->SR |= (1 << BIT_I);                       // ; disable interrupts
+    this->PC  =  this->mem[RESET_VECTOR];           // ; put PC at where reset vector pointed
+    this->PC |= (this->mem[RESET_VECTOR + 1]) << 8;
+    
+    // TODO Do this through a reset routine
+    this->SP  = STACK_PAGE_HIGH;                    // ; init stack pointer to ceiling of stack page ()
+    this->SR &= ~(1 << BIT_I);                      // ; enable interrupts again
+}
+
+void Cpu::irq() 
+{
+    printf("IRQ signal\n");
+    this->PC  =  this->mem[IRQ_BRK_VECTOR];
+    this->PC |= (this->mem[IRQ_BRK_VECTOR + 1]) << 8;
+}
+
+void Cpu::nmi()
+{
+    printf("NMI signal\n");
+    this->PC  =  this->mem[NMI_VECTOR];
+    this->PC |= (this->mem[NMI_VECTOR + 1]) << 8;
 }
 
 void Cpu::print_status() 

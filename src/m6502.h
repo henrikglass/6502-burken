@@ -75,11 +75,13 @@ struct Cpu
     // Memory
     Memory &mem;
 
-    // Reset
-    void reset();
-
     // Execute a single instruction, returning the # of cycles taken
     u8 fetch_execute_next();
+
+    // interrupts
+    void reset();
+    void irq();
+    void nmi();
 
     // debug
     void print_status();

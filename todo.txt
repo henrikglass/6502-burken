@@ -1,8 +1,11 @@
-1. Move memory layout constants to its own header
-2. display functionality
-3. "cassette" loading
-4. timers + interrupts
-5. implement test all instructions
-6. check #cycles are correct for all instructions
-7. check #cycles for branch instructions and instructions using abs,X and abs,Y 
-8. CPU register monitoring using that cool opengl lib
+1.  Move memory layout constants to its own header
+2.  display functionality
+3.  "cassette" loading
+4.  timers + interrupts
+5.  implement test all instructions
+6.  check #cycles are correct for all instructions
+7.  check #cycles for branch instructions and instructions using abs,X and abs,Y 
+8.  CPU register monitoring using imgui
+9.  Audio (aplay?)
+10. Is "data pointer" used when it should be?
+11. Rename "timer data" to something more descriptive

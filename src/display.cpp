@@ -43,7 +43,7 @@ int Display::setup()
     //glfwWindowHint(GLFW_BLUE_BITS,    mode->blueBits);
     //glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
     
-    this->window = glfwCreateWindow(512, 512, "6502-burken", nullptr, nullptr);
+    this->window = glfwCreateWindow(640, 400, "6502-burken", nullptr, nullptr);
     if (window == nullptr)
     {
         std::cout << "Failed to create GLFW window" << std::endl;

@@ -34,12 +34,12 @@ int main()
     for (int i = Layout::VGA_TEXT_BUF_LOW; i <= Layout::VGA_TEXT_BUF_HIGH; i++) {
         if (i % 2 == 0) {
             mem[i] = (i/2) % 0xFF;
-        } else if (i < Layout::VGA_TEXT_BUF_LOW + 20) {
+        }/* else if (i < Layout::VGA_TEXT_BUF_LOW + 20) {
             mem[i] = 0xA0;
-        } else {
+        }*/ else {
             int temp = i % 160;
             temp /= 10;
-            mem[i] = (temp << 4) + (temp ^ 0b1111);
+            mem[i] = (temp << 4) + (0b1111);
             //mem[i] = 0x0A; // bg color index: 0b0000, fg color index: 0b1111
 
         }

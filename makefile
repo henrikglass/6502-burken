@@ -10,7 +10,7 @@ DEBUG_FLAGS = -DDEBUG_PRINTS
 
 # linker
 LINKER 	= g++
-LFLAGS 	= -ldl -lglfw -lm #-pg
+LFLAGS 	= -lpthread -ldl -lglfw -lm #-pg
 
 # directories
 OBJDIR 	= obj

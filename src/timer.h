@@ -4,7 +4,6 @@
 #include "memory.h"
 #include "m6502.h"
 #include "typedefs.h"
-#include "layout.h"
 
 /*
  * Implements a timer loosely(!) based on TIMER 1 in an ATmega328P
@@ -28,8 +27,8 @@ struct Timer
                              // bit 1-3: prescaler (mapping is:  001->1,
                              // 010->8, 011->64, 100->256, 101->1024).
                              // values 0b000, 0b110, and 0b111 are not 
-                             // allowed (but act as prescaler = 1 for
-                             // now)
+                             // allowed (will cause floating point 
+                             // exception)
 
     // internal state
     u16 count;               // the active count value

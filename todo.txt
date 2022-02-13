@@ -9,3 +9,7 @@
 9.  Audio (aplay?)
 10. Is "data pointer" used when it should be?
 11. Rename "timer data" to something more descriptive
+12. Correct timing (1 MHz)
+13. Threadsafe memory
+14. Proper implementation of IRQ/reset/NMI (push registers onto stack)
+15. 

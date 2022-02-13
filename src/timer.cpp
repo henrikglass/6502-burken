@@ -1,14 +1,14 @@
 #include "timer.h"
 
 const u16 prescaler_map[8] = {
-    1,    // 0b000
+    0,    // 0b000
     1,    // 0b001
     8,    // 0b010
     64,   // 0b011
     256,  // 0b100
     1024, // 0b101
-    1,    // 0b110
-    1     // 0b111
+    0,    // 0b110
+    0     // 0b111
 };
 
 Timer::Timer(Cpu &cpu, const Memory &mem, u16 ctrl_address, u16 data_address) :

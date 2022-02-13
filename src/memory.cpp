@@ -1,13 +1,12 @@
 #include "memory.h"
-#include "layout.h"
 
 #include <iostream>
 #include <string.h>
 
 Memory::Memory()
 {
-    data = new u8[MEM_SIZE];
-    memset(data, 0, MEM_SIZE * sizeof(u8)); // Not really neccessary.
+    data = new u8[Layout::MEM_SIZE];
+    memset(data, 0, Layout::MEM_SIZE * sizeof(u8)); // Not really neccessary.
 }
 
 Memory::~Memory()
@@ -37,7 +36,7 @@ int Memory::load_from_file(const std::string &path, u16 offset)
         return 1;
     }
 
-    u32 max_n_bytes = MEM_SIZE - offset; 
+    u32 max_n_bytes = Layout::MEM_SIZE - offset; 
     u32 n_read = fread(&(this->data[offset]), sizeof(u8), max_n_bytes, f);
     fclose(f);
     

@@ -18,17 +18,13 @@ BIT_Z	src/m6502.h	/^const u8 BIT_Z      = 1; \/\/ Zero$/;"	v	typeref:typename:co
 BRK	src/m6502.h	/^    BRK     = 0x00,$/;"	e	enum:TTInstruction
 Cpu	src/m6502.cpp	/^Cpu::Cpu(Memory &mem) : mem(mem) {$/;"	f	class:Cpu
 Cpu	src/m6502.h	/^struct Cpu $/;"	s
-DISPLAY_DATA_HIGH	src/layout.h	/^const u16 DISPLAY_DATA_HIGH  = 0x03FF;$/;"	v	typeref:typename:const u16
-DISPLAY_DATA_LOW	src/layout.h	/^const u16 DISPLAY_DATA_LOW   = 0x0200;$/;"	v	typeref:typename:const u16
 DISPLAY_H	src/display.h	/^#define DISPLAY_H$/;"	d
-DISPLAY_TILES_HIGH	src/layout.h	/^const u16 DISPLAY_TILES_HIGH = 0x04FF;$/;"	v	typeref:typename:const u16
-DISPLAY_TILES_LOW	src/layout.h	/^const u16 DISPLAY_TILES_LOW  = 0x0400;$/;"	v	typeref:typename:const u16
 Display	src/display.h	/^    Display(const Cpu &cpu, const Memory &mem) : cpu(cpu), mem(mem) $/;"	f	struct:Display
 Display	src/display.h	/^struct Display $/;"	s
-FREE_RAM_HIGH	src/layout.h	/^const u16 FREE_RAM_HIGH      = 0x3FFF;$/;"	v	typeref:typename:const u16
-FREE_RAM_LOW	src/layout.h	/^const u16 FREE_RAM_LOW       = 0x0600;$/;"	v	typeref:typename:const u16
-FREE_ROM_HIGH	src/layout.h	/^const u16 FREE_ROM_HIGH      = 0xFFF9;$/;"	v	typeref:typename:const u16
-FREE_ROM_LOW	src/layout.h	/^const u16 FREE_ROM_LOW       = 0x8000;$/;"	v	typeref:typename:const u16
+FREE_RAM_HIGH	src/memory.h	/^    const u16 FREE_RAM_HIGH      = 0x3FFF;$/;"	v	namespace:Layout	typeref:typename:const u16
+FREE_RAM_LOW	src/memory.h	/^    const u16 FREE_RAM_LOW       = 0x1700;$/;"	v	namespace:Layout	typeref:typename:const u16
+FREE_ROM_HIGH	src/memory.h	/^    const u16 FREE_ROM_HIGH      = 0xFFF9;$/;"	v	namespace:Layout	typeref:typename:const u16
+FREE_ROM_LOW	src/memory.h	/^    const u16 FREE_ROM_LOW       = 0x8000;$/;"	v	namespace:Layout	typeref:typename:const u16
 GLAD_GL_VERSION_1_0	src/glad.cpp	/^int GLAD_GL_VERSION_1_0 = 0;$/;"	v	typeref:typename:int
 GLAD_GL_VERSION_1_1	src/glad.cpp	/^int GLAD_GL_VERSION_1_1 = 0;$/;"	v	typeref:typename:int
 GLAD_GL_VERSION_1_2	src/glad.cpp	/^int GLAD_GL_VERSION_1_2 = 0;$/;"	v	typeref:typename:int
@@ -51,51 +47,63 @@ GLVersion	src/glad.cpp	/^struct gladGLversionStruct GLVersion = { 0, 0 };$/;"	v	
 HAVE_WINAPIFAMILY	src/glad.cpp	/^    #define HAVE_WINAPIFAMILY /;"	d	file:
 HAVE_WINAPIFAMILY	src/glad.cpp	/^  #define HAVE_WINAPIFAMILY /;"	d	file:
 HIGH	src/typedefs.h	/^const bool HIGH = true;$/;"	v	typeref:typename:const bool
-IO_MEM_HIGH	src/layout.h	/^const u16 IO_MEM_HIGH        = 0x7FFF;$/;"	v	typeref:typename:const u16
-IO_MEM_LOW	src/layout.h	/^const u16 IO_MEM_LOW         = 0x4000;$/;"	v	typeref:typename:const u16
-IO_PAGE_HIGH	src/layout.h	/^const u16 IO_PAGE_HIGH       = 0x05FF;$/;"	v	typeref:typename:const u16
-IO_PAGE_LOW	src/layout.h	/^const u16 IO_PAGE_LOW        = 0x0500;$/;"	v	typeref:typename:const u16
-IRQ_BRK_VECTOR	src/layout.h	/^const u16 IRQ_BRK_VECTOR     = 0xFFFE; \/\/ 2 bytes$/;"	v	typeref:typename:const u16
+IO_MEM_HIGH	src/memory.h	/^    const u16 IO_MEM_HIGH        = 0x7FFF;$/;"	v	namespace:Layout	typeref:typename:const u16
+IO_MEM_LOW	src/memory.h	/^    const u16 IO_MEM_LOW         = 0x4000;$/;"	v	namespace:Layout	typeref:typename:const u16
+IO_PAGE_HIGH	src/memory.h	/^    const u16 IO_PAGE_HIGH       = 0x16FF;$/;"	v	namespace:Layout	typeref:typename:const u16
+IO_PAGE_LOW	src/memory.h	/^    const u16 IO_PAGE_LOW        = 0x1600;$/;"	v	namespace:Layout	typeref:typename:const u16
+IRQ_BRK_VECTOR	src/memory.h	/^    const u16 IRQ_BRK_VECTOR     = 0xFFFE; \/\/ 2 bytes$/;"	v	namespace:Layout	typeref:typename:const u16
 IS_UWP	src/glad.cpp	/^    #define IS_UWP /;"	d	file:
 Instruction	src/m6502.h	/^struct Instruction$/;"	s
 JMP_ABS	src/m6502.h	/^    JMP_ABS = 0x4c$/;"	e	enum:TTInstruction
-LAYOUT_H	src/layout.h	/^#define LAYOUT_H$/;"	d
 LDA_I	src/m6502.h	/^    LDA_I   = 0xA9,$/;"	e	enum:TTInstruction
 LDX_I	src/m6502.h	/^    LDX_I   = 0xA2,$/;"	e	enum:TTInstruction
 LDY_I	src/m6502.h	/^    LDY_I   = 0xA0,$/;"	e	enum:TTInstruction
 LOW	src/typedefs.h	/^const bool LOW  = false;$/;"	v	typeref:typename:const bool
+Layout	src/memory.h	/^namespace Layout$/;"	n
 M6502_H	src/m6502.h	/^#define M6502_H$/;"	d
 MEMORY_H	src/memory.h	/^#define MEMORY_H$/;"	d
-MEM_SIZE	src/layout.h	/^const u32 MEM_SIZE = 0x10000;$/;"	v	typeref:typename:const u32
+MEM_SIZE	src/memory.h	/^    const u32 MEM_SIZE          = 0x10000;$/;"	v	namespace:Layout	typeref:typename:const u32
 Memory	src/memory.cpp	/^Memory::Memory()$/;"	f	class:Memory
 Memory	src/memory.h	/^struct Memory $/;"	s
-NMI_VECTOR	src/layout.h	/^const u16 NMI_VECTOR         = 0xFFFA; \/\/ 2 bytes$/;"	v	typeref:typename:const u16
+NMI_VECTOR	src/memory.h	/^    const u16 NMI_VECTOR         = 0xFFFA; \/\/ 2 bytes$/;"	v	namespace:Layout	typeref:typename:const u16
 NOP	src/m6502.h	/^    NOP     = 0xEA,$/;"	e	enum:TTInstruction
 OP_INVALID	src/m6502_instructions.cpp	/^u8 OP_INVALID(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) $/;"	f	typeref:typename:u8
 PC	src/m6502.h	/^    u16 PC = 0x00;$/;"	m	struct:Cpu	typeref:typename:u16
 PFNGLXGETPROCADDRESSPROC_PRIVATE	src/glad.cpp	/^typedef void* (APIENTRYP PFNGLXGETPROCADDRESSPROC_PRIVATE)(const char*);$/;"	t	typeref:typename:void * (APIENTRYP)(const char *)	file:
 PFNWGLGETPROCADDRESSPROC_PRIVATE	src/glad.cpp	/^typedef void* (APIENTRYP PFNWGLGETPROCADDRESSPROC_PRIVATE)(const char*);$/;"	t	typeref:typename:void * (APIENTRYP)(const char *)	file:
 PHA	src/m6502.h	/^    PHA     = 0x48,$/;"	e	enum:TTInstruction
-RESET_VECTOR	src/layout.h	/^const u16 RESET_VECTOR       = 0xFFFC; \/\/ 2 bytes$/;"	v	typeref:typename:const u16
+RESET_VECTOR	src/memory.h	/^    const u16 RESET_VECTOR       = 0xFFFC; \/\/ 2 bytes$/;"	v	namespace:Layout	typeref:typename:const u16
 SP	src/m6502.h	/^    u16 SP = 0x0000;$/;"	m	struct:Cpu	typeref:typename:u16
 SR	src/m6502.h	/^    u8 SR = 0x00;$/;"	m	struct:Cpu	typeref:typename:u8
-STACK_PAGE_HIGH	src/layout.h	/^const u16 STACK_PAGE_HIGH    = 0x01FF;$/;"	v	typeref:typename:const u16
-STACK_PAGE_LOW	src/layout.h	/^const u16 STACK_PAGE_LOW     = 0x0100;$/;"	v	typeref:typename:const u16
-TIMER1_CTRL	src/layout.h	/^const u16 TIMER1_CTRL        = 0x0500; \/\/ 1 Byte$/;"	v	typeref:typename:const u16
-TIMER1_DATA	src/layout.h	/^const u16 TIMER1_DATA        = 0x0501; \/\/ 2 Bytes$/;"	v	typeref:typename:const u16
-TIMER2_CTRL	src/layout.h	/^const u16 TIMER2_CTRL        = 0x0503; \/\/ 1 Byte$/;"	v	typeref:typename:const u16
-TIMER2_DATA	src/layout.h	/^const u16 TIMER2_DATA        = 0x0504; \/\/ 2 Bytes$/;"	v	typeref:typename:const u16
+STACK_PAGE_HIGH	src/memory.h	/^    const u16 STACK_PAGE_HIGH    = 0x01FF;$/;"	v	namespace:Layout	typeref:typename:const u16
+STACK_PAGE_LOW	src/memory.h	/^    const u16 STACK_PAGE_LOW     = 0x0100;$/;"	v	namespace:Layout	typeref:typename:const u16
+TIMER1_CTRL	src/memory.h	/^    const u16 TIMER1_CTRL        = 0x1600; \/\/ 1 Byte$/;"	v	namespace:Layout	typeref:typename:const u16
+TIMER1_DATA	src/memory.h	/^    const u16 TIMER1_DATA        = 0x1601; \/\/ 2 Bytes$/;"	v	namespace:Layout	typeref:typename:const u16
+TIMER2_CTRL	src/memory.h	/^    const u16 TIMER2_CTRL        = 0x1603; \/\/ 1 Byte$/;"	v	namespace:Layout	typeref:typename:const u16
+TIMER2_DATA	src/memory.h	/^    const u16 TIMER2_DATA        = 0x1604; \/\/ 2 Bytes$/;"	v	namespace:Layout	typeref:typename:const u16
 TIMER_H	src/timer.h	/^#define TIMER_H$/;"	d
 TTInstruction	src/m6502.h	/^enum TTInstruction $/;"	g
 TYPEDEFS_H	src/typedefs.h	/^#define TYPEDEFS_H$/;"	d
 Timer	src/timer.cpp	/^Timer::Timer(Cpu &cpu, const Memory &mem, u16 ctrl_address, u16 data_address) :$/;"	f	class:Timer
 Timer	src/timer.h	/^struct Timer $/;"	s
+VAO	src/display.h	/^    unsigned int VAO;$/;"	m	struct:Display	typeref:typename:unsigned int
+VGA_CHAR_BUF_HIGH	src/memory.h	/^    const u16 VGA_CHAR_BUF_HIGH  = 0x15FF;$/;"	v	namespace:Layout	typeref:typename:const u16
+VGA_CHAR_BUF_LOW	src/memory.h	/^    const u16 VGA_CHAR_BUF_LOW   = 0x1200;$/;"	v	namespace:Layout	typeref:typename:const u16
+VGA_CHAR_BUF_SIZE	src/memory.h	/^    const u16 VGA_CHAR_BUF_SIZE = VGA_CHAR_BUF_HIGH - VGA_CHAR_BUF_LOW + 1;$/;"	v	namespace:Layout	typeref:typename:const u16
+VGA_CHAR_SIZE	src/display.h	/^    const unsigned int VGA_CHAR_SIZE    =  8;$/;"	m	struct:Display	typeref:typename:const unsigned int
+VGA_N_CHARS	src/display.h	/^    const unsigned int VGA_N_CHARS      = Layout::VGA_CHAR_BUF_SIZE \/ VGA_CHAR_SIZE;$/;"	m	struct:Display	typeref:typename:const unsigned int
+VGA_TEXT_BUF_HIGH	src/memory.h	/^    const u16 VGA_TEXT_BUF_HIGH  = 0x11FF; \/\/ last 96 bytes are unused but reserved$/;"	v	namespace:Layout	typeref:typename:const u16
+VGA_TEXT_BUF_LOW	src/memory.h	/^    const u16 VGA_TEXT_BUF_LOW   = 0x0200;$/;"	v	namespace:Layout	typeref:typename:const u16
+VGA_TEXT_BUF_SIZE	src/memory.h	/^    const u16 VGA_TEXT_BUF_SIZE = VGA_TEXT_BUF_HIGH - VGA_TEXT_BUF_LOW + 1;$/;"	v	namespace:Layout	typeref:typename:const u16
+VGA_TEXT_COLUMNS	src/display.h	/^    const unsigned int VGA_TEXT_COLUMNS = 80;$/;"	m	struct:Display	typeref:typename:const unsigned int
+VGA_TEXT_ROWS	src/display.h	/^    const unsigned int VGA_TEXT_ROWS    = 25;$/;"	m	struct:Display	typeref:typename:const unsigned int
 X	src/m6502.h	/^    u8 ACC = 0x00, X = 0x00, Y = 0x00;$/;"	m	struct:Cpu	typeref:typename:u8
 Y	src/m6502.h	/^    u8 ACC = 0x00, X = 0x00, Y = 0x00;$/;"	m	struct:Cpu	typeref:typename:u8
-ZERO_PAGE_HIGH	src/layout.h	/^const u16 ZERO_PAGE_HIGH     = 0x00FF;$/;"	v	typeref:typename:const u16
-ZERO_PAGE_LOW	src/layout.h	/^const u16 ZERO_PAGE_LOW      = 0x0000;$/;"	v	typeref:typename:const u16
+ZERO_PAGE_HIGH	src/memory.h	/^    const u16 ZERO_PAGE_HIGH     = 0x00FF;$/;"	v	namespace:Layout	typeref:typename:const u16
+ZERO_PAGE_LOW	src/memory.h	/^    const u16 ZERO_PAGE_LOW      = 0x0000;$/;"	v	namespace:Layout	typeref:typename:const u16
 _GLAD_IS_SOME_NEW_VERSION	src/glad.cpp	/^#define _GLAD_IS_SOME_NEW_VERSION /;"	d	file:
 __anon256972060102	src/memory.cpp	/^{$/;"	f	file:
+__anond902be230102	src/display.cpp	/^    return std::thread([this](){$/;"	f	function:Display::start	file:
 additional_cycles	src/m6502.h	/^    u8  additional_cycles;$/;"	m	struct:AddrModeRet	typeref:typename:u8
 addr_abs	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_abs(Cpu *cpu)$/;"	f	typeref:typename:AddrModeRet
 addr_abs_X	src/m6502_addressing_modes.cpp	/^AddrModeRet addr_abs_X(Cpu *cpu)$/;"	f	typeref:typename:AddrModeRet
@@ -128,13 +136,17 @@ fetch_execute_next	src/m6502.cpp	/^u8 Cpu::fetch_execute_next() $/;"	f	class:Cpu
 find_coreGL	src/glad.cpp	/^static void find_coreGL(void) {$/;"	f	typeref:typename:void	file:
 find_extensionsGL	src/glad.cpp	/^static int find_extensionsGL(void) {$/;"	f	typeref:typename:int	file:
 frag_shader_source	src/display.h	/^    const char *frag_shader_source =$/;"	m	struct:Display	typeref:typename:const char *
+frame	src/display.cpp	/^int frame = 0;$/;"	v	typeref:typename:int
 framebuffer_size_callback	src/display.cpp	/^void framebuffer_size_callback(GLFWwindow* window, int width, int height)$/;"	f	typeref:typename:void
 free_exts	src/glad.cpp	/^static void free_exts(void) {$/;"	f	typeref:typename:void	file:
+full_screen_tri_vbo	src/display.h	/^    unsigned int full_screen_tri_vbo; $/;"	m	struct:Display	typeref:typename:unsigned int
 generic_branch	src/m6502_instructions.cpp	/^u8 generic_branch(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu), u8 bit, bool value)$/;"	f	typeref:typename:u8
 generic_compare	src/m6502_instructions.cpp	/^u8 generic_compare(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu), u8 register_value)$/;"	f	typeref:typename:u8
 get_exts	src/glad.cpp	/^static int get_exts(void) {$/;"	f	typeref:typename:int	file:
 get_proc	src/glad.cpp	/^void* get_proc(const char *namez) {$/;"	f	typeref:typename:void *	file:
 get_status_bit	src/m6502_instructions.cpp	/^u8 get_status_bit(Cpu *cpu, u8 bit_pos) $/;"	f	typeref:typename:u8
+glCheckError	src/display.cpp	/^#define glCheckError(/;"	d	file:
+glCheckError_	src/display.cpp	/^GLenum glCheckError_(const char *file, int line)$/;"	f	typeref:typename:GLenum
 gladGetProcAddressPtr	src/glad.cpp	/^static PFNGLXGETPROCADDRESSPROC_PRIVATE gladGetProcAddressPtr;$/;"	v	typeref:typename:PFNGLXGETPROCADDRESSPROC_PRIVATE	file:
 gladGetProcAddressPtr	src/glad.cpp	/^static PFNWGLGETPROCADDRESSPROC_PRIVATE gladGetProcAddressPtr;$/;"	v	typeref:typename:PFNWGLGETPROCADDRESSPROC_PRIVATE	file:
 gladLoadGL	src/glad.cpp	/^int gladLoadGL(void) {$/;"	f	typeref:typename:int
@@ -862,6 +874,7 @@ load_GL_VERSION_4_3	src/glad.cpp	/^static void load_GL_VERSION_4_3(GLADloadproc 
 load_GL_VERSION_4_4	src/glad.cpp	/^static void load_GL_VERSION_4_4(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
 load_GL_VERSION_4_5	src/glad.cpp	/^static void load_GL_VERSION_4_5(GLADloadproc load) {$/;"	f	typeref:typename:void	file:
 load_from_file	src/memory.cpp	/^int Memory::load_from_file(const std::string &path, u16 offset)$/;"	f	class:Memory	typeref:typename:int
+loop	src/display.cpp	/^int Display::loop()$/;"	f	class:Display	typeref:typename:int
 main	src/main.cpp	/^int main() $/;"	f	typeref:typename:int
 max_loaded_major	src/glad.cpp	/^static int max_loaded_major;$/;"	v	typeref:typename:int	file:
 max_loaded_minor	src/glad.cpp	/^static int max_loaded_minor;$/;"	v	typeref:typename:int	file:
@@ -935,19 +948,22 @@ populate_instruction_table	src/m6502_instructions.cpp	/^void populate_instructio
 prescaler_clock_sum	src/timer.h	/^    u16 prescaler_clock_sum; \/\/ keep track of the number of clock cycles$/;"	m	struct:Timer	typeref:typename:u16
 prescaler_map	src/timer.cpp	/^const u16 prescaler_map[8] = {$/;"	v	typeref:typename:const u16[8]
 print_status	src/m6502.cpp	/^void Cpu::print_status() $/;"	f	class:Cpu	typeref:typename:void
-processInput	src/display.cpp	/^void processInput(GLFWwindow *window)$/;"	f	typeref:typename:void
 reset	src/m6502.cpp	/^void Cpu::reset() $/;"	f	class:Cpu	typeref:typename:void
 set_status_bit	src/m6502_instructions.cpp	/^void set_status_bit(Cpu *cpu, u8 bit_pos, bool value) $/;"	f	typeref:typename:void
 setup	src/display.cpp	/^int Display::setup() $/;"	f	class:Display	typeref:typename:int
 stack_pop	src/m6502_instructions.cpp	/^u8 stack_pop(Cpu *cpu)$/;"	f	typeref:typename:u8
 stack_push	src/m6502_instructions.cpp	/^void stack_push(Cpu *cpu, u8 byte)$/;"	f	typeref:typename:void
+start	src/display.cpp	/^std::thread Display::start() {$/;"	f	class:Display	typeref:typename:std::thread
 step	src/timer.cpp	/^void Timer::step(u16 n_cycles_elapsed) $/;"	f	class:Timer	typeref:typename:void
 u16	src/typedefs.h	/^typedef uint16_t u16; $/;"	t	typeref:typename:uint16_t
 u32	src/typedefs.h	/^typedef uint32_t u32; $/;"	t	typeref:typename:uint32_t
 u64	src/typedefs.h	/^typedef uint64_t u64; $/;"	t	typeref:typename:uint64_t
 u8	src/typedefs.h	/^typedef uint8_t   u8; $/;"	t	typeref:typename:uint8_t
-update	src/display.cpp	/^int Display::update()$/;"	f	class:Display	typeref:typename:int
 vert_shader_source	src/display.h	/^    const char *vert_shader_source =$/;"	m	struct:Display	typeref:typename:const char *
+vga_char_texture	src/display.h	/^    unsigned int vga_char_texture;$/;"	m	struct:Display	typeref:typename:unsigned int
+vga_char_ubo	src/display.h	/^    unsigned int vga_char_ubo;$/;"	m	struct:Display	typeref:typename:unsigned int
+vga_text_texture	src/display.h	/^    unsigned int vga_text_texture;$/;"	m	struct:Display	typeref:typename:unsigned int
+vga_text_ubo	src/display.h	/^    unsigned int vga_text_ubo;$/;"	m	struct:Display	typeref:typename:unsigned int
 window	src/display.h	/^    GLFWwindow *window;$/;"	m	struct:Display	typeref:typename:GLFWwindow *
 ~Display	src/display.cpp	/^Display::~Display() {$/;"	f	class:Display
 ~Memory	src/memory.cpp	/^Memory::~Memory()$/;"	f	class:Memory

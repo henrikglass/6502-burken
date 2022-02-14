@@ -132,24 +132,6 @@ int Display::setup()
     glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(glm::vec3), nullptr);
     glEnableVertexAttribArray(0);
 
-    // setup uniform buffer objects to hold vga text buffer and char buffer.
-    //unsigned int text_buffer_idx = glGetUniformBlockIndex(shader_program, "VgaTextBuffer");
-    //unsigned int char_buffer_idx = glGetUniformBlockIndex(shader_program, "VgaCharBuffer");
-    //glUniformBlockBinding(shader_program, text_buffer_idx, 0);
-    //glUniformBlockBinding(shader_program, char_buffer_idx, 1);
-
-    //glGenBuffers(1, &this->vga_text_ubo);
-    //glGenBuffers(1, &this->vga_char_ubo);
-
-    //glBindBuffer(GL_UNIFORM_BUFFER, this->vga_text_ubo);
-    //glBufferData(GL_UNIFORM_BUFFER, Layout::VGA_TEXT_BUF_SIZE, this->mem.data + Layout::VGA_TEXT_BUF_LOW, GL_STATIC_DRAW); // TODO consider GL_DYNAMIC_DRAW
-    //glBindBuffer(GL_UNIFORM_BUFFER, this->vga_char_ubo);
-    //glBufferData(GL_UNIFORM_BUFFER, Layout::VGA_CHAR_BUF_SIZE, this->mem.data + Layout::VGA_CHAR_BUF_LOW, GL_STATIC_DRAW); // TODO consider GL_DYNAMIC_DRAW
-    //glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-    //glBindBufferBase(GL_UNIFORM_BUFFER, 0, this->vga_text_ubo);
-    //glBindBufferBase(GL_UNIFORM_BUFFER, 1, this->vga_char_ubo);
-    
     // setup textures to hold vga text buffer and char buffer.
     glGenTextures(1, &this->vga_text_texture);
     glGenTextures(1, &this->vga_char_texture);
@@ -172,8 +154,6 @@ int Display::setup()
             this->mem.data + Layout::VGA_TEXT_BUF_LOW
     ); 
    
-    glCheckError();
-
     // configure vga char buffer texture
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, this->vga_char_texture);
@@ -193,32 +173,11 @@ int Display::setup()
     ); 
     glBindTexture(GL_TEXTURE_2D, 0);
     
-    glCheckError();
-
-
     // Associate texture units with corresponding sampler
     glUniform1i(glGetUniformLocation(shader_program, "vga_text_buffer"), 0);
     glUniform1i(glGetUniformLocation(shader_program, "vga_char_buffer"), 1);
 
-    //size_t size = Layout::VGA_CHAR_BUF_SIZE + Layout::VGA_TEXT_BUF_SIZE;
-    //glGenBuffers(1, &this->vga_buffers_ubo);
-    //glBindBuffer(GL_UNIFORM_BUFFER, this->vga_buffers_ubo);
-    //glBufferData(GL_UNIFORM_BUFFER, size, nullptr, GL_STATIC_DRAW); // TODO consider GL_DYNAMIC_DRAW
-    //glBindBuffer(GL_UNIFORM_BUFFER, 0);
-    //glBindBufferRange(GL_UNIFORM_BUFFER, 0, this->vga_buffers_ubo, 0, size);
-
-    //// fill text buffer
-    //glBindBuffer(GL_UNIFORM_BUFFER, vga_buffers_ubo);
-    //glBufferSubData(GL_UNIFORM_BUFFER, 0, Layout::VGA_TEXT_BUF_SIZE, this->mem.data + 
-    //        Layout::VGA_TEXT_BUF_LOW);
-    //glBindBuffer(GL_UNIFORM_BUFFER, 0);
-    //
-    //// fill char buffer
-    //glBindBuffer(GL_UNIFORM_BUFFER, vga_buffers_ubo);
-    //glBufferSubData(GL_UNIFORM_BUFFER, Layout::VGA_TEXT_BUF_SIZE, Layout::VGA_CHAR_BUF_SIZE, 
-    //        this->mem.data + Layout::VGA_CHAR_BUF_LOW);
-    //glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
+    glCheckError();
     return 0;
 }
 

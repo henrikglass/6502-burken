@@ -33,15 +33,16 @@ int main()
     // load vga text buffer with garbage
     for (int i = Layout::VGA_TEXT_BUF_LOW; i <= Layout::VGA_TEXT_BUF_HIGH; i++) {
         if (i % 2 == 0) {
-            mem[i] = (i/2) % 0xFF;
-        }/* else if (i < Layout::VGA_TEXT_BUF_LOW + 20) {
-            mem[i] = 0xA0;
-        }*/ else {
-            int temp = i % 160;
+            mem[i] = (i/2) % 0x80;
+        } else if ((i / (5*160)) % 2 == 0) {
+            int temp = (i-2) % 160;
             temp /= 10;
-            mem[i] = (temp << 4) + (0b1111);
+            mem[i] = (temp << 4) + (0b0000);
             //mem[i] = 0x0A; // bg color index: 0b0000, fg color index: 0b1111
-
+        } else { // on odd rows swap fg and bg colors
+            int temp = (i-2) % 160;
+            temp /= 10;
+            mem[i] = (0b0000 << 4) + (temp);
         }
 
     }

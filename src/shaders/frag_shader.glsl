@@ -3,6 +3,15 @@ R""(
 #extension GL_ARB_arrays_of_arrays: enable
 #extension GL_ARB_shading_language_420pack: enable
 
+
+/*
+ * Various constants (TODO uniforms?) describing the size and layout of 
+ * things. To make the math work out, it's important that these values 
+ * are reasonably chosen.
+ * 
+ * E.g. VIEWPORT_WIDTH should be a multiple of CHAR_SIZE * TEXT_COLS 
+ * (640, 1280, 2560, etc.)
+ */
 const uint CHAR_SIZE       =    8u;
 const uint CHARSET_SIZE    =  128u;
 const uint VIEWPORT_WIDTH  = 1280u;
@@ -10,8 +19,17 @@ const uint VIEWPORT_HEIGHT =  800u;
 const uint TEXT_COLS       =   80u;
 const uint TEXT_ROWS       =   25u;
 
+/*
+ * The size of a tile in viewport pixels
+ */
 const uint TILE_WIDTH_IN_PIXELS  = VIEWPORT_WIDTH / TEXT_COLS;
 const uint TILE_HEIGHT_IN_PIXELS = VIEWPORT_HEIGHT / TEXT_ROWS;
+
+/*
+ * The ratio of viewport pixels to "char pixels".
+ */
+const uint PIXEL_RATIO_X = VIEWPORT_WIDTH / (CHAR_SIZE*TEXT_COLS);
+const uint PIXEL_RATIO_Y = VIEWPORT_HEIGHT / (CHAR_SIZE*TEXT_ROWS);
 
 /*
  * Color palette is based on "NA16" with some changes.
@@ -44,18 +62,10 @@ uniform usampler2D vga_char_buffer;
 
 /*
  * Sample the VGA text buffer.
- *
- * @char_code   The char code
- * @x           The x offset inside a tile. Valid range: [0,7]
- * @y           The y offset inside a tile. Valid range: [0,7]
  */
 uvec4 sample_tile(uint x, uint y) 
 {
-    return texture(
-            vga_text_buffer,
-            vec2(float(x) / float(TEXT_COLS), float(25u - y) / float(TEXT_ROWS)) +
-            vec2(0.5f / float(TEXT_COLS), 0.5f / float(TEXT_ROWS))
-    );
+    return texelFetch(vga_text_buffer, ivec2(x, y), 0);
 }
 
 /*
@@ -67,35 +77,19 @@ uvec4 sample_tile(uint x, uint y)
  */
 uint sample_char(uint char_code, uint x, uint y)
 {
-    x = TILE_WIDTH_IN_PIXELS - x; // flip horizontally 
-    uint row = texture(
-            vga_char_buffer,
-            vec2(float(y) / float(TILE_HEIGHT_IN_PIXELS), float(char_code) / float(CHARSET_SIZE))// +
-            //vec2(0.5f / float(CHAR_SIZE), 0.5f / float(CHARSET_SIZE))
-    ).r;
-    return (row >> ((x * 8u) / TILE_WIDTH_IN_PIXELS)) & 1u;
+    x = CHAR_SIZE - x; // flip horizontally 
+    uint row = texelFetch(vga_char_buffer, ivec2(y, char_code), 0).r;
+    return (row >> x) & 1u;
 }
 
 void main() 
 {
-    //uint xi = uint(VIEWPORT_WIDTH) - uint(gl_FragCoord.x);
-    //uint yi = uint(VIEWPORT_HEIGHT) - uint(gl_FragCoord.y);
-    //uint tile_width  = uint(VIEWPORT_WIDTH  / float(TEXT_COLS));
-    //uint tile_height = uint(VIEWPORT_HEIGHT / float(TEXT_ROWS));
-    //float x = gl_FragCoord.x / VIEWPORT_WIDTH;
-    //float y = gl_FragCoord.y / VIEWPORT_HEIGHT;
-    //uint tile_idx_x = uint(x * TEXT_COLS);
-    //uint tile_idx_y = uint(y * TEXT_ROWS);
-    //uint char_idx_x = uint(((xi % tile_width) / float(tile_width)) * 8.0f);
-    //uint char_idx_y = uint(((yi % tile_height) / float(tile_height)) * 8.0f);
-
-
     uint pixel_x = uint(gl_FragCoord.x);
     uint pixel_y = VIEWPORT_HEIGHT - uint(gl_FragCoord.y); // swap y axis
     uint tile_x  = pixel_x / TILE_WIDTH_IN_PIXELS;
     uint tile_y  = pixel_y / TILE_HEIGHT_IN_PIXELS;
-    uint char_x  = pixel_x % TILE_WIDTH_IN_PIXELS;
-    uint char_y  = pixel_y % TILE_HEIGHT_IN_PIXELS;
+    uint char_x  = (pixel_x % TILE_WIDTH_IN_PIXELS) / PIXEL_RATIO_X;
+    uint char_y  = (pixel_y % TILE_HEIGHT_IN_PIXELS) / PIXEL_RATIO_Y;
 
     uvec4 tile      = sample_tile(tile_x, tile_y);
     uint char_code  = tile.r;
@@ -103,14 +97,10 @@ void main()
     vec4 bg_color   = palette[(tile.g >> 4u) & 0x0Fu];
     uint pixel      = sample_char(char_code, char_x, char_y);
     
-    //frag_color = /*bg_color +*/ vec4(float(char_y) / 8.0f, 0.0f, float(char_x) / 8.0f, 1.0f);
-    frag_color = palette[0];//vec4(0.0f,0.0f,0.0f,1.0f);
-    
+    frag_color = bg_color;
+   
     if (pixel != 0u)
-        frag_color = bg_color;
-
-//    if (char_x == 0u || char_y == 0u)
-//        frag_color = vec4(1.0f,1.0f,1.0f,1.0f);
+        frag_color = fg_color;
     
 }
 

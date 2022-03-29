@@ -12,4 +12,4 @@
 12. Correct timing (1 MHz)
 13. Threadsafe memory
 14. Proper implementation of IRQ/reset/NMI (push registers onto stack)
-15. 
+15. renderbuffer instead of frambuffer? 

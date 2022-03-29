@@ -7,15 +7,15 @@ R""(
 /*
  * Various constants (TODO uniforms?) describing the size and layout of 
  * things. To make the math work out, it's important that these values 
- * are reasonably chosen.
+ * are reasonably chosen. Although, 640x200 should be enough.
  * 
  * E.g. VIEWPORT_WIDTH should be a multiple of CHAR_SIZE * TEXT_COLS 
  * (640, 1280, 2560, etc.)
  */
 const uint CHAR_SIZE       =    8u;
 const uint CHARSET_SIZE    =  128u;
-const uint VIEWPORT_WIDTH  = 1280u;
-const uint VIEWPORT_HEIGHT =  800u;
+const uint VIEWPORT_WIDTH  =  640u;
+const uint VIEWPORT_HEIGHT =  200u;
 const uint TEXT_COLS       =   80u;
 const uint TEXT_ROWS       =   25u;
 
@@ -77,7 +77,7 @@ uvec4 sample_tile(uint x, uint y)
  */
 uint sample_char(uint char_code, uint x, uint y)
 {
-    x = CHAR_SIZE - x; // flip horizontally 
+    x = (CHAR_SIZE - 1u) - x; // flip horizontally 
     uint row = texelFetch(vga_char_buffer, ivec2(y, char_code), 0).r;
     return (row >> x) & 1u;
 }

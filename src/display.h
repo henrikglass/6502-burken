@@ -33,12 +33,24 @@ private:
      * by the constructor.
      */
     int setup();
+
+    void setup_ntsc_encode_program();
+    
+    void setup_ntsc_decode_program();
+
+    void setup_frambuffer_gen_program();
     
     /*
      * Returns 1 if program should terminate (i.e. user closes the window).
      */
     int loop();
+    
+    void use_ntsc_encode_program();
 
+    void use_ntsc_decode_program();
+
+    void use_frambuffer_gen_program();
+    
     /*
      * We include this for monitoring with ImGui. Const because no cheating 
      * allowed.
@@ -55,24 +67,44 @@ private:
     const unsigned int VGA_TEXT_ROWS    = 25;
     const unsigned int VGA_CHAR_SIZE    =  8;
     const unsigned int VGA_N_CHARS      = Layout::VGA_CHAR_BUF_SIZE / VGA_CHAR_SIZE;
+    const unsigned int RESOLUTION_X     = VGA_TEXT_COLUMNS * VGA_CHAR_SIZE;
+    const unsigned int RESOLUTION_Y     = VGA_TEXT_ROWS * VGA_CHAR_SIZE;
 
     /*
      * OpenGL and GLFW related stuff
      */
-    const char *vert_shader_source =
-        #include "shaders/vert_shader.glsl"
+    const char *pass_through_vert_shader_source =
+        #include "shaders/pass_through.vert"
     ;
-    const char *frag_shader_source =
-        #include "shaders/frag_shader.glsl"
+    const char *framebuffer_gen_frag_shader_source =
+        #include "shaders/framebuffer_gen.frag"
+    ;
+    const char *ntsc_encode_frag_shader_source =
+        #include "shaders/ntsc_encode.frag"
+    ;
+    const char *ntsc_decode_frag_shader_source =
+        #include "shaders/ntsc_decode.frag"
     ;
 
     GLFWwindow *window;
 
+    // programs
+    unsigned int framebuffer_gen_program;
+    unsigned int ntsc_encode_program;
+    unsigned int ntsc_decode_program;
+
+    // fbos
+    unsigned int framebuffer_gen_fbo;
+    
+    // vbos
     unsigned int full_screen_tri_vbo; 
-    unsigned int vga_text_ubo;
-    unsigned int vga_char_ubo;
+
+    //textures
     unsigned int vga_text_texture;
     unsigned int vga_char_texture;
+    unsigned int framebuffer_gen_fbo_color;
+
+    // vaos
     unsigned int VAO;
 
     

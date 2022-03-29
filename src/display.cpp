@@ -1,89 +1,22 @@
 #include "display.h"
+#include "util.h"
 
 #include <iostream>
 #include <thread>
 #include <chrono>
 
-GLenum glCheckError_(const char *file, int line)
-{
-    GLenum errorCode;
-    while ((errorCode = glGetError()) != GL_NO_ERROR)
-    {
-        std::string error;
-        switch (errorCode)
-        {
-            case GL_INVALID_ENUM:                  error = "INVALID_ENUM"; break;
-            case GL_INVALID_VALUE:                 error = "INVALID_VALUE"; break;
-            case GL_INVALID_OPERATION:             error = "INVALID_OPERATION"; break;
-            case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
-            case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
-            case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
-            case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
-        }
-        std::cout << error << " | " << file << " (" << line << ")" << std::endl;
-    }
-    return errorCode;
-}
-#define glCheckError() glCheckError_(__FILE__, __LINE__) 
-
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    // make sure the viewport matches the new window dimensions; note that width and 
-    // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
 }
 
-Display::~Display() {
-    glfwTerminate();
-} 
-
-int Display::setup() 
+unsigned int make_shader_program(const char *vert_shader_src, const char *frag_shader_src)
 {
-    // glfw setup. Apparently vmware is only good enough for version 3.3
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
-    //GLFWmonitor *monitor = glfwGetPrimaryMonitor(); 
-    //const GLFWvidmode *mode = glfwGetVideoMode(monitor);
- 
-    //glfwWindowHint(GLFW_RED_BITS,     mode->redBits);
-    //glfwWindowHint(GLFW_GREEN_BITS,   mode->greenBits);
-    //glfwWindowHint(GLFW_BLUE_BITS,    mode->blueBits);
-    //glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-    
-    this->window = glfwCreateWindow(1280, 800, "6502-burken", nullptr, nullptr);
-    if (window == nullptr)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
-    // glad
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }
-
-    glViewport(0,0,1280,800);
-    
-    // compile shaders and link
     unsigned int vert_shader = glCreateShader(GL_VERTEX_SHADER);
     unsigned int frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
     unsigned int shader_program = glCreateProgram();
-    glShaderSource(vert_shader, 1, &(this->vert_shader_source), nullptr);
-    glShaderSource(frag_shader, 1, &(this->frag_shader_source), nullptr);
+    glShaderSource(vert_shader, 1, &vert_shader_src, nullptr);
+    glShaderSource(frag_shader, 1, &frag_shader_src, nullptr);
     glCompileShader(vert_shader);
     glCompileShader(frag_shader);
     glAttachShader(shader_program, vert_shader);
@@ -104,33 +37,23 @@ int Display::setup()
         std::cout << "Fragment shader error:\n" << log << std::endl;
         glGetProgramInfoLog(shader_program, 512, nullptr, log);
         std::cout << "Linking error:\n" << log << std::endl;
-        return -1;
+        exit(1); // TODO handle these in a better way
     }
 
     // delete shaders
     glDeleteShader(vert_shader);
     glDeleteShader(frag_shader);
-    
-    glUseProgram(shader_program);
-    
-    // misc. enables, disables, & other settings
-    glClearColor(0.4f, 0.2f, 0.2f, 1.0f);
 
-    // setup VAO
-    glGenVertexArrays(1, &this->VAO);
-    glBindVertexArray(this->VAO);
+    diva_error_check();
 
-    // setup full screen static quad 
-    glGenBuffers(1, &(this->full_screen_tri_vbo));
-    glBindBuffer(GL_ARRAY_BUFFER, this->full_screen_tri_vbo);
-    glm::vec3 vertices[] = {
-        glm::vec3(-1.0f, -1.0f, 0.0f),
-        glm::vec3( 3.0f, -1.0f, 0.0f),
-        glm::vec3(-1.0f,  3.0f, 0.0f)
-    };
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(glm::vec3), nullptr);
-    glEnableVertexAttribArray(0);
+    return shader_program;
+}
+
+#include <vector>
+
+void Display::setup_frambuffer_gen_program()
+{
+    glUseProgram(this->framebuffer_gen_program);
 
     // setup textures to hold vga text buffer and char buffer.
     glGenTextures(1, &this->vga_text_texture);
@@ -174,10 +97,140 @@ int Display::setup()
     glBindTexture(GL_TEXTURE_2D, 0);
     
     // Associate texture units with corresponding sampler
-    glUniform1i(glGetUniformLocation(shader_program, "vga_text_buffer"), 0);
-    glUniform1i(glGetUniformLocation(shader_program, "vga_char_buffer"), 1);
+    glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_text_buffer"), 0);
+    glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_char_buffer"), 1);
+    
+    // setup framebuffer for rendering to
+    glGenFramebuffers(1, &this->framebuffer_gen_fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, this->framebuffer_gen_fbo);
 
-    glCheckError();
+    //std::vector<unsigned char> dadd;
+    //for (int i = 0; i < 640*200; i++) {
+    //    if (i % 2 == 0) {
+    //        dadd.push_back(255);
+    //        dadd.push_back(255);
+    //        dadd.push_back(255);
+    //        dadd.push_back(255);
+    //    } else {
+    //        dadd.push_back(255);
+    //        dadd.push_back(0);
+    //        dadd.push_back(0);
+    //        dadd.push_back(255);
+    //    }
+    //}
+
+
+    glGenTextures(1, &this->framebuffer_gen_fbo_color);
+    glBindTexture(GL_TEXTURE_2D, this->framebuffer_gen_fbo_color);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, RESOLUTION_X, RESOLUTION_Y, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->framebuffer_gen_fbo_color, 0);
+
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+	    std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+        exit(1);
+    }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    diva_error_check();
+}
+
+void Display::setup_ntsc_encode_program()
+{
+    glUseProgram(this->ntsc_encode_program);
+    glUniform1i(glGetUniformLocation(this->ntsc_encode_program, "frame_buffer_texture"), 0);
+    
+    diva_error_check();
+}
+
+
+void Display::setup_ntsc_decode_program()
+{
+    glUseProgram(this->ntsc_decode_program);
+    glUniform1i(glGetUniformLocation(this->ntsc_decode_program, "frame_buffer_texture"), 0);
+    
+    diva_error_check();
+}
+
+Display::~Display() {
+    glfwTerminate();
+} 
+
+int Display::setup() 
+{
+    // glfw setup. Apparently vmware is only good enough for version 3.3
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
+    this->window = glfwCreateWindow(1280, 600, "6502-burken", nullptr, nullptr);
+    if (window == nullptr)
+    {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    // glad
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
+
+    glViewport(0, 0, 1280, 600);
+   
+    this->framebuffer_gen_program = make_shader_program(
+        this->pass_through_vert_shader_source,
+        this->framebuffer_gen_frag_shader_source
+    );
+    
+    this->ntsc_encode_program = make_shader_program(
+        this->pass_through_vert_shader_source,
+        this->ntsc_encode_frag_shader_source
+    );
+    
+    this->ntsc_decode_program = make_shader_program(
+        this->pass_through_vert_shader_source,
+        this->ntsc_decode_frag_shader_source
+    );
+
+    // misc. enables, disables, & other settings
+    glClearColor(0.7f, 0.0f, 0.0f, 1.0f);
+    glDisable(GL_DEPTH_TEST);
+
+    // setup VAO
+    glGenVertexArrays(1, &this->VAO);
+    glBindVertexArray(this->VAO);
+
+    // setup full screen static quad 
+    glGenBuffers(1, &(this->full_screen_tri_vbo));
+    glBindBuffer(GL_ARRAY_BUFFER, this->full_screen_tri_vbo);
+    glm::vec3 vertices[] = {
+        glm::vec3(-1.0f, -1.0f, 0.0f),
+        glm::vec3( 3.0f, -1.0f, 0.0f),
+        glm::vec3(-1.0f,  3.0f, 0.0f)
+    };
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(glm::vec3), nullptr);
+    glEnableVertexAttribArray(0);
+
+    this->setup_frambuffer_gen_program();
+    this->setup_ntsc_encode_program();
+    this->setup_ntsc_decode_program();
+
+    diva_error_check();
+    
     return 0;
 }
 
@@ -194,22 +247,65 @@ int Display::loop()
     glfwSwapBuffers(this->window);
     glfwPollEvents();
 
+    glBindVertexArray(this->VAO);
+    
     // ---------------- redraw ----------------
 
-    glClear(GL_COLOR_BUFFER_BIT); 
+    // first pass: generate framebuffer
+    glBindFramebuffer(GL_FRAMEBUFFER, this->framebuffer_gen_fbo);
+    this->use_frambuffer_gen_program();
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    
+    // second pass: encode ntsc color
+    this->use_ntsc_encode_program();
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    
+    // second pass: decode ntsc color
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    this->use_ntsc_decode_program();
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 
-    // Not really necessary, but good practice to rebind stuff.
+    std::cout << "Hello" << frame++ << std::endl;
+    return 0;
+}
+    
+void Display::use_frambuffer_gen_program()
+{
+    glUseProgram(this->framebuffer_gen_program);
+    glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_text_buffer"), 0);
+    glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_char_buffer"), 1);
+    
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->vga_text_texture);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, this->vga_char_texture);
-    glBindVertexArray(this->VAO);
     
+    glClearColor(0.7f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT); 
+}
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+void Display::use_ntsc_encode_program() 
+{
+    glUseProgram(this->ntsc_encode_program);
+    glUniform1i(glGetUniformLocation(this->ntsc_encode_program, "frame_buffer_texture"), 0);
     
-    std::cout << "Hello" << frame++ << std::endl;
-    return 0;
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, this->framebuffer_gen_fbo_color);
+    
+    glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT); 
+}
+
+void Display::use_ntsc_decode_program() 
+{
+    glUseProgram(this->ntsc_decode_program);
+    glUniform1i(glGetUniformLocation(this->ntsc_decode_program, "frame_buffer_texture"), 0);
+    
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, this->framebuffer_gen_fbo_color);
+    
+    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT); 
 }
 
 std::thread Display::start() {

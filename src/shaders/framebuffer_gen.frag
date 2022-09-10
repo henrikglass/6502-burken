@@ -16,6 +16,8 @@ const uint CHAR_SIZE       =    8u;
 const uint CHARSET_SIZE    =  128u;
 const uint VIEWPORT_WIDTH  =  640u;
 const uint VIEWPORT_HEIGHT =  200u;
+const uint LEFT_MARGIN     =   10u;
+const uint BOTTOM_MARGIN   =    5u;
 const uint TEXT_COLS       =   80u;
 const uint TEXT_ROWS       =   25u;
 
@@ -84,8 +86,8 @@ uint sample_char(uint char_code, uint x, uint y)
 
 void main() 
 {
-    uint pixel_x = uint(gl_FragCoord.x);
-    uint pixel_y = VIEWPORT_HEIGHT - uint(gl_FragCoord.y); // swap y axis
+    uint pixel_x = uint(gl_FragCoord.x) - LEFT_MARGIN;
+    uint pixel_y = VIEWPORT_HEIGHT - (uint(gl_FragCoord.y) - BOTTOM_MARGIN) - 1u; // swap y axis
     uint tile_x  = pixel_x / TILE_WIDTH_IN_PIXELS;
     uint tile_y  = pixel_y / TILE_HEIGHT_IN_PIXELS;
     uint char_x  = (pixel_x % TILE_WIDTH_IN_PIXELS) / PIXEL_RATIO_X;

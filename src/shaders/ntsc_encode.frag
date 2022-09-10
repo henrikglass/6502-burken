@@ -5,13 +5,15 @@ R""(
 
 // Code mostly taken from https://www.shadertoy.com/view/llyGzR
 
-const float VIEWPORT_WIDTH = 1280.0f;
-const float VIEWPORT_HEIGHT = 600.0f;
+const float VIEWPORT_WIDTH = 1320.0f;
+const float VIEWPORT_HEIGHT = 820.0f;
 
 const float PI = 3.1415926535f;
 const float TAU = 2.0f * PI;
 
 const float F_COL = 1.0f / 4.0f;
+
+in vec2 uv;
 
 out vec4 frag_color;
 
@@ -22,6 +24,7 @@ vec3 get_pixel_rgb()
     float x = gl_FragCoord.x / VIEWPORT_WIDTH;
     float y = gl_FragCoord.y / VIEWPORT_HEIGHT;
     return texture(frame_buffer_texture, vec2(x, y)).xyz;
+    //return texture(frame_buffer_texture, uv).xyz;
 }
 
 vec3 rgb_to_yiq(vec3 rgb)
@@ -50,7 +53,7 @@ void main()
     vec2 pixel_osc = oscillator(fcol, fs, n);
     float sig      = pixel_yiq.x + dot(pixel_osc, pixel_yiq.yz);
 
-    frag_color = vec4(sig, 0.0f, 0.0f, 0.0f);
+    frag_color = vec4(sig, 0.0f, 0.0f, 1.0f);
 }
 
 )""

@@ -1,6 +1,9 @@
 # project
 TARGET 	= 6502-burken
 
+# make flags
+MAKEFLAGS += --jobs $(shell nproc)
+
 # compiler
 CC 		= g++
 

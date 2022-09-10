@@ -56,12 +56,15 @@ int main()
 
     // DEBUG
     // print memory contents
-    //for(int i = Layout::VGA_TEXT_BUF_LOW; i <= Layout::VGA_TEXT_BUF_HIGH; i++) {
-    //    printf("0x%04X    0x%02X\n", i, cpu.mem[i]);
+    for(int i = Layout::VGA_TEXT_BUF_LOW; i <= Layout::VGA_TEXT_BUF_HIGH; i++) {
+        printf("0x%04X    0x%02X\n", i, cpu.mem[i]);
+    }
 
-    //for(int i = Layout::VGA_CHAR_BUF_LOW; i <= Layout::VGA_CHAR_BUF_HIGH; i++) {
-    //    printf("0x%04X    0x%02X\n", i, cpu.mem[i]);
-    //}
+    printf("\n");
+
+    for(int i = Layout::VGA_CHAR_BUF_LOW; i <= Layout::VGA_CHAR_BUF_HIGH; i++) {
+        printf("0x%04X    0x%02X\n", i, cpu.mem[i]);
+    }
     // print memory contents
     //for(int i = 0x8000; i < 0x802A; i++) {
     //    printf("0x%04X    0x%02X -- %s\n", i, cpu.mem[i], instruction_table[cpu.mem[i]].mnemonic.c_str());

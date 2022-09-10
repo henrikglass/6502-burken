@@ -2,7 +2,7 @@
 #include "util.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "stb/stb_image.h"
 
 #include <iostream>
 #include <thread>
@@ -10,8 +10,10 @@
 #include <algorithm>
 
 // default screen size
-unsigned int display_width  = 1320;
-unsigned int display_height =  820;
+//unsigned int display_width  = 1320;
+//unsigned int display_height =  820;
+unsigned int display_width  = 1920;
+unsigned int display_height = 1080;
 
 std::chrono::time_point<std::chrono::high_resolution_clock> timer_start;
 float timer_current;
@@ -114,24 +116,8 @@ void Display::setup_frambuffer_gen_program()
     glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_char_buffer"), 1);
     
     // setup framebuffer for rendering to
-    glGenFramebuffers(1, &this->framebuffer_gen_fbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, this->framebuffer_gen_fbo);
-
-    //std::vector<unsigned char> dadd;
-    //for (int i = 0; i < 640*200; i++) {
-    //    if (i % 2 == 0) {
-    //        dadd.push_back(255);
-    //        dadd.push_back(255);
-    //        dadd.push_back(255);
-    //        dadd.push_back(255);
-    //    } else {
-    //        dadd.push_back(255);
-    //        dadd.push_back(0);
-    //        dadd.push_back(0);
-    //        dadd.push_back(255);
-    //    }
-    //}
-
+    glGenFramebuffers(1, &this->offscreen_fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, this->offscreen_fbo);
 
     glGenTextures(1, &this->framebuffer_tex_native);
     glGenTextures(1, &this->framebuffer_tex_ntsc_active);
@@ -299,6 +285,8 @@ void Display::use_post_process_program()
 }
 
 Display::~Display() {
+    if (this->imgui_layer != nullptr)
+        imgui_layer->shutdown();
     glfwTerminate();
 } 
 
@@ -306,6 +294,7 @@ int Display::setup()
 {
     // glfw setup. Apparently vmware is only good enough for version 3.3
     glfwInit();
+    const char *glsl_version = "#version 330 core";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -324,6 +313,8 @@ int Display::setup()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+    glfwSwapInterval(1); // vsync
+
     // glad
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -332,6 +323,11 @@ int Display::setup()
     }
 
     glViewport(0, 0, display_width, display_height);
+
+    // setup ImguiLayer (maybe)
+    if (this->imgui_layer != nullptr) {
+        this->imgui_layer->setup(this->window, glsl_version);
+    }
    
     this->framebuffer_gen_program = make_shader_program(
         this->pass_through_vert_shader_source,
@@ -410,30 +406,32 @@ int Display::loop()
     // ---------------- redraw ----------------
 
     // --- BIND "WORKING" FRAMEBUFFER ---
-    glBindFramebuffer(GL_FRAMEBUFFER, this->framebuffer_gen_fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, this->offscreen_fbo);
 
-    // first pass: generate the "native framebuffer" image
+    // FIRST PASS: generate the "native framebuffer" image
     this->use_frambuffer_gen_program();
     glDrawArrays(GL_TRIANGLES, 0, 3);
     
-    // second pass: encode ntsc color
+    // SECOND PASS: encode ntsc color
     this->use_ntsc_encode_program();
     glDrawArrays(GL_TRIANGLES, 0, 3);
     
-    // third pass:  decode ntsc color (pass a)
+    // THIRD PASS:  decode ntsc color (pass a)
     this->use_ntsc_decode_pass_a_program();
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
-    // fourth pass: decode ntsc color (pass b)
+    // FOURTH PASS: decode ntsc color (pass b)
     this->use_ntsc_decode_pass_b_program();
     glDrawArrays(GL_TRIANGLES, 0, 3);
-   
-    // --- BIND DEFAULT FRAMEBUFFER ---
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    // fitfh pass: post process. Display image.
+    // FITFH PASS: post process. Display image.
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     this->use_post_process_program();
     glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    // Draw imgui layer if we have one
+    if (this->imgui_layer != nullptr)
+        this->imgui_layer->draw();
     
     // ------------ measure time --------------
     auto time_elapsed = std::chrono::high_resolution_clock::now() - timer_start;
@@ -444,7 +442,8 @@ int Display::loop()
 }
     
 
-std::thread Display::start() {
+std::thread Display::start() 
+{
     return std::thread([this](){
         // setup rendering context. Must be same thread.
         if (this->setup() != 0)
@@ -456,7 +455,7 @@ std::thread Display::start() {
         // enter render loop 
         bool should_exit = false;
         while(!should_exit) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(16)); // approx 60 fps
+            //std::this_thread::sleep_for(std::chrono::milliseconds(16)); // approx 60 fps
             should_exit = this->loop();
         }
 
@@ -464,4 +463,9 @@ std::thread Display::start() {
         // Not the most pretty solution but idc.
         exit(0);
     });
+}
+
+void Display::attach_imgui_layer(ImguiLayer *imgui_layer)
+{
+    this->imgui_layer = imgui_layer;
 }

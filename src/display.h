@@ -1,7 +1,7 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#include "m6502.h"
+#include "memory.h"
 
 // TODO maybe some of these aren't needed
 #include <glad/glad.h>
@@ -9,16 +9,27 @@
 #include <glm/glm.hpp>
 #include <thread>
 
+#include "imgui_layer.h"
+
+
 struct Vertex
 {
     glm::vec3 pos;
     glm::vec2 uv;
 };
 
-struct Display 
+/*
+ * The Display class represents a VGA text mode (sorta) video output. 
+ *
+ * This class holds the OpenGL context of the program. As such, ImguiLayer
+ * must be attached to this class to borrow the context. This is done via
+ * `attach_imgui_layer(const ImguiLayer &imgui_layer)`.
+ */
+class Display 
 {
+public:
 
-    Display(const Cpu &cpu, const Memory &mem) : cpu(cpu), mem(mem) 
+    Display(const Memory &mem) : mem(mem) 
     {
         //int err = this->setup();
         //if (err != 0)
@@ -31,6 +42,11 @@ struct Display
      * Spawn a new thread and start rendering.
      */
     std::thread start();
+
+    /*
+     * Attach an Imgui layer
+     */
+    void attach_imgui_layer(ImguiLayer *imgui_layer);
 
 private:
 
@@ -58,15 +74,16 @@ private:
     void use_post_process_program();
     
     /*
-     * We include this for monitoring with ImGui. Const because no cheating 
-     * allowed.
-     */
-    const Cpu &cpu;
-
-    /*
      * We read the VGA_* pages from memory to construct the image.
      */
     const Memory &mem;
+
+    /*
+     * We might keep a reference to an imgui_layer.
+     *
+     * TODO multiple? Decide how to implement this in the nicest way.
+     */
+    ImguiLayer *imgui_layer = nullptr;
 
     /*
      * OpenGL and GLFW related stuff
@@ -108,7 +125,7 @@ private:
     unsigned int post_process_program;
 
     // fbos
-    unsigned int framebuffer_gen_fbo;
+    unsigned int offscreen_fbo;
     
     // vbos
     unsigned int full_screen_tri_vbo; 

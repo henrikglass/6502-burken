@@ -25,7 +25,7 @@ namespace Layout
     const u16 FREE_RAM_HIGH      = 0x3FFF;
     const u16 IO_MEM_LOW         = 0x4000;
     const u16 IO_MEM_HIGH        = 0x7FFF;
-    const u16 FREE_ROM_LOW       = 0x8000;
+    const u16 FREE_ROM_LOW       = 0x8000; // Note: not actually protected from writes in any way.
     const u16 FREE_ROM_HIGH      = 0xFFF9;
     const u16 NMI_VECTOR         = 0xFFFA; // 2 bytes
     const u16 RESET_VECTOR       = 0xFFFC; // 2 bytes
@@ -53,7 +53,7 @@ struct Memory
     /*
      * Loads memory from file at specified offset.
      */
-    int load_from_file(const std::string &path, u16 offset);
+    int load_from_file(u16 dest, const std::string &path);
 };
 
 #endif

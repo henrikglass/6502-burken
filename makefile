@@ -1,3 +1,5 @@
+# TODO remake this makefile
+
 # project
 TARGET 	= 6502-burken
 
@@ -9,7 +11,14 @@ CC 		= g++
 
 # other flags
 #CFLAGS 	= -Iinclude -lglfw -O2 -std=c++2a -Wall -pedantic -march=native #-pg -g
-CFLAGS 	= -Iinclude -lglfw -pg -g -std=c++2a -Wall -pedantic
+CFLAGS 	= 	-Iinclude \
+			-Iinclude/imgui \
+			-Isrc/imgui \
+			-lglfw \
+			-pg -g \
+			-std=c++2a \
+			-Wall -pedantic
+
 DEBUG_FLAGS = -DDEBUG_PRINTS
 
 # linker
@@ -21,12 +30,17 @@ OBJDIR 	= obj
 SRCDIR 	= src
 BINDIR 	= .
 
-SOURCES		:= $(wildcard $(SRCDIR)/*.cpp)
-INCLUDES 	:= $(wildcard $(SRCDIR)/*.h)
+SOURCES		:= $(wildcard $(SRCDIR)/*.cpp) \
+			   $(wildcard $(SRCDIR)/imgui/*.cpp)
+INCLUDES 	:= $(wildcard $(SRCDIR)/*.h) \
+			   $(wildcard $(SRCDIR)/imgui/*.h)
 OBJECTS 	:= $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 # targets
 build: tags $(OBJDIR) $(TARGET)
+
+mkdbg:
+	echo $(OBJECTS)
 
 tags:
 	ctags -R src/
@@ -39,7 +53,11 @@ $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 
 $(OBJDIR):
 	mkdir $(OBJDIR)
+	mkdir $(OBJDIR)/imgui
 
 clean:
-	rm $(BINDIR)/$(TARGET) & rm $(OBJDIR)/*.o
-	rm tags
+	rm $(BINDIR)/$(TARGET) &\
+	rm $(OBJDIR)/*.o &\
+	rm $(OBJDIR)/imgui/*.o &\
+	rm tags & \
+	rmdir $(OBJDIR) \

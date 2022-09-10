@@ -25,9 +25,9 @@ u8 &Memory::operator[](u16 address)
 }
 
 /*
- * Loads memory from file at specified offset.
+ * Loads file into memory at specified offset `dest`.
  */
-int Memory::load_from_file(const std::string &path, u16 offset)
+int Memory::load_from_file(u16 dest, const std::string &path)
 {
     FILE *f = fopen(path.c_str(), "r");
 
@@ -36,8 +36,8 @@ int Memory::load_from_file(const std::string &path, u16 offset)
         return 1;
     }
 
-    u32 max_n_bytes = Layout::MEM_SIZE - offset; 
-    u32 n_read = fread(&(this->data[offset]), sizeof(u8), max_n_bytes, f);
+    u32 max_n_bytes = Layout::MEM_SIZE - dest; 
+    u32 n_read = fread(&(this->data[dest]), sizeof(u8), max_n_bytes, f);
     fclose(f);
     
     printf("%d bytes read from <%s>\n", n_read, path.c_str());

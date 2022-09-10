@@ -30,50 +30,12 @@ int main()
     if (mem.load_from_file("extra/6502burken_charset.bin", Layout::VGA_CHAR_BUF_LOW) != 0)
         return 1;
     
-    // load vga text buffer with garbage
-    for (int i = Layout::VGA_TEXT_BUF_LOW; i <= Layout::VGA_TEXT_BUF_HIGH; i++) {
-        if (i % 2 == 0) {
-            mem[i] = (i/2) % 0x80;
-        } else if ((i / (5*160)) % 2 == 0) {
-            int temp = (i-2) % 160;
-            temp /= 10;
-            mem[i] = (temp << 4) + (0b0000);
-            //mem[i] = 0x0A; // bg color index: 0b0000, fg color index: 0b1111
-        } else { // on odd rows swap fg and bg colors
-            int temp = (i-2) % 160;
-            temp /= 10;
-            mem[i] = (0b0000 << 4) + (temp);
-        }
-
-    }
-    
     // reset cpu 
     cpu.reset();
 
     // start display
     auto render_thread = display.start();
-    //auto render_thread = std::thread(display.enter_render_loop);
 
-    // DEBUG
-    // print memory contents
-    for(int i = Layout::VGA_TEXT_BUF_LOW; i <= Layout::VGA_TEXT_BUF_HIGH; i++) {
-        printf("0x%04X    0x%02X\n", i, cpu.mem[i]);
-    }
-
-    printf("\n");
-
-    for(int i = Layout::VGA_CHAR_BUF_LOW; i <= Layout::VGA_CHAR_BUF_HIGH; i++) {
-        printf("0x%04X    0x%02X\n", i, cpu.mem[i]);
-    }
-    // print memory contents
-    //for(int i = 0x8000; i < 0x802A; i++) {
-    //    printf("0x%04X    0x%02X -- %s\n", i, cpu.mem[i], instruction_table[cpu.mem[i]].mnemonic.c_str());
-    //}
-    //printf("\n");
-    //for(int i = 0xfff0; i < 0xffff; i++) {
-    //    printf("0x%04X    0x%02X -- %s\n", i, cpu.mem[i], instruction_table[cpu.mem[i]].mnemonic.c_str());
-    //}
-    //printf("\n\n\n");
     cpu.print_status();
 
     // enter infinite fetch (decode) execute loop

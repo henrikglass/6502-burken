@@ -8,7 +8,8 @@ MAKEFLAGS += --jobs $(shell nproc)
 CC 		= g++
 
 # other flags
-CFLAGS 	= -Iinclude -lglfw -O2 -std=c++2a -Wall -pedantic -march=native #-pg -g
+#CFLAGS 	= -Iinclude -lglfw -O2 -std=c++2a -Wall -pedantic -march=native #-pg -g
+CFLAGS 	= -Iinclude -lglfw -pg -g -std=c++2a -Wall -pedantic
 DEBUG_FLAGS = -DDEBUG_PRINTS
 
 # linker

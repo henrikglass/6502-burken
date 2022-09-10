@@ -57,6 +57,7 @@ const vec4 palette[16] = {
     vec4(0.549f, 0.561f, 0.682f, 1.0f),  // 0b1111
 };
 
+in vec2 uv;
 out vec4 frag_color;
 
 uniform usampler2D vga_text_buffer;

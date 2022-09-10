@@ -4,11 +4,11 @@ MASK = $2000
 
 entry:
   lda #$ff
-  sta $0501
+  sta $1601
   lda #$00
-  sta $0502
+  sta $1602
   lda #$05
-  sta $0500         ; Rembember to load control register after loading data registers
+  sta $1600         ; Rembember to load control register after loading data registers
   lda #$ff
   sta MASK
   lda #%10101010
@@ -21,7 +21,7 @@ swap:
   eor MASK
   jmp deadloop
 
-  .org $fffc        ; reset vector
+  .org $fffc        ; RESET vector
   .word entry       ; 
-  .org $fffe        ; reset vector
+  .org $fffe        ; IRQ BRK vector
   .word swap        ; 

@@ -17,3 +17,9 @@ This generates the file `a.out`. To check the contents, do:
 ```
 hexdump -C  a.out
 ```
+
+Alternatively, use the supplied `compile.sh` script like so:
+
+```
+./compile.sh program.s
+```

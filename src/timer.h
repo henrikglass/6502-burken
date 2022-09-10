@@ -19,8 +19,8 @@ struct Timer
     // access to timer registers
     u16 data_address;        // The data register sets the upper limit
                              // for counting. When count hits this value,
-                             // call it `v`, it wraps around to [0,`v`] 
-                             // and an interrupt signal is sent.
+                             // it wraps around to 0 and an interrupt 
+                             // signal is sent.
 
     u16 ctrl_address;        // The control register works like this:
                              // bit 0: active

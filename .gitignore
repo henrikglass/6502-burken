@@ -1,4 +1,5 @@
-6502-emul
+6502-burken
 *.swp
 obj/*
 .gdb_history
+tags

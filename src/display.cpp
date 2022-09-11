@@ -1,5 +1,4 @@
 #include "display.h"
-#include "util.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb/stb_image.h"
@@ -8,6 +7,30 @@
 #include <thread>
 #include <chrono>
 #include <algorithm>
+#include <vector>
+
+GLenum glCheckError_(const char *file, int line)
+{
+    GLenum errorCode;
+    while ((errorCode = glGetError()) != GL_NO_ERROR)
+    {
+        std::string error;
+        switch (errorCode)
+        {
+            case GL_INVALID_ENUM:                  error = "INVALID_ENUM"; break;
+            case GL_INVALID_VALUE:                 error = "INVALID_VALUE"; break;
+            case GL_INVALID_OPERATION:             error = "INVALID_OPERATION"; break;
+            case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
+            case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
+            case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
+            case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
+        }
+        std::cout << error << " | " << file << " (" << line << ")" << std::endl;
+    }
+    return errorCode;
+}
+#define glCheckError() glCheckError_(__FILE__, __LINE__) 
+#define diva_error_check() if(glCheckError_(__FILE__, __LINE__) != GL_NO_ERROR) exit(1)
 
 // default screen size
 //unsigned int display_width  = 1320;
@@ -64,8 +87,6 @@ unsigned int make_shader_program(const char *vert_shader_src, const char *frag_s
     return shader_program;
 }
 
-#include <vector>
-
 void Display::setup_frambuffer_gen_program()
 {
     glUseProgram(this->framebuffer_gen_program);
@@ -80,17 +101,7 @@ void Display::setup_frambuffer_gen_program()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     //glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexImage2D(
-            GL_TEXTURE_2D, 
-            0, 
-            GL_RG8UI, // GL_RG8. R --> char byte. G --> color byte.
-            VGA_TEXT_COLUMNS,
-            VGA_TEXT_ROWS, 
-            0, 
-            GL_RG_INTEGER, 
-            GL_UNSIGNED_BYTE, 
-            this->mem.data + Layout::VGA_TEXT_BUF_LOW
-    ); 
+    this->update_vga_text_buffer_texture();
    
     // configure vga char buffer texture
     glActiveTexture(GL_TEXTURE1);
@@ -98,17 +109,8 @@ void Display::setup_frambuffer_gen_program()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexImage2D(
-            GL_TEXTURE_2D, 
-            0, 
-            GL_R8UI, // GL_RG8. R --> a row in a character.
-            VGA_CHAR_SIZE,
-            VGA_N_CHARS, 
-            0, 
-            GL_RED_INTEGER, 
-            GL_UNSIGNED_BYTE, 
-            this->mem.data + Layout::VGA_CHAR_BUF_LOW
-    ); 
+    this->update_vga_char_buffer_texture();
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, 0);
     
     // Associate texture units with corresponding sampler
@@ -208,15 +210,17 @@ void Display::setup_post_process_program()
 void Display::use_frambuffer_gen_program()
 {
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->framebuffer_tex_native, 0);
-
     glUseProgram(this->framebuffer_gen_program);
     glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_text_buffer"), 0);
     glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_char_buffer"), 1);
     
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->vga_text_texture);
+    this->update_vga_text_buffer_texture();
+
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, this->vga_char_texture);
+    this->update_vga_char_buffer_texture();
     
     glClearColor(0.7f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT); 
@@ -282,6 +286,43 @@ void Display::use_post_process_program()
     
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT); 
+}
+
+void Display::update_vga_text_buffer_texture()
+{
+    // maybe only do this when this memory is changed except for every frame, 
+    // or figure out another better way.
+    glActiveTexture(GL_TEXTURE0);
+    glTexImage2D(
+            GL_TEXTURE_2D, 
+            0, 
+            GL_RG8UI, // GL_RG8. R --> char byte. G --> color byte.
+            VGA_TEXT_COLUMNS,
+            VGA_TEXT_ROWS, 
+            0, 
+            GL_RG_INTEGER, 
+            GL_UNSIGNED_BYTE, 
+            this->mem.data + Layout::VGA_TEXT_BUF_LOW
+    ); 
+}
+
+void Display::update_vga_char_buffer_texture()
+{
+    // maybe only do this when this memory is changed except for every frame, 
+    // or figure out another better way.
+    // configure vga char buffer texture
+    glActiveTexture(GL_TEXTURE1);
+    glTexImage2D(
+            GL_TEXTURE_2D, 
+            0, 
+            GL_R8UI, // GL_RG8. R --> a row in a character.
+            VGA_CHAR_SIZE,
+            VGA_N_CHARS, 
+            0, 
+            GL_RED_INTEGER, 
+            GL_UNSIGNED_BYTE, 
+            this->mem.data + Layout::VGA_CHAR_BUF_LOW
+    ); 
 }
 
 Display::~Display() {

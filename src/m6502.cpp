@@ -40,14 +40,14 @@ void Cpu::reset()
 
 void Cpu::irq() 
 {
-    printf("IRQ signal\n");
+    //printf("IRQ signal\n");
     this->PC  =  this->mem[Layout::IRQ_BRK_VECTOR];
     this->PC |= (this->mem[Layout::IRQ_BRK_VECTOR + 1]) << 8;
 }
 
 void Cpu::nmi()
 {
-    printf("NMI signal\n");
+    //printf("NMI signal\n");
     this->PC  =  this->mem[Layout::NMI_VECTOR];
     this->PC |= (this->mem[Layout::NMI_VECTOR + 1]) << 8;
 }

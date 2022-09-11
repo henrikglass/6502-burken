@@ -49,9 +49,9 @@ void Timer::step(u16 n_cycles_elapsed)
         }
     }
 
-    printf("timer>count: %d\n", this->count);
-    printf("timer>data: %d\n", data);
-    printf("timer>prescaler: %d\n", prescaler);
+    //printf("timer>count: %d\n", this->count);
+    //printf("timer>data: %d\n", data);
+    //printf("timer>prescaler: %d\n", prescaler);
 
     if (this->count < data)
         return;

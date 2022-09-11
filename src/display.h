@@ -56,22 +56,25 @@ private:
      */
     int setup();
 
+    /*
+     * Returns 1 if program should terminate (i.e. user closes the window).
+     */
+    int loop();
+
     void setup_ntsc_encode_program();
     void setup_ntsc_decode_pass_a_program();
     void setup_ntsc_decode_pass_b_program();
     void setup_frambuffer_gen_program();
     void setup_post_process_program();
-    
-    /*
-     * Returns 1 if program should terminate (i.e. user closes the window).
-     */
-    int loop();
-    
+
     void use_ntsc_encode_program();
     void use_ntsc_decode_pass_a_program();
     void use_ntsc_decode_pass_b_program();
     void use_frambuffer_gen_program();
     void use_post_process_program();
+
+    void update_vga_text_buffer_texture();
+    void update_vga_char_buffer_texture();
     
     /*
      * We read the VGA_* pages from memory to construct the image.

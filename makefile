@@ -11,6 +11,8 @@ CC 		= g++
 
 # other flags
 #CFLAGS 	= -Iinclude -lglfw -O2 -std=c++2a -Wall -pedantic -march=native #-pg -g
+
+# For debug build
 CFLAGS 	= 	-Iinclude \
 			-Iinclude/imgui \
 			-Isrc/imgui \
@@ -19,7 +21,16 @@ CFLAGS 	= 	-Iinclude \
 			-std=c++2a \
 			-Wall -pedantic
 
-DEBUG_FLAGS = -DDEBUG_PRINTS
+# For release build
+#CFLAGS 	= 	-Iinclude \
+#			-Iinclude/imgui \
+#			-Isrc/imgui \
+#			-lglfw \
+#			-O3 -march=native
+#			-std=c++2a \
+#			-Wall -pedantic
+
+DEBUG_FLAGS = #-DDEBUG_PRINTS
 
 # linker
 LINKER 	= g++

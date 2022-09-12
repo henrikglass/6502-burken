@@ -1,5 +1,3 @@
-# TODO remake this makefile
-
 # project
 TARGET 	= 6502-burken
 
@@ -9,8 +7,16 @@ MAKEFLAGS += --jobs $(shell nproc)
 # compiler
 CC 		= g++
 
-# other flags
-#CFLAGS 	= -Iinclude -lglfw -O2 -std=c++2a -Wall -pedantic -march=native #-pg -g
+# SUBPROJ_SRCDIRS returns "src/ src/imgui/ ..." etc.
+SUBPROJ_SRCDIRS = $(sort $(dir $(wildcard $(SRCDIR)/*/)))
+SUBPROJ_OBJDIRS = $(subst $(SRCDIR), $(OBJDIR), $(SUBPROJ_SRCDIRS))
+SUBPROJ_SRCDIRS_INCLUDE = $(patsubst %, -I%, $(SUBPROJ_SRCDIRS))
+SUBPROJ_OBJDIRS_INCLUDE = $(patsubst %, -aO%, $(SUBPROJ_OBJDIRS))
+
+SOURCES := $(wildcard $(SRCDIR)/*.cpp)   \
+			$(wildcard $(SRCDIR)/*/*.cpp)
+
+OBJECTS := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 # For debug build
 CFLAGS 	= 	-Iinclude \
@@ -50,9 +56,6 @@ OBJECTS 	:= $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 # targets
 build: tags $(OBJDIR) $(TARGET)
 
-mkdbg:
-	echo $(OBJECTS)
-
 tags:
 	ctags -R src/
 
@@ -68,7 +71,6 @@ $(OBJDIR):
 
 clean:
 	rm $(BINDIR)/$(TARGET) &\
-	rm $(OBJDIR)/*.o &\
-	rm $(OBJDIR)/imgui/*.o &\
+	rm $(OBJECTS)&\
 	rm tags & \
 	rmdir $(OBJDIR) \

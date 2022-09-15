@@ -1,18 +1,10 @@
-1.  Move memory layout constants to its own header
-2.  display functionality
-3.  "cassette" loading
-4.  timers + interrupts
-5.  implement test all instructions
-6.  check #cycles are correct for all instructions
-7.  check #cycles for branch instructions and instructions using abs,X and abs,Y 
-8.  CPU register monitoring using imgui
-9.  Audio (aplay?)
-10. Is "data pointer" used when it should be?
-11. Rename "timer data" to something more descriptive
-12. Correct timing (1 MHz)
-13. Threadsafe memory
-14. Proper implementation of IRQ/reset/NMI (push registers onto stack)
-15. renderbuffer instead of frambuffer? 
-16. Implement cpu reset/irqs properly.
-17. clock program
-18. invalid timer data shouldn't crash program... (floating point error)
+fps counter
+implement test all instructions
+Audio device
+Is "data pointer" used when it should be?
+imgui disassembler
+Proper implementation of IRQ/reset/NMI (push registers onto stack)
+Proper implementation of BRK
+clock program
+invalid timer data shouldn't crash program... (floating point error)
+Maybe getting a segfault on every Ctrl-C isn't good...

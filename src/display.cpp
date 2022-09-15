@@ -457,11 +457,11 @@ int Display::loop()
     this->use_ntsc_encode_program();
     glDrawArrays(GL_TRIANGLES, 0, 3);
     
-    // THIRD PASS:  decode ntsc color (pass a)
+    // THIRD PASS:  decode ntsc color (part 1)
     this->use_ntsc_decode_pass_a_program();
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
-    // FOURTH PASS: decode ntsc color (pass b)
+    // FOURTH PASS: decode ntsc color (part 2)
     this->use_ntsc_decode_pass_b_program();
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -486,6 +486,13 @@ int Display::loop()
 std::thread Display::start() 
 {
     return std::thread([this](){
+
+        using std::chrono::high_resolution_clock;
+        using std::chrono::duration_cast;
+        using std::chrono::duration;
+        using std::chrono::milliseconds;
+        auto t_start = high_resolution_clock::now();
+
         // setup rendering context. Must be same thread.
         if (this->setup() != 0)
             exit(1);
@@ -497,7 +504,10 @@ std::thread Display::start()
         bool should_exit = false;
         while(!should_exit) {
             //std::this_thread::sleep_for(std::chrono::milliseconds(16)); // approx 60 fps
+            double t_start = glfwGetTime();
             should_exit = this->loop();
+            double t_end = glfwGetTime();
+            this->imgui_layer->info->frames_per_second = 1.0f / (t_end - t_start);
         }
 
         // terminate entire program on window close.

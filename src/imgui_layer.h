@@ -22,7 +22,7 @@ struct ImguiLayerInfo
     bool turbo_mode                  = false;
     float requested_clock_speed      = 10000.0f; // Hz
     float measured_clock_speed       = 0.0f;
-    float frame_time; // ms
+    float frames_per_second          = 0.0f; 
 };
 
 class ImguiLayer
@@ -32,10 +32,10 @@ public:
     void setup(GLFWwindow *window, const char *glsl_version) const;
     void draw();
     void shutdown() const;
+    ImguiLayerInfo *info;
 private:
     const Cpu &cpu;
     const Memory &mem;
-    ImguiLayerInfo *info;
 
     void draw_main_window() const;
 };

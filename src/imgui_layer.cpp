@@ -8,6 +8,8 @@
 
 static MemoryEditor mem_edit;
 
+static u16 last_frame_pc;
+
 void show_freq(float freq)
 {
     ImGui::SameLine();
@@ -22,102 +24,118 @@ void show_freq(float freq)
     }
 }
 
+void show_cpu_stats(const Cpu *cpu)
+{
+    ImGui::Separator();
+    ImGui::Text("CPU status:\n");
+    ImGui::Text("ACC: 0x%02X\tX: 0x%02X\tY: 0x%02X", 
+            cpu->ACC, 
+            cpu->X, 
+            cpu->Y
+    );
+    ImGui::Text("SP:  0x%02X", cpu->SP);
+    ImGui::Text("PC:  0x%02X", cpu->PC);
+    ImGui::Text("CARRY (C):    %d    ZERO (Z):    %d    IRQB (I):        %d    DECIMAL (D):    %d", 
+            (bool)(cpu->SR & (1 << BIT_C)),
+            (bool)(cpu->SR & (1 << BIT_Z)),
+            (bool)(cpu->SR & (1 << BIT_I)),
+            (bool)(cpu->SR & (1 << BIT_D))
+    );
+    ImGui::Text("BRK (B):      %d    UNUSED:      %d    OVERFLOW (V):    %d    NEGATIVE (N):   %d", 
+            (bool)(cpu->SR & (1 << BIT_B)),
+            (bool)(cpu->SR & (1 << BIT_UNUSED)),
+            (bool)(cpu->SR & (1 << BIT_V)),
+            (bool)(cpu->SR & (1 << BIT_N))
+    );
+}
+
+void show_simulation_control(ImguiLayerInfo *info)
+{
+    ImGui::Separator();
+    ImGui::Text("Simulation control:\n");
+    if (ImGui::Button(info->execution_paused ? "Resume" : "Pause")) {
+        info->execution_paused = !info->execution_paused;
+        info->changed = true;
+    }
+    ImGui::SameLine();
+
+    if (ImGui::Button("Step")) {
+        info->step_execution = true;
+        info->changed = true;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button((info->follow_pc_on_step) ? "Follow PC on step: ON" : "Follow PC on step: OFF")) {
+        info->follow_pc_on_step = !info->follow_pc_on_step;
+        info->changed = true;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset CPU")) {
+        info->reset_cpu = true;
+        info->changed = true;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button((info->turbo_mode) ? "Turbo mode: ON" : "Turbo mode: OFF")) {
+        info->turbo_mode = !info->turbo_mode;
+        info->changed = true;
+    }
+    float f32_min = 5.0f;
+    float f32_max = M6502Constants::CLOCK_SPEED_MAX;
+    info->changed |= ImGui::SliderScalar("CPU speed:", ImGuiDataType_Float, &info->requested_clock_speed, &f32_min, &f32_max,  "", ImGuiSliderFlags_Logarithmic);
+    show_freq(info->requested_clock_speed);
+    ImGui::Text("Measured CPU clock speed: ");
+    if (!info->execution_paused &&
+            info->requested_clock_speed > 1000.0f &&
+            !info->turbo_mode) {
+        show_freq(info->measured_clock_speed);
+    } else {
+        ImGui::SameLine();
+        ImGui::Text("-");
+    }
+}
+
+void show_mem_editor(const Memory *mem, const Cpu *cpu, ImguiLayerInfo *info)
+{
+    ImGui::Separator();
+    if (ImGui::Button(info->show_mem_edit ? "Hide memory editor" : "Show memory editor")) {
+        info->show_mem_edit = !info->show_mem_edit; 
+        info->changed = true;
+    }
+    if (info->show_mem_edit) {
+        ImGui::BeginChild("Memory editor");
+        mem_edit.DrawContents(mem->data, Layout::MEM_SIZE, 0x0000);
+        ImGui::EndChild();
+    }
+    if (info->follow_pc_on_step && 
+            (info->execution_paused || info->requested_clock_speed < 1000.0f) &&
+            cpu->PC != last_frame_pc) {
+        mem_edit.GotoAddrAndHighlight(cpu->PC, cpu->PC);
+    }
+}
+
+void show_disassmbler(const Memory *mem, const Cpu *cpu, ImguiLayerInfo *info)
+{
+    ImGui::Separator();
+    ImGui::Text("Disassembler: TODO\n");
+    ImGui::Text("Op at PC: %s\n", instruction_table[(*mem)[cpu->PC]].mnemonic.c_str());
+}
+
 /*
  * TODO make this entire function less garbage.
  */
 void ImguiLayer::draw_main_window() const
 {
-    static u16 last_frame_pc;
-
-    bool &changed = this->info->changed;
     ImGui::Begin("6502-burken");
 
-    // --- CPU status ---
-    ImGui::Separator();
-    ImGui::Text("CPU status:\n");
-    ImGui::Text("ACC: 0x%02X\tX: 0x%02X\tY: 0x%02X", 
-            this->cpu.ACC, 
-            this->cpu.X, 
-            this->cpu.Y
-    );
-    ImGui::Text("SP:  0x%02X", this->cpu.SP);
-    ImGui::Text("PC:  0x%02X", this->cpu.PC);
-    ImGui::Text("CARRY (C):    %d    ZERO (Z):    %d    IRQB (I):        %d    DECIMAL (D):    %d", 
-            (bool)(this->cpu.SR & (1 << BIT_C)),
-            (bool)(this->cpu.SR & (1 << BIT_Z)),
-            (bool)(this->cpu.SR & (1 << BIT_I)),
-            (bool)(this->cpu.SR & (1 << BIT_D))
-    );
-    ImGui::Text("BRK (B):      %d    UNUSED:      %d    OVERFLOW (V):    %d    NEGATIVE (N):   %d", 
-            (bool)(this->cpu.SR & (1 << BIT_B)),
-            (bool)(this->cpu.SR & (1 << BIT_UNUSED)),
-            (bool)(this->cpu.SR & (1 << BIT_V)),
-            (bool)(this->cpu.SR & (1 << BIT_N))
-    );
-   
+    show_cpu_stats(&this->cpu);
+
     // --- program visualization ---
-    ImGui::Separator();
-    ImGui::Text("Program: TODO\n");
-    ImGui::Text("Op at PC: %s\n", instruction_table[this->mem[this->cpu.PC]].mnemonic.c_str());
+    show_disassmbler(&this->mem, &this->cpu, this->info);
 
     // --- Execution speed control --- 
-    ImGui::Separator();
-    ImGui::Text("Simulation control:\n");
-    if (ImGui::Button((this->info->execution_paused) ? "Resume" : "Pause")) {
-        this->info->execution_paused = !this->info->execution_paused;
-        changed = true;
-    }
-    ImGui::SameLine();
-
-    if (ImGui::Button("Step")) {
-        this->info->step_execution = true;
-        changed = true;
-    }
-    ImGui::SameLine();
-    if (ImGui::Button((this->info->follow_pc_on_step) ? "Follow PC on step: ON" : "Follow PC on step: OFF")) {
-        this->info->follow_pc_on_step = !this->info->follow_pc_on_step;
-        changed = true;
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Reset CPU")) {
-        this->info->reset_cpu = true;
-        changed = true;
-    }
-    ImGui::SameLine();
-    if (ImGui::Button((this->info->turbo_mode) ? "Turbo mode: ON" : "Turbo mode: OFF")) {
-        this->info->turbo_mode = !this->info->turbo_mode;
-        changed = true;
-    }
-    float f32_min = 5.0f;
-    float f32_max = M6502Constants::CLOCK_SPEED_MAX;
-    changed |= ImGui::SliderScalar("CPU speed:", ImGuiDataType_Float, &this->info->requested_clock_speed, &f32_min, &f32_max,  "", ImGuiSliderFlags_Logarithmic);
-    show_freq(this->info->requested_clock_speed);
-    ImGui::Text("Measured CPU clock speed: ");
-    if (!this->info->execution_paused &&
-            this->info->requested_clock_speed > 1000.0f &&
-            !this->info->turbo_mode) {
-        show_freq(this->info->measured_clock_speed);
-    } else {
-        ImGui::SameLine();
-        ImGui::Text("-");
-    }
-
+    show_simulation_control(this->info);
     
     // --- Memory inspector ---
-    ImGui::Separator();
-    if (ImGui::Button(this->info->show_mem_edit ? "Hide memory editor" : "Show memory editor")) {
-        this->info->show_mem_edit = !this->info->show_mem_edit; 
-    }
-    if (this->info->show_mem_edit) {
-        ImGui::BeginChild("Memory editor");
-        mem_edit.DrawContents(this->mem.data, Layout::MEM_SIZE, 0x0000);
-        ImGui::EndChild();
-    }
-    if (this->info->follow_pc_on_step && 
-            (this->info->execution_paused || this->info->requested_clock_speed < 1000.0f) &&
-            this->cpu.PC != last_frame_pc) {
-        mem_edit.GotoAddrAndHighlight(this->cpu.PC, this->cpu.PC);
-    }
+    show_mem_editor(&this->mem, &this->cpu, this->info);
 
     ImGui::End();
 

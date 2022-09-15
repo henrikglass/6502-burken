@@ -15,3 +15,4 @@
 15. renderbuffer instead of frambuffer? 
 16. Implement cpu reset/irqs properly.
 17. clock program
+18. invalid timer data shouldn't crash program... (floating point error)

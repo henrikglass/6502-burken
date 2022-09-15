@@ -8,15 +8,21 @@
 
 /*
  * We use this struct to pass information to and from the ImguiLayer.
+ *
+ * TODO rename this
  */
 struct ImguiLayerInfo 
 {
-    bool show_mem_edit    = true;
-    bool execution_paused = false; 
-    bool step_execution   = false;
-    bool reset_cpu        = false;
-    float execution_speed = 10000.0f; // Hz
-    //float execution_speed = 1000000.0f; // Hz
+    bool changed                     = true;
+    bool show_mem_edit               = true;
+    bool execution_paused            = true; 
+    bool step_execution              = false;
+    bool follow_pc_on_step           = false;
+    bool reset_cpu                   = false;
+    bool turbo_mode                  = false;
+    float requested_clock_speed      = 10000.0f; // Hz
+    float measured_clock_speed       = 0.0f;
+    float frame_time; // ms
 };
 
 class ImguiLayer

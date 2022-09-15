@@ -8,8 +8,28 @@
 
 static MemoryEditor mem_edit;
 
+void show_freq(float freq)
+{
+    ImGui::SameLine();
+    if (freq >= 100000000.0f) {
+        ImGui::Text("%.3f GHz", freq / 1000000.0f);
+    } else if (freq >= 100000.0f) {
+        ImGui::Text("%.3f MHz", freq / 1000000.0f);
+    } else if (freq >= 100.0f) {
+        ImGui::Text("%.3f KHz", freq / 1000.0f);
+    } else {
+        ImGui::Text("%.3f Hz", freq);
+    }
+}
+
+/*
+ * TODO make this entire function less garbage.
+ */
 void ImguiLayer::draw_main_window() const
 {
+    static u16 last_frame_pc;
+
+    bool &changed = this->info->changed;
     ImGui::Begin("6502-burken");
 
     // --- CPU status ---
@@ -38,46 +58,71 @@ void ImguiLayer::draw_main_window() const
     // --- program visualization ---
     ImGui::Separator();
     ImGui::Text("Program: TODO\n");
+    ImGui::Text("Op at PC: %s\n", instruction_table[this->mem[this->cpu.PC]].mnemonic.c_str());
 
     // --- Execution speed control --- 
     ImGui::Separator();
     ImGui::Text("Simulation control:\n");
     if (ImGui::Button((this->info->execution_paused) ? "Resume" : "Pause")) {
         this->info->execution_paused = !this->info->execution_paused;
+        changed = true;
     }
     ImGui::SameLine();
+
     if (ImGui::Button("Step")) {
         this->info->step_execution = true;
+        changed = true;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button((this->info->follow_pc_on_step) ? "Follow PC on step: ON" : "Follow PC on step: OFF")) {
+        this->info->follow_pc_on_step = !this->info->follow_pc_on_step;
+        changed = true;
     }
     ImGui::SameLine();
     if (ImGui::Button("Reset CPU")) {
         this->info->reset_cpu = true;
+        changed = true;
     }
-    //ImGui::DragScalar("drag float log", ImGuiDataType_Float,  &f32_v, 0.005f,  &f32_zero, &f32_one, "%f", ImGuiSliderFlags_Logarithmic);
-    float f32_min = 0.5f;
-    float f32_max = M6502Constants::CLOCK_SPEED_MAX;
-    ImGui::SliderScalar("CPU clock speed: ", ImGuiDataType_Float, &this->info->execution_speed, &f32_min, &f32_max,  "", ImGuiSliderFlags_Logarithmic);
     ImGui::SameLine();
-    if (this->info->execution_speed >= 100000.0f) {
-        ImGui::Text("%.2f MHz", this->info->execution_speed / 1000000.0f);
-    } else if (this->info->execution_speed >= 100.0f) {
-        ImGui::Text("%.2f KHz", this->info->execution_speed / 1000.0f);
-    } else {
-        ImGui::Text("%.2f Hz", this->info->execution_speed);
+    if (ImGui::Button((this->info->turbo_mode) ? "Turbo mode: ON" : "Turbo mode: OFF")) {
+        this->info->turbo_mode = !this->info->turbo_mode;
+        changed = true;
     }
+    float f32_min = 5.0f;
+    float f32_max = M6502Constants::CLOCK_SPEED_MAX;
+    changed |= ImGui::SliderScalar("CPU speed:", ImGuiDataType_Float, &this->info->requested_clock_speed, &f32_min, &f32_max,  "", ImGuiSliderFlags_Logarithmic);
+    show_freq(this->info->requested_clock_speed);
+    ImGui::Text("Measured CPU clock speed: ");
+    if (!this->info->execution_paused &&
+            this->info->requested_clock_speed > 1000.0f &&
+            !this->info->turbo_mode) {
+        show_freq(this->info->measured_clock_speed);
+    } else {
+        ImGui::SameLine();
+        ImGui::Text("-");
+    }
+
     
     // --- Memory inspector ---
     ImGui::Separator();
     if (ImGui::Button(this->info->show_mem_edit ? "Hide memory editor" : "Show memory editor")) {
-       this->info->show_mem_edit = !this->info->show_mem_edit; 
+        this->info->show_mem_edit = !this->info->show_mem_edit; 
     }
     if (this->info->show_mem_edit) {
         ImGui::BeginChild("Memory editor");
         mem_edit.DrawContents(this->mem.data, Layout::MEM_SIZE, 0x0000);
         ImGui::EndChild();
     }
+    if (this->info->follow_pc_on_step && 
+            (this->info->execution_paused || this->info->requested_clock_speed < 1000.0f) &&
+            this->cpu.PC != last_frame_pc) {
+        mem_edit.GotoAddrAndHighlight(this->cpu.PC, this->cpu.PC);
+    }
 
     ImGui::End();
+
+    // some logic
+    last_frame_pc = this->cpu.PC;
 }
 
 void ImguiLayer::setup(GLFWwindow *window, const char *glsl_version) const

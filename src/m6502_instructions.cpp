@@ -747,7 +747,7 @@ void populate_instruction_table()
 
     // "zero" fill
     for (int i = 0; i < 256; i++)
-        instruction_table[i] = {OP_INVALID, nullptr};
+        instruction_table[i] = {OP_INVALID, nullptr, "-", 0};
 
     // populate
     // row 0

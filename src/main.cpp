@@ -13,9 +13,117 @@
 const char *usage = "Usage: 6502-burken <program>\n";
 bool running = true;
 
+struct System
+{
+    Memory  *mem;
+    Cpu     *cpu;
+    Timer   *timer1;
+    Timer   *timer2;
+    Display *display;
+};
+
 void sigint_handler(int signal)
 {
     running = false;
+}
+
+void run_simulation(System *system, ImguiLayerInfo *info)
+{
+    using std::chrono::high_resolution_clock;
+    using std::chrono::duration_cast;
+    using std::chrono::duration;
+    using std::chrono::milliseconds;
+    using std::chrono::microseconds;
+    using std::chrono::nanoseconds;
+    
+    // this is easier than naming their types lol
+    auto t_start = high_resolution_clock::now(); // time at start of fetch decode execute cycle
+
+    // reset cpu (starts executing at wherever the reset vector is pointing) 
+    system->cpu->reset();
+    
+    // start display
+    auto render_thread = system->display->start();
+    render_thread.detach();
+
+    // Some state related to keeping CPU clock in check
+    int64_t ns_to_sleep = 0;
+    int64_t last_diff_ns = 0;
+    int total_n_cycles = 0;
+    int n_cycles_thresh = 10000;
+    
+    // enter infinite fetch (decode) execute loop
+    while(running) {
+
+        if (info->changed) {
+            // set a resonable value for `n_cycles_thresh` depending on
+            // requested clock speed.
+            n_cycles_thresh = info->requested_clock_speed / 60.0f;
+        }
+
+        // handle paused execution
+        if (info->execution_paused) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(20));
+            if (!info->step_execution)
+                continue;
+            info->step_execution = false;
+        }
+
+        // handle manual (imgui) reset
+        if (info->reset_cpu) {
+            system->cpu->reset();
+            info->reset_cpu = false;
+        }
+
+        // run and time this fetch decode execute cycle
+        u8 elapsed_cycles = system->cpu->fetch_execute_next();
+        system->timer1->step((u16) elapsed_cycles);
+        system->timer2->step((u16) elapsed_cycles);
+        total_n_cycles += elapsed_cycles;
+        
+        // If in turbo mode, we execute as fast as possible (quite unlike
+        // what the turbo button did on some 90s computers). Don't sleep.
+        if (info->turbo_mode)
+            continue;
+
+        // sleep for however long we need to sleep to match the clock speed
+        // we're supposed to run at.
+        ns_to_sleep += elapsed_cycles * (1000000000.0f / info->requested_clock_speed);
+        ns_to_sleep = Util::precise_sleep(ns_to_sleep);
+        
+        // To account for real cpu time usage, we measure the time it takes to run a set number of
+        // cycles (say `N`). The difference between the measured time and the expected time is 
+        // subtracted from the time that will be slept for the next `N` cycles.
+        if (info->requested_clock_speed > 1000.0f &&
+                total_n_cycles > n_cycles_thresh) {
+            int64_t measured_ns = duration_cast<nanoseconds>(high_resolution_clock::now() - t_start).count();
+            int64_t expected_ns = n_cycles_thresh * (1000000000.0f / info->requested_clock_speed);
+
+            // compensate for extra mesaured cycles above `n_cycles_thresh`. We barely lose or gain
+            // any precision but why not.
+            int64_t extra_cycles = total_n_cycles - n_cycles_thresh;
+            measured_ns -= extra_cycles * (1000000000.0f / info->requested_clock_speed);
+
+            // compensate for the time subracted from previous measurements
+            expected_ns -= info->changed ? 0 : last_diff_ns;
+
+            // subtract difference from `ns_to_sleep`
+            last_diff_ns = (info->changed) ? 0 : (measured_ns - expected_ns);
+            ns_to_sleep -= last_diff_ns;                                            
+
+            // reset stuff for next measurement
+            total_n_cycles = 0;
+            t_start = high_resolution_clock::now();
+            //first = false;
+            info->changed = false;
+           
+            // measured clock speed 
+            info->measured_clock_speed = (1000000000.0f * n_cycles_thresh) / measured_ns;
+        }
+        
+        
+    }
+
 }
 
 int main(int argc, char *argv[]) 
@@ -24,6 +132,8 @@ int main(int argc, char *argv[])
         printf("%s", usage);
         return 1;
     }
+
+    System system;
 
     signal(SIGINT, sigint_handler);
 
@@ -36,6 +146,13 @@ int main(int argc, char *argv[])
     // Create display and provide references to cpu and memory
     Display display(mem);
     
+    // -------------- DEBUG ---------------
+    // put garbage in vga_text_buffer
+    for (int i = Layout::VGA_TEXT_BUF_LOW; i < Layout::VGA_TEXT_BUF_HIGH; i++) {
+        mem[i] = (i/2) % 256;
+    }
+    // ------------------------------------
+
     // Create an imgui layer and attach it to the OpenGL context of `display`
     ImguiLayerInfo info;
     ImguiLayer imgui_layer(cpu, mem, &info);
@@ -46,86 +163,21 @@ int main(int argc, char *argv[])
     Timer timer2(cpu, mem, Layout::TIMER2_CTRL, Layout::TIMER2_DATA);
 
     // load program into memory
-    if (mem.load_from_file(Layout::FREE_ROM_LOW, argv[1]) != 0)
+    if (mem.load_from_file(Layout::FREE_ROM_LOW, argv[1]) < 0)
         return 1;
     
     // load VGA charset into memory
-    if (mem.load_from_file(Layout::VGA_CHAR_BUF_LOW, "extra/6502burken_charset.bin") != 0)
+    if (mem.load_from_file(Layout::VGA_CHAR_BUF_LOW, "extra/6502burken_charset.bin") < 0)
         return 1;
+   
+    // bundle everything together
+    system.cpu     = &cpu;
+    system.mem     = &mem;
+    system.timer1  = &timer1;
+    system.timer2  = &timer2;
+    system.display = &display;
     
-    // reset cpu (starts executing at wherever the reset vector is pointing) 
-    cpu.reset();
-
-
-    // -------------- DEBUG ---------------
-    // put garbage in vga_text_buffer
-    for (int i = Layout::VGA_TEXT_BUF_LOW; i < Layout::VGA_TEXT_BUF_HIGH; i++) {
-        mem[i] = (i/2) % 256;
-    }
-    // ------------------------------------
-
-
-    // start display
-    auto render_thread = display.start();
-    render_thread.detach();
-
-    using std::chrono::high_resolution_clock;
-    using std::chrono::duration_cast;
-    using std::chrono::duration;
-    using std::chrono::nanoseconds;
-
-    // this is easier than naming their types lol
-    auto t_start = high_resolution_clock::now();
-    auto t_end = high_resolution_clock::now();
-
-    // keep track of remaining ns to sleep from last cycle 
-    int64_t sleep_remainder = 0;
-    int64_t ns_to_sleep = 0;
-    int64_t n_cycles_total = 0;
-
-    // enter infinite fetch (decode) execute loop
-    while(running) {
-        // handle paused execution
-        if (info.execution_paused) {
-            printf("freq %f\n", info.execution_speed);
-            std::this_thread::sleep_for(std::chrono::milliseconds(20));
-            if (!info.step_execution)
-                continue;
-            info.step_execution = false;
-        }
-
-        // handle manual (imgui) reset
-        if (info.reset_cpu) {
-            cpu.reset();
-            info.reset_cpu = false;
-        }
-
-        // run simulation
-        u8 elapsed_cycles = cpu.fetch_execute_next();
-        timer1.step((u16) elapsed_cycles);
-        timer2.step((u16) elapsed_cycles);
-        
-        // sleep for however long we need to sleep
-        t_end = high_resolution_clock::now();
-        auto duration = duration_cast<nanoseconds>(t_end - t_start);
-        t_start = high_resolution_clock::now();
-        ns_to_sleep = elapsed_cycles * (1000000000.0f / info.execution_speed);
-        ns_to_sleep -= duration.count(); // subtract the actual CPU time
-        ns_to_sleep += sleep_remainder;  // add the sleep remainder
-        sleep_remainder = Util::precise_sleep(ns_to_sleep);
-        n_cycles_total += elapsed_cycles;
-        
-        //if (sleep_remainder < 0)
-        //    printf("%ld\n", sleep_remainder);
-
-        // (PRECISELY) sleep to match selected clock speed
-        // TODO don't do this
-        //std::this_thread::sleep_for(std::chrono::milliseconds(elapsed_cycles*20));
-    }
-
-    // DEBUG
-    printf("ns_to_sleep = %ld\n", ns_to_sleep);
-    printf("sleep_remainder = %ld\n", sleep_remainder);
-    printf("n_cycles_total = %ld\n", n_cycles_total);
+    // run simulation
+    run_simulation(&system, &info);
 
 }

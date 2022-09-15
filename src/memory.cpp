@@ -33,7 +33,7 @@ int Memory::load_from_file(u16 dest, const std::string &path)
 
     if(f == nullptr) {
         printf("Error opening file <%s>", path.c_str());
-        return 1;
+        return -1;
     }
 
     u32 max_n_bytes = Layout::MEM_SIZE - dest; 

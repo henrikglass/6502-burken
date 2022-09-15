@@ -19,22 +19,22 @@ SOURCES := $(wildcard $(SRCDIR)/*.cpp)   \
 OBJECTS := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 # For debug build
-CFLAGS 	= 	-Iinclude \
-			-Iinclude/imgui \
-			-Isrc/imgui \
-			-lglfw \
-			-pg -g \
-			-std=c++2a \
-			-Wall -pedantic
-
-# For release build
 #CFLAGS 	= 	-Iinclude \
 #			-Iinclude/imgui \
 #			-Isrc/imgui \
 #			-lglfw \
-#			-O3 -march=native
+#			-pg -g \
 #			-std=c++2a \
 #			-Wall -pedantic
+
+# For release build
+CFLAGS 	= 	-Iinclude \
+			-Iinclude/imgui \
+			-Isrc/imgui \
+			-lglfw \
+			-O2 -march=native
+			-std=c++2a \
+			-Wall -pedantic -Wunused
 
 DEBUG_FLAGS = #-DDEBUG_PRINTS
 

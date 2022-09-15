@@ -20,7 +20,8 @@ int64_t Util::precise_sleep(int64_t ns)
     using std::chrono::milliseconds;
 
     const int sleep_method_threshold_ns = 5000000; // 5 ms
-    const int spin_lock_threshold_ns = 1000; // 1 us 
+    const int spin_lock_threshold_ns = 1000; // 10 us 
+    //const int spin_lock_threshold_ns = 0; // 1 us 
 
     // utilize OS sleep function for coarser sleeps
     while (ns > sleep_method_threshold_ns) {
@@ -33,11 +34,12 @@ int64_t Util::precise_sleep(int64_t ns)
     }
 
     // spin for finer grained sleeps
+    int64_t spin_slept_ns = 0;
     auto t_start = high_resolution_clock::now();
-    while (ns > spin_lock_threshold_ns) {
-        ns -= duration_cast<nanoseconds>(high_resolution_clock::now() - t_start).count();
+    while (spin_slept_ns < ns - spin_lock_threshold_ns) {
+        spin_slept_ns = duration_cast<nanoseconds>(high_resolution_clock::now() - t_start).count();
     }
 
-    // return remaining nanoseconds left to sleep (< `spin_lock_threshold_ns`)
-    return ns;
+    // return remaining nanoseconds left to sleep (should be < `spin_lock_threshold_ns`)
+    return ns - spin_slept_ns;
 }

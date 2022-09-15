@@ -436,7 +436,7 @@ int Display::loop()
 
     if (glfwWindowShouldClose(this->window)) {
         glfwTerminate();
-        return 1;
+        return 0;
     }
     
     glfwSwapBuffers(this->window);

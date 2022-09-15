@@ -20,22 +20,8 @@
 
 namespace M6502Constants 
 {
-    const float CLOCK_SPEED_MAX = 1000000.0f; // 1 MHz (TODO 3?)
+    const float CLOCK_SPEED_MAX = 3000000.0f; // 3 MHz
 };
-
-/*
- * Temp. TODO delete
- */
-//enum TTInstruction 
-//{
-//    BRK     = 0x00,
-//    NOP     = 0xEA,
-//    PHA     = 0x48,
-//    LDA_I   = 0xA9,
-//    LDX_I   = 0xA2,
-//    LDY_I   = 0xA0,
-//    JMP_ABS = 0x4c
-//};
 
 /*****************************************************************************
  *

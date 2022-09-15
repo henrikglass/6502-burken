@@ -14,3 +14,4 @@
 14. Proper implementation of IRQ/reset/NMI (push registers onto stack)
 15. renderbuffer instead of frambuffer? 
 16. Implement cpu reset/irqs properly.
+17. clock program

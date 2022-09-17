@@ -354,7 +354,7 @@ int Display::setup()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    glfwSwapInterval(1); // vsync
+    glfwSwapInterval(1); // 0 = vsync off, 1 = vsync on
 
     // glad
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -507,7 +507,10 @@ std::thread Display::start()
             double t_start = glfwGetTime();
             should_exit = this->loop();
             double t_end = glfwGetTime();
-            this->imgui_layer->info->frames_per_second = 1.0f / (t_end - t_start);
+
+            //average this frame time with previous frames.
+            this->imgui_layer->info->frames_per_second *= 0.9f;
+            this->imgui_layer->info->frames_per_second += 0.1f / (t_end - t_start);
         }
 
         // terminate entire program on window close.

@@ -126,7 +126,7 @@ void ImguiLayer::draw_main_window() const
 {
     ImGui::Begin("6502-burken");
 
-    ImGui::Text("Fps: %f", this->info->frames_per_second);
+    ImGui::Text("Fps: %3.1f", this->info->frames_per_second);
 
     show_cpu_stats(&this->cpu);
 

@@ -491,7 +491,6 @@ std::thread Display::start()
         using std::chrono::duration_cast;
         using std::chrono::duration;
         using std::chrono::milliseconds;
-        auto t_start = high_resolution_clock::now();
 
         // setup rendering context. Must be same thread.
         if (this->setup() != 0)

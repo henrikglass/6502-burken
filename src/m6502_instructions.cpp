@@ -747,7 +747,7 @@ void populate_instruction_table()
 
     // "zero" fill
     for (int i = 0; i < 256; i++)
-        instruction_table[i] = {OP_INVALID, nullptr, "-", 0};
+        instruction_table[i] = {OP_INVALID, IMPLIED, "-", 0};
 
     // populate
     // row 0
@@ -811,7 +811,7 @@ void populate_instruction_table()
     instruction_table[0x51] = {op_eor,  addr_ind_Y, "EOR ind,Y",  5};
     instruction_table[0x55] = {op_eor,  addr_zpg_X, "EOR zpg,X",  4};
     instruction_table[0x56] = {op_lsr,  addr_zpg_X, "LSR zpg,X",  6};
-    instruction_table[0x58] = {op_cli,  IMPLIED,    "CLI",        2};
+    instruction_table[0x58] = {op_cli,  IMPLIED,    "CLI",        2}; // TODO??
     instruction_table[0x59] = {op_cli,  IMPLIED,    "CLI",        2};
     instruction_table[0x5D] = {op_cli,  IMPLIED,    "CLI",        2};
     instruction_table[0x5E] = {op_cli,  IMPLIED,    "CLI",        2};

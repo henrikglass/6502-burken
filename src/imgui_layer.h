@@ -28,7 +28,10 @@ struct ImguiLayerInfo
 class ImguiLayer
 {
 public:
-    ImguiLayer(const Cpu &cpu, const Memory &mem, ImguiLayerInfo *info) : cpu(cpu), mem(mem), info(info) {};
+    ImguiLayer(const Cpu &cpu, const Memory &mem, ImguiLayerInfo *info) : cpu(cpu), mem(mem) 
+    {
+        this->info = info;
+    };
     void setup(GLFWwindow *window, const char *glsl_version) const;
     void draw();
     void shutdown() const;

@@ -32,7 +32,7 @@ CFLAGS 	= 	-Iinclude \
 			-Iinclude/imgui \
 			-Isrc/imgui \
 			-lglfw \
-			-O2 -march=native
+			-O2 -march=native \
 			-std=c++2a \
 			-Wall -pedantic -Wunused
 

@@ -36,6 +36,8 @@ CFLAGS 	= 	-Iinclude \
 			-std=c++2a \
 			-Wall -pedantic -Wunused
 
+#CFLAGS += -O0 -pg -g
+
 DEBUG_FLAGS = #-DDEBUG_PRINTS
 
 # linker

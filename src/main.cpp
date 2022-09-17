@@ -6,6 +6,7 @@
 
 #include "memory.h"
 #include "m6502.h"
+#include "m6502_disassembler.h"
 #include "display.h"
 #include "timer.h"
 #include "util.h"
@@ -176,7 +177,11 @@ int main(int argc, char *argv[])
     system.timer1  = &timer1;
     system.timer2  = &timer2;
     system.display = &display;
-    
+
+    // DEBUG
+    Disassembler disassembler(mem);
+    disassembler.disassemble();
+
     // run simulation
     run_simulation(&system, &info);
 

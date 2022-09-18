@@ -154,9 +154,12 @@ int main(int argc, char *argv[])
     }
     // ------------------------------------
 
+    // create a Disassembler object (used by ImguiLayer).
+    Disassembler disassembler(mem);
+
     // Create an imgui layer and attach it to the OpenGL context of `display`
     ImguiLayerInfo info;
-    ImguiLayer imgui_layer(cpu, mem, &info);
+    ImguiLayer imgui_layer(cpu, mem, &disassembler, &info);
     display.attach_imgui_layer(&imgui_layer);
 
     // Create timers and provide references to cpu and memory
@@ -179,8 +182,9 @@ int main(int argc, char *argv[])
     system.display = &display;
 
     // DEBUG
-    Disassembler disassembler(mem);
-    disassembler.disassemble();
+    //Disassembler disassembler(mem);
+    //auto ss = disassembler.get_disassembly(Layout::FREE_ROM_LOW + 7);
+    //std::cout << ss.str() << std::endl;
 
     // run simulation
     run_simulation(&system, &info);

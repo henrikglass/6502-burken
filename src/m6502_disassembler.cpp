@@ -10,60 +10,179 @@
  * Returns a vector of jump destinations. I.e. a list of all addresses where the
  * execution could jump to (via jmp, bne, jsr, etc.).
  */
-std::vector<u16> Disassembler::disassemble_block(Block *block)
-{
-    std::vector<u16> jmp_destinations;
-    const u8 *block_start_ptr = this->mem.data + block->start;
-    u8 *it = this->mem.data + block->start;
+//std::vector<u16> Disassembler::disassemble_block(Block *block)
+//{
+//    std::vector<u16> jmp_destinations;
+//    const u8 *block_start_ptr = this->mem.data + block->start;
+//    u8 *it = this->mem.data + block->start;
+//
+//    while (true) {
+//        u16 offset = (u16) (it - block_start_ptr); // fel. -1
+//        u8 op_code = *it++;
+//        InstructionInfo info = instruction_info_table[op_code];
+//
+//        if (info.mnemonic == "-") {
+//            break;
+//        }
+//
+//        // TODO look a few bytes ahead. brk is still a valid instruction
+//        if (info.mnemonic == "brk") {
+//            block->code.push_back({info.mnemonic, 1}); 
+//            break;
+//        }
+//
+//        if (block->start + offset > Layout::FREE_ROM_HIGH) {
+//            break;
+//        }
+//
+//        if (false /* intersection with other block*/) {
+//            // TODO merge
+//        }
+//        
+//        block->code.resize((size_t) offset + 1);
+//        //block->code[offset] = info.mnemonic + info.addr_parser(&it); 
+//        if (offset == 0)
+//            std::cout << "> 0x" << std::hex << (block->start + offset) << std::dec << ":  " << info.mnemonic + " " + info.addr_parser(&it) << std::endl;
+//        else
+//            std::cout << "  0x" << std::hex << (block->start + offset) << std::dec << ":  " << info.mnemonic + " " + info.addr_parser(&it) << std::endl;
+//    }
+//
+//    return jmp_destinations; 
+//}
 
-    while (true) {
-        u16 offset = (u16) (it - block_start_ptr); // fel. -1
+/*
+ * Prints a disassembled page.
+ */
+void Disassembler::Page::get_disassembly(std::stringstream *ss, u16 addr)
+{
+    for (int offset = this->first_instr_offset; offset < (int)Layout::PAGE_SIZE;) {
+        if ((size_t)offset > this->code.size() - 1)
+            break;
+        auto line = this->code[offset];
+        if (line.len == 0)
+            break;
+        if (offset + this->page_addr == addr) {
+            *ss << "> 0x" << std::hex << (this->page_addr + offset) << ":  " << line.str << " <\n";
+        } else {
+            *ss << "  0x" << std::hex << (this->page_addr + offset) << ":  " << line.str << "\n";
+        }
+        offset += line.len;
+    }
+}
+
+/*
+ * Disassembles one (1) page of memory starting at the instruction at
+ * `first_instr_addr`. Returns the offset of the "next instruction" from
+ * the page address of the next page. I.e. if the function returns 2, then
+ * the third byte of the next page is an opcode (probably). If the function
+ * returns something < 0, then the code terminates early in the page and 
+ * the "next instruction" isn't a valid instruction.
+ */
+int Disassembler::disassemble_page(Page *page, u16 first_instr_addr)
+{
+    // TODO compute checksum to see if we need to update the disassembled text.
+
+    const u8 *page_start = this->mem.data + page->page_addr;
+    const u8 *page_end   = this->mem.data + page->page_addr + Layout::PAGE_SIZE;
+    const u8 *next_page  = this->mem.data + page->page_addr + Layout::PAGE_SIZE + 1;
+    page->first_instr_offset = first_instr_addr % Layout::PAGE_SIZE;
+    u8 *it = this->mem.data + first_instr_addr;
+
+    while (it < page_end) {
+        u16 offset = (u16) (it - page_start); // fel. -1
         u8 op_code = *it++;
         InstructionInfo info = instruction_info_table[op_code];
 
+        // TODO check for jmps and add labels...
+
+        // reached an invalid op code
         if (info.mnemonic == "-") {
-            break;
+            return it - next_page;
         }
 
         // TODO look a few bytes ahead. brk is still a valid instruction
         if (info.mnemonic == "brk") {
-            block->code.push_back({info.mnemonic, 1}); 
-            break;
+            page->code.push_back({false, info.mnemonic, 1}); 
+            return it - next_page + 1;
         }
 
-        if (block->start + offset > Layout::FREE_ROM_HIGH) {
-            break;
+        // reached end of memory
+        if (page->page_addr + offset > Layout::FREE_ROM_HIGH) {
+            return it - next_page;
         }
 
-        if (false /* intersection with other block*/) {
-            // TODO merge
-        }
+        page->code.resize((size_t) offset + 1);
+        std::string disassembly = info.mnemonic + " " + info.addr_parser(&it);
+        page->code[offset].str = disassembly; 
+        page->code[offset].len = (it - page_start) - offset;
+        //if (offset == 0)
+        //    std::cout << "> 0x" << std::hex << (page->page_addr + offset) << std::dec << ":  " << info.mnemonic + " " + info.addr_parser(&it) << std::endl;
+        //else
+        //    std::cout << "  0x" << std::hex << (page->page_addr + offset) << std::dec << ":  " << info.mnemonic + " " + info.addr_parser(&it) << std::endl;
+    }
+    
+    return it - next_page;
+}
+
+/*
+ * Returns the disassembled code at and surrounding `addr` as a stringstream.
+ */
+std::stringstream Disassembler::get_disassembly(u16 addr)
+{
+    std::stringstream ss;
+
+    // figure out where to start disassembling/printing from.
+    u16 page_nr   = addr / Layout::PAGE_SIZE;
+    int instr_off = addr % Layout::PAGE_SIZE;
+    if (this->page_table[page_nr].first_instr_offset != -1) {
         
-        block->code.resize((size_t) offset + 1);
-        //block->code[offset] = info.mnemonic + info.addr_parser(&it); 
-        if (offset == 0)
-            std::cout << "> 0x" << std::hex << (block->start + offset) << std::dec << ":  " << info.mnemonic + " " + info.addr_parser(&it) << std::endl;
-        else
-            std::cout << "  0x" << std::hex << (block->start + offset) << std::dec << ":  " << info.mnemonic + " " + info.addr_parser(&it) << std::endl;
+        // If this page has been disassembled. Find the first disassembled
+        // page contigous with this one.
+        while (page_nr > 0 && this->page_table[page_nr - 1].first_instr_offset != -1) {
+            page_nr--;
+        }
+
+        // overwrite `instr_off`
+        instr_off = this->page_table[page_nr].first_instr_offset;
+    }
+    const u16 first_page_nr = page_nr;
+
+    // disassemble pages
+    Page *page = &(this->page_table[page_nr]);
+    while (instr_off >= 0) {
+        // get the address of the first instruction on the page
+        u16 first_instr_addr = page_nr * Layout::PAGE_SIZE + instr_off;
+
+        // disassemble page starting at `first_instr_addr`.
+        instr_off = this->disassemble_page(page, first_instr_addr);
+        
+        // get the next page
+        page = &(this->page_table[++page_nr]);
     }
 
-    return jmp_destinations; 
+    // print disassembly
+    for (page_nr = first_page_nr; this->page_table[page_nr].first_instr_offset != -1; page_nr++) {
+        this->page_table[page_nr].get_disassembly(&ss, addr);
+    }
+   
+    return ss;
 }
 
 /*
  * Disassembles the program pointed to by the reset vector.
  * Will recursively enter
  */
-void Disassembler::disassemble()
-{
-    u16 addr = mem[Layout::RESET_VECTOR] + 
-              (mem[Layout::RESET_VECTOR + 1] << 8);
-
-    Block entry(addr);
-    std::vector<u16> jmps = this->disassemble_block(&entry);
-
-    this->code_blocks.push_back(entry);
-}
+//void Disassembler::disassemble()
+//{
+//    u16 addr = mem[Layout::RESET_VECTOR] + 
+//              (mem[Layout::RESET_VECTOR + 1] << 8);
+//
+//    Page *page = &(this->page_table[addr / 0x100]);
+//    this->disassemble_page(page, addr);
+//    //std::vector<u16> jmps = this->disassemble_block(&entry);
+//
+//    //this->code_blocks.push_back(entry);
+//}
 
 std::string byte_to_hex(u8 b)
 {
@@ -157,6 +276,15 @@ std::string addr_zpg_Y(u8 **bytes)
 {
     u8 ll = *(*bytes)++;
     return "$" + byte_to_hex(ll);
+}
+
+/*
+ * Sets up the page table.
+ */
+void Disassembler::init_page_table()
+{
+    for (int i = 0; i < Layout::N_PAGES; i++)
+        page_table[i].page_addr = i * Layout::PAGE_SIZE;
 }
 
 /*

@@ -112,11 +112,21 @@ void show_mem_editor(const Memory *mem, const Cpu *cpu, ImguiLayerInfo *info)
     }
 }
 
-void show_disassmbler(const Memory *mem, const Cpu *cpu, ImguiLayerInfo *info)
+void show_disassmbler(const Cpu *cpu, Disassembler *disasm, ImguiLayerInfo *info)
 {
     ImGui::Separator();
-    ImGui::Text("Disassembler: TODO\n");
-    ImGui::Text("Op at PC: %s\n", instruction_table[(*mem)[cpu->PC]].mnemonic.c_str());
+    if (ImGui::Button(info->show_disasm ? "Hide live disassembler" : "Show live disassembler")) {
+        info->show_disasm = !info->show_disasm; 
+        info->changed = true;
+    }
+    if (info->show_disasm) {
+        ImGuiWindowFlags window_flags = ImGuiWindowFlags_HorizontalScrollbar;
+        ImGui::BeginChild("Live disassembler", {0, 160}, false, window_flags);
+            ImGui::Text("%s", disasm->get_disassembly(cpu->PC).str().c_str());
+        ImGui::EndChild();
+    }
+
+    //ImGui::Text("Op at PC: %s\n", instruction_table[(*mem)[cpu->PC]].mnemonic.c_str());
 }
 
 /*
@@ -131,7 +141,7 @@ void ImguiLayer::draw_main_window() const
     show_cpu_stats(&this->cpu);
 
     // --- program visualization ---
-    show_disassmbler(&this->mem, &this->cpu, this->info);
+    show_disassmbler(&this->cpu, this->disasm, this->info);
 
     // --- Execution speed control --- 
     show_simulation_control(this->info);
@@ -162,6 +172,7 @@ void ImguiLayer::draw()
     ImGui::NewFrame();
 
     // --- draw GUI! ---
+    ImGui::ShowDemoWindow();
     this->draw_main_window();
 
     // render

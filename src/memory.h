@@ -31,6 +31,7 @@ namespace Layout
     const u16 RESET_VECTOR       = 0xFFFC; // 2 bytes
     const u16 IRQ_BRK_VECTOR     = 0xFFFE; // 2 bytes
 
+    const u16 N_PAGES           = 0xFF;
     const u32 PAGE_SIZE         = 0x100;
     const u32 MEM_SIZE          = 0x10000;
     const u16 VGA_CHAR_BUF_SIZE = VGA_CHAR_BUF_HIGH - VGA_CHAR_BUF_LOW + 1;

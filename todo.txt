@@ -8,4 +8,5 @@ Proper implementation of BRK
 clock program
 invalid timer data shouldn't crash program... (floating point error)
 Maybe getting a segfault on every Ctrl-C isn't good...
-remover mnemonics from instruction_table
+remove mnemonics from instruction_table
+blink bit VGA

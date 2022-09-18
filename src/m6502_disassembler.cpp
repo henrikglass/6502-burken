@@ -3,70 +3,18 @@
 #include <iostream>
 
 /*
- * Disassembles a block of code. It starts at `block->start` and makes it's way
- * through memory till it either reaches an invalid opcode, reaches end of memory,
- * reaches a `brk` instruction, or reaches another block's starting address.
- *
- * Returns a vector of jump destinations. I.e. a list of all addresses where the
- * execution could jump to (via jmp, bne, jsr, etc.).
+ * Puts the disassembly for a page into `*instrs`
  */
-//std::vector<u16> Disassembler::disassemble_block(Block *block)
-//{
-//    std::vector<u16> jmp_destinations;
-//    const u8 *block_start_ptr = this->mem.data + block->start;
-//    u8 *it = this->mem.data + block->start;
-//
-//    while (true) {
-//        u16 offset = (u16) (it - block_start_ptr); // fel. -1
-//        u8 op_code = *it++;
-//        InstructionInfo info = instruction_info_table[op_code];
-//
-//        if (info.mnemonic == "-") {
-//            break;
-//        }
-//
-//        // TODO look a few bytes ahead. brk is still a valid instruction
-//        if (info.mnemonic == "brk") {
-//            block->code.push_back({info.mnemonic, 1}); 
-//            break;
-//        }
-//
-//        if (block->start + offset > Layout::FREE_ROM_HIGH) {
-//            break;
-//        }
-//
-//        if (false /* intersection with other block*/) {
-//            // TODO merge
-//        }
-//        
-//        block->code.resize((size_t) offset + 1);
-//        //block->code[offset] = info.mnemonic + info.addr_parser(&it); 
-//        if (offset == 0)
-//            std::cout << "> 0x" << std::hex << (block->start + offset) << std::dec << ":  " << info.mnemonic + " " + info.addr_parser(&it) << std::endl;
-//        else
-//            std::cout << "  0x" << std::hex << (block->start + offset) << std::dec << ":  " << info.mnemonic + " " + info.addr_parser(&it) << std::endl;
-//    }
-//
-//    return jmp_destinations; 
-//}
-
-/*
- * Prints a disassembled page.
- */
-void Disassembler::Page::get_disassembly(std::stringstream *ss, u16 addr)
+void Disassembler::Page::get_disassembly(std::vector<DisassembledInstruction *> *instrs)
 {
     for (int offset = this->first_instr_offset; offset < (int)Layout::PAGE_SIZE;) {
         if ((size_t)offset > this->code.size() - 1)
             break;
-        auto line = this->code[offset];
-        if (line.len == 0)
+        DisassembledInstruction *instr = &(this->code[offset]);
+        if (instr->len == 0)
             break;
-        if (offset + this->page_addr == addr) {
-            *ss << "> 0x" << std::hex << (this->page_addr + offset) << ":  " << line.str << " <\n";
-        } else {
-            *ss << "  0x" << std::hex << (this->page_addr + offset) << ":  " << line.str << "\n";
-        }
-        offset += line.len;
+        instrs->push_back(instr);
+        offset += instr->len;
     }
 }
 
@@ -102,7 +50,7 @@ int Disassembler::disassemble_page(Page *page, u16 first_instr_addr)
 
         // TODO look a few bytes ahead. brk is still a valid instruction
         if (info.mnemonic == "brk") {
-            page->code.push_back({false, info.mnemonic, 1}); 
+            page->code.push_back({false, info.mnemonic, (u16)(page->page_addr + offset), 1}); 
             return it - next_page + 1;
         }
 
@@ -114,6 +62,7 @@ int Disassembler::disassemble_page(Page *page, u16 first_instr_addr)
         page->code.resize((size_t) offset + 1);
         std::string disassembly = info.mnemonic + " " + info.addr_parser(&it);
         page->code[offset].str = disassembly; 
+        page->code[offset].addr = page->page_addr + offset;
         page->code[offset].len = (it - page_start) - offset;
         //if (offset == 0)
         //    std::cout << "> 0x" << std::hex << (page->page_addr + offset) << std::dec << ":  " << info.mnemonic + " " + info.addr_parser(&it) << std::endl;
@@ -127,9 +76,9 @@ int Disassembler::disassemble_page(Page *page, u16 first_instr_addr)
 /*
  * Returns the disassembled code at and surrounding `addr` as a stringstream.
  */
-std::stringstream Disassembler::get_disassembly(u16 addr)
+std::vector<DisassembledInstruction *> Disassembler::get_disassembly(u16 addr)
 {
-    std::stringstream ss;
+    std::vector<DisassembledInstruction *> instrs;
 
     // figure out where to start disassembling/printing from.
     u16 page_nr   = addr / Layout::PAGE_SIZE;
@@ -162,27 +111,11 @@ std::stringstream Disassembler::get_disassembly(u16 addr)
 
     // print disassembly
     for (page_nr = first_page_nr; this->page_table[page_nr].first_instr_offset != -1; page_nr++) {
-        this->page_table[page_nr].get_disassembly(&ss, addr);
+        this->page_table[page_nr].get_disassembly(&instrs);
     }
    
-    return ss;
+    return instrs;
 }
-
-/*
- * Disassembles the program pointed to by the reset vector.
- * Will recursively enter
- */
-//void Disassembler::disassemble()
-//{
-//    u16 addr = mem[Layout::RESET_VECTOR] + 
-//              (mem[Layout::RESET_VECTOR + 1] << 8);
-//
-//    Page *page = &(this->page_table[addr / 0x100]);
-//    this->disassemble_page(page, addr);
-//    //std::vector<u16> jmps = this->disassemble_block(&entry);
-//
-//    //this->code_blocks.push_back(entry);
-//}
 
 std::string byte_to_hex(u8 b)
 {

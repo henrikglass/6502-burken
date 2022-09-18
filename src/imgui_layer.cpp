@@ -112,6 +112,7 @@ void show_mem_editor(const Memory *mem, const Cpu *cpu, ImguiLayerInfo *info)
     }
 }
 
+#include <iostream>
 void show_disassmbler(const Cpu *cpu, Disassembler *disasm, ImguiLayerInfo *info)
 {
     ImGui::Separator();
@@ -119,12 +120,37 @@ void show_disassmbler(const Cpu *cpu, Disassembler *disasm, ImguiLayerInfo *info
         info->show_disasm = !info->show_disasm; 
         info->changed = true;
     }
-    if (info->show_disasm) {
-        ImGuiWindowFlags window_flags = ImGuiWindowFlags_HorizontalScrollbar;
-        ImGui::BeginChild("Live disassembler", {0, 160}, false, window_flags);
-            ImGui::Text("%s", disasm->get_disassembly(cpu->PC).str().c_str());
-        ImGui::EndChild();
+    
+    if (!info->show_disasm) {
+        return;
     }
+
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_HorizontalScrollbar;
+    ImGui::BeginChild("Live disassembler", {0, 160}, false, window_flags);
+        
+    auto instrs = disasm->get_disassembly(cpu->PC);
+    int row = 0;
+    float tgt;
+    for (auto *instr : instrs) {
+        if (instr->addr == cpu->PC) {
+            ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.0f, 1.0f), "> 0x%04X:  %s <", instr->addr, instr->str.c_str());
+            //ImGui::SetScrollHereY(0.5f);
+            tgt = ImGui::GetScrollY();
+        } else {
+            ImGui::Text("  0x%04X:  %s", instr->addr, instr->str.c_str());
+        }
+        row++;
+    }
+
+    float scroll = ImGui::GetScrollY();
+    float scrollmax = ImGui::GetScrollMaxY();
+    float height =  ImGui::GetWindowHeight();
+    float fontsize = ImGui::GetFontSize();
+
+    std::cout << "s: " << scroll << " sm: " << scrollmax << " tgt: " << tgt << " h: " << height << 
+                 " fonts: " << fontsize << " rows: " << row << " p: " << (fontsize * row) << std::endl;
+    
+    ImGui::EndChild();
 
     //ImGui::Text("Op at PC: %s\n", instruction_table[(*mem)[cpu->PC]].mnemonic.c_str());
 }

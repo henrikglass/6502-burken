@@ -36,10 +36,19 @@ entry:
     lda #$ff
     sta MASK
     lda #%10101010
+    nop
+    nop
 
 deadloop:
     nop
     jmp deadloop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
 
 swap:
     eor MASK

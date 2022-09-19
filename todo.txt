@@ -1,6 +1,6 @@
-fps counter
 implement test all instructions
 Audio device
+keyboard device
 Is "data pointer" used when it should be?
 imgui disassembler
 Proper implementation of IRQ/reset/NMI (push registers onto stack)

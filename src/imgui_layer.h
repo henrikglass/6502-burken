@@ -16,10 +16,11 @@ struct ImguiLayerInfo
 {
     bool changed                     = true;
     bool show_disasm                 = true;
+    bool disasm_follow_pc            = true;
     bool show_mem_edit               = true;
     bool execution_paused            = true; 
     bool step_execution              = false;
-    bool follow_pc_on_step           = false;
+    bool memedit_follow_pc           = false;
     bool reset_cpu                   = false;
     bool turbo_mode                  = false;
     float requested_clock_speed      = 10000.0f; // Hz

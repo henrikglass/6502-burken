@@ -64,11 +64,6 @@ void show_simulation_control(ImguiLayerInfo *info)
         info->changed = true;
     }
     ImGui::SameLine();
-    if (ImGui::Button((info->follow_pc_on_step) ? "Follow PC on step: ON" : "Follow PC on step: OFF")) {
-        info->follow_pc_on_step = !info->follow_pc_on_step;
-        info->changed = true;
-    }
-    ImGui::SameLine();
     if (ImGui::Button("Reset CPU")) {
         info->reset_cpu = true;
         info->changed = true;
@@ -96,28 +91,47 @@ void show_simulation_control(ImguiLayerInfo *info)
 void show_mem_editor(const Memory *mem, const Cpu *cpu, ImguiLayerInfo *info)
 {
     ImGui::Separator();
+    ImGui::Text("Memory editor:\n");
     if (ImGui::Button(info->show_mem_edit ? "Hide memory editor" : "Show memory editor")) {
         info->show_mem_edit = !info->show_mem_edit; 
         info->changed = true;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button((info->memedit_follow_pc) ? "Follow PC on step: ON" : "Follow PC on step: OFF")) {
+        info->memedit_follow_pc = !info->memedit_follow_pc;
+        info->changed = true;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Jump to PC")) {
+        mem_edit.GotoAddrAndHighlight(cpu->PC, cpu->PC);
     }
     if (info->show_mem_edit) {
         ImGui::BeginChild("Memory editor");
         mem_edit.DrawContents(mem->data, Layout::MEM_SIZE, 0x0000);
         ImGui::EndChild();
     }
-    if (info->follow_pc_on_step && 
-            (info->execution_paused || info->requested_clock_speed < 1000.0f) &&
+    if (info->memedit_follow_pc && 
+            (info->execution_paused || info->requested_clock_speed < 100.0f /*hz*/) &&
             cpu->PC != last_frame_pc) {
         mem_edit.GotoAddrAndHighlight(cpu->PC, cpu->PC);
     }
 }
 
-#include <iostream>
 void show_disassmbler(const Cpu *cpu, Disassembler *disasm, ImguiLayerInfo *info)
 {
+    const int DISASSEMBLER_CONTENT_HEIGHT = 275;
+    const int DISASSEMBLER_SCROLL_MARGIN = 25; 
+
     ImGui::Separator();
+    ImGui::Text("Live disassembler:\n");
     if (ImGui::Button(info->show_disasm ? "Hide live disassembler" : "Show live disassembler")) {
         info->show_disasm = !info->show_disasm; 
+        info->changed = true;
+    }
+    
+    ImGui::SameLine();
+    if (ImGui::Button(info->disasm_follow_pc ? "Follow PC: ON" : "Follow PC: OFF")) {
+        info->disasm_follow_pc = !info->disasm_follow_pc; 
         info->changed = true;
     }
     
@@ -126,29 +140,33 @@ void show_disassmbler(const Cpu *cpu, Disassembler *disasm, ImguiLayerInfo *info
     }
 
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_HorizontalScrollbar;
-    ImGui::BeginChild("Live disassembler", {0, 160}, false, window_flags);
+    ImGui::BeginChild("Live disassembler", {0, DISASSEMBLER_CONTENT_HEIGHT}, false, window_flags);
         
     auto instrs = disasm->get_disassembly(cpu->PC);
     int row = 0;
-    float tgt;
+    int tgt = 0;
     for (auto *instr : instrs) {
         if (instr->addr == cpu->PC) {
             ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.0f, 1.0f), "> 0x%04X:  %s <", instr->addr, instr->str.c_str());
             //ImGui::SetScrollHereY(0.5f);
-            tgt = ImGui::GetScrollY();
+            //tgt = ImGui::GetScrollY();
+            tgt = row;
         } else {
             ImGui::Text("  0x%04X:  %s", instr->addr, instr->str.c_str());
         }
         row++;
     }
 
-    float scroll = ImGui::GetScrollY();
-    float scrollmax = ImGui::GetScrollMaxY();
-    float height =  ImGui::GetWindowHeight();
-    float fontsize = ImGui::GetFontSize();
-
-    std::cout << "s: " << scroll << " sm: " << scrollmax << " tgt: " << tgt << " h: " << height << 
-                 " fonts: " << fontsize << " rows: " << row << " p: " << (fontsize * row) << std::endl;
+    if (info->disasm_follow_pc) {
+        float scroll_max = ImGui::GetScrollMaxY();
+        float own_scroll_pos = ImGui::GetScrollY();
+        float tgt_scroll_pos = float(tgt)/float(row) * (scroll_max + DISASSEMBLER_CONTENT_HEIGHT);
+        
+        if (own_scroll_pos + DISASSEMBLER_CONTENT_HEIGHT < tgt_scroll_pos + DISASSEMBLER_SCROLL_MARGIN/2 ||
+                own_scroll_pos > tgt_scroll_pos) {
+            ImGui::SetScrollY(tgt_scroll_pos - DISASSEMBLER_SCROLL_MARGIN);
+        }
+    }
     
     ImGui::EndChild();
 
@@ -198,7 +216,7 @@ void ImguiLayer::draw()
     ImGui::NewFrame();
 
     // --- draw GUI! ---
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
     this->draw_main_window();
 
     // render

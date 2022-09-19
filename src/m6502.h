@@ -72,9 +72,6 @@ struct Cpu
     void reset();
     void irq();
     void nmi();
-
-    // debug
-    void print_status();
 };
 
 /*****************************************************************************
@@ -131,7 +128,6 @@ struct Instruction
 {
     u8 (*op)(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu * cpu)); // instr.
     AddrModeRet (*addr_mode)(Cpu *cpu); // addressing mode.
-    std::string mnemonic;
     u8 n_cycles;
     u8 execute(Cpu *cpu) 
     {

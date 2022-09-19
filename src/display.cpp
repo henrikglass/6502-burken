@@ -33,8 +33,6 @@ GLenum glCheckError_(const char *file, int line)
 #define diva_error_check() if(glCheckError_(__FILE__, __LINE__) != GL_NO_ERROR) exit(1)
 
 // default screen size
-//unsigned int display_width  = 1320;
-//unsigned int display_height =  820;
 unsigned int display_width  = 1920;
 unsigned int display_height = 1080;
 
@@ -474,11 +472,6 @@ int Display::loop()
     if (this->imgui_layer != nullptr)
         this->imgui_layer->draw();
     
-    // ------------ measure time --------------
-    auto time_elapsed = std::chrono::high_resolution_clock::now() - timer_start;
-    long long us = std::chrono::duration_cast<std::chrono::microseconds>(time_elapsed).count();
-    timer_current = float(double(us) / 1000000.0);
-
     return 0;
 }
     

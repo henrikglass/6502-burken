@@ -747,191 +747,191 @@ void populate_instruction_table()
 
     // "zero" fill
     for (int i = 0; i < 256; i++)
-        instruction_table[i] = {OP_INVALID, IMPLIED, "-", 0};
+        instruction_table[i] = {OP_INVALID, IMPLIED, 0};
 
     // populate
     // row 0
-    instruction_table[0x00] = {op_brk,  IMPLIED,    "BRK",        7};
-    instruction_table[0x01] = {op_ora,  addr_ind_X, "ORA ind,X",  6};
-    instruction_table[0x05] = {op_ora,  addr_zpg,   "ORA zpg",    3};
-    instruction_table[0x06] = {op_asl,  addr_zpg,   "ASL zpg",    5};
-    instruction_table[0x08] = {op_php,  IMPLIED,    "PHP",        3};
-    instruction_table[0x09] = {op_ora,  addr_imm,   "ORA #",      2};
-    instruction_table[0x0A] = {op_asl,  addr_acc,   "ASL A",      2};
-    instruction_table[0x0D] = {op_ora,  addr_abs,   "ORA abs",    4};
-    instruction_table[0x0E] = {op_asl,  addr_abs,   "ASL abs",    6};
+    instruction_table[0x00] = {op_brk,  IMPLIED,    7};
+    instruction_table[0x01] = {op_ora,  addr_ind_X, 6};
+    instruction_table[0x05] = {op_ora,  addr_zpg,   3};
+    instruction_table[0x06] = {op_asl,  addr_zpg,   5};
+    instruction_table[0x08] = {op_php,  IMPLIED,    3};
+    instruction_table[0x09] = {op_ora,  addr_imm,   2};
+    instruction_table[0x0A] = {op_asl,  addr_acc,   2};
+    instruction_table[0x0D] = {op_ora,  addr_abs,   4};
+    instruction_table[0x0E] = {op_asl,  addr_abs,   6};
     
     // row 1
-    instruction_table[0x10] = {op_bpl,  IMPLIED,    "BPL",        2};
-    instruction_table[0x11] = {op_ora,  addr_ind_Y, "ORA ind,Y",  5};
-    instruction_table[0x15] = {op_ora,  addr_zpg_X, "ORA zpg,X",  4};
-    instruction_table[0x16] = {op_asl,  addr_zpg_X, "ASL zpg,X",  6};
-    instruction_table[0x18] = {op_clc,  IMPLIED,    "CLC",        2};
-    instruction_table[0x19] = {op_ora,  addr_abs_Y, "ORA abs,Y",  4};
-    instruction_table[0x1D] = {op_ora,  addr_abs_X, "ORA abs,X",  4};
-    instruction_table[0x1E] = {op_asl,  addr_abs_X, "ASL abs,X",  7};
+    instruction_table[0x10] = {op_bpl,  IMPLIED,    2};
+    instruction_table[0x11] = {op_ora,  addr_ind_Y, 5};
+    instruction_table[0x15] = {op_ora,  addr_zpg_X, 4};
+    instruction_table[0x16] = {op_asl,  addr_zpg_X, 6};
+    instruction_table[0x18] = {op_clc,  IMPLIED,    2};
+    instruction_table[0x19] = {op_ora,  addr_abs_Y, 4};
+    instruction_table[0x1D] = {op_ora,  addr_abs_X, 4};
+    instruction_table[0x1E] = {op_asl,  addr_abs_X, 7};
 
     // row 2
-    instruction_table[0x20] = {op_jsr,  addr_abs,   "JSR abs",    6};
-    instruction_table[0x21] = {op_and,  addr_ind_X, "AND ind,X",  6};
-    instruction_table[0x24] = {op_bit,  addr_zpg,   "BIT zpg",    3};
-    instruction_table[0x25] = {op_and,  addr_zpg,   "AND zpg",    3};
-    instruction_table[0x26] = {op_rol,  addr_zpg,   "ROL zpg",    5};
-    instruction_table[0x28] = {op_plp,  IMPLIED,    "PLP",        4};
-    instruction_table[0x29] = {op_and,  addr_imm,   "AND #",      2};
-    instruction_table[0x2A] = {op_rol,  addr_acc,   "ROL A",      2};
-    instruction_table[0x2C] = {op_bit,  addr_abs,   "BIT abs",    4};
-    instruction_table[0x2D] = {op_and,  addr_abs,   "AND abs",    4};
-    instruction_table[0x2E] = {op_rol,  addr_abs,   "ROL abs",    6};
+    instruction_table[0x20] = {op_jsr,  addr_abs,   6};
+    instruction_table[0x21] = {op_and,  addr_ind_X, 6};
+    instruction_table[0x24] = {op_bit,  addr_zpg,   3};
+    instruction_table[0x25] = {op_and,  addr_zpg,   3};
+    instruction_table[0x26] = {op_rol,  addr_zpg,   5};
+    instruction_table[0x28] = {op_plp,  IMPLIED,    4};
+    instruction_table[0x29] = {op_and,  addr_imm,   2};
+    instruction_table[0x2A] = {op_rol,  addr_acc,   2};
+    instruction_table[0x2C] = {op_bit,  addr_abs,   4};
+    instruction_table[0x2D] = {op_and,  addr_abs,   4};
+    instruction_table[0x2E] = {op_rol,  addr_abs,   6};
 
     // row 3
-    instruction_table[0x30] = {op_bmi,  addr_rel,   "BMI rel",    2};
-    instruction_table[0x31] = {op_and,  addr_ind_Y, "AND ind,Y",  5};
-    instruction_table[0x35] = {op_and,  addr_zpg_X, "AND zpg,X",  4};
-    instruction_table[0x36] = {op_rol,  addr_zpg_X, "ROL zpg,X",  6};
-    instruction_table[0x38] = {op_sec,  IMPLIED,    "SEC",        6};
-    instruction_table[0x39] = {op_and,  addr_abs_Y, "AND abs,Y",  4};
-    instruction_table[0x3D] = {op_and,  addr_abs_X, "AND abs,X",  4};
-    instruction_table[0x3E] = {op_rol,  addr_abs_X, "ROL abs,X",  7};
+    instruction_table[0x30] = {op_bmi,  addr_rel,   2};
+    instruction_table[0x31] = {op_and,  addr_ind_Y, 5};
+    instruction_table[0x35] = {op_and,  addr_zpg_X, 4};
+    instruction_table[0x36] = {op_rol,  addr_zpg_X, 6};
+    instruction_table[0x38] = {op_sec,  IMPLIED,    6};
+    instruction_table[0x39] = {op_and,  addr_abs_Y, 4};
+    instruction_table[0x3D] = {op_and,  addr_abs_X, 4};
+    instruction_table[0x3E] = {op_rol,  addr_abs_X, 7};
 
     // row 4
-    instruction_table[0x40] = {op_rti,  IMPLIED,    "RTI",        6};
-    instruction_table[0x41] = {op_eor,  addr_ind_X, "EOR ind,X",  6};
-    instruction_table[0x45] = {op_eor,  addr_zpg,   "E0R zpg",    3};
-    instruction_table[0x46] = {op_lsr,  addr_zpg,   "LSR zpg",    5};
-    instruction_table[0x48] = {op_pha,  IMPLIED,    "PHA",        3};
-    instruction_table[0x49] = {op_eor,  addr_imm,   "EOR #",      2};
-    instruction_table[0x4A] = {op_lsr,  addr_acc,   "LSR A",      2};
-    instruction_table[0x4C] = {op_jmp,  addr_abs,   "JMP abs",    3};
-    instruction_table[0x4D] = {op_eor,  addr_abs,   "EOR abs",    3};
-    instruction_table[0x4E] = {op_lsr,  addr_abs,   "LSR abs",    3};
+    instruction_table[0x40] = {op_rti,  IMPLIED,    6};
+    instruction_table[0x41] = {op_eor,  addr_ind_X, 6};
+    instruction_table[0x45] = {op_eor,  addr_zpg,   3};
+    instruction_table[0x46] = {op_lsr,  addr_zpg,   5};
+    instruction_table[0x48] = {op_pha,  IMPLIED,    3};
+    instruction_table[0x49] = {op_eor,  addr_imm,   2};
+    instruction_table[0x4A] = {op_lsr,  addr_acc,   2};
+    instruction_table[0x4C] = {op_jmp,  addr_abs,   3};
+    instruction_table[0x4D] = {op_eor,  addr_abs,   3};
+    instruction_table[0x4E] = {op_lsr,  addr_abs,   3};
 
     // row 5
-    instruction_table[0x50] = {op_bvc,  addr_rel,   "BVC rel",    2};
-    instruction_table[0x51] = {op_eor,  addr_ind_Y, "EOR ind,Y",  5};
-    instruction_table[0x55] = {op_eor,  addr_zpg_X, "EOR zpg,X",  4};
-    instruction_table[0x56] = {op_lsr,  addr_zpg_X, "LSR zpg,X",  6};
-    instruction_table[0x58] = {op_cli,  IMPLIED,    "CLI",        2}; // TODO??
-    instruction_table[0x59] = {op_cli,  IMPLIED,    "CLI",        2};
-    instruction_table[0x5D] = {op_cli,  IMPLIED,    "CLI",        2};
-    instruction_table[0x5E] = {op_cli,  IMPLIED,    "CLI",        2};
+    instruction_table[0x50] = {op_bvc,  addr_rel,   2};
+    instruction_table[0x51] = {op_eor,  addr_ind_Y, 5};
+    instruction_table[0x55] = {op_eor,  addr_zpg_X, 4};
+    instruction_table[0x56] = {op_lsr,  addr_zpg_X, 6};
+    instruction_table[0x58] = {op_cli,  IMPLIED,    2}; // TODO??
+    instruction_table[0x59] = {op_cli,  IMPLIED,    2};
+    instruction_table[0x5D] = {op_cli,  IMPLIED,    2};
+    instruction_table[0x5E] = {op_cli,  IMPLIED,    2};
 
     // row 6
-    instruction_table[0x60] = {op_bvc,  addr_rel,   "BVC rel",    2};
-    instruction_table[0x61] = {op_eor,  addr_ind_Y, "EOR ind,Y",  5};
-    instruction_table[0x65] = {op_eor,  addr_zpg_X, "EOR zpg,X",  4};
-    instruction_table[0x66] = {op_lsr,  addr_zpg_X, "LSR zpg,X",  6};
-    instruction_table[0x68] = {op_cli,  IMPLIED,    "CLI",        2};
-    instruction_table[0x69] = {op_adc,  addr_imm,   "ADC #",      2};
-    instruction_table[0x6A] = {op_ror,  addr_acc,   "ROR A",      2};
-    instruction_table[0x6C] = {op_jmp,  addr_ind,   "JMP ind",    5};
-    instruction_table[0x6D] = {op_adc,  addr_abs,   "ADC abs",    4};
-    instruction_table[0x6E] = {op_ror,  addr_abs,   "ROR abs",    6};
+    instruction_table[0x60] = {op_bvc,  addr_rel,   2};
+    instruction_table[0x61] = {op_eor,  addr_ind_Y, 5};
+    instruction_table[0x65] = {op_eor,  addr_zpg_X, 4};
+    instruction_table[0x66] = {op_lsr,  addr_zpg_X, 6};
+    instruction_table[0x68] = {op_cli,  IMPLIED,    2};
+    instruction_table[0x69] = {op_adc,  addr_imm,   2};
+    instruction_table[0x6A] = {op_ror,  addr_acc,   2};
+    instruction_table[0x6C] = {op_jmp,  addr_ind,   5};
+    instruction_table[0x6D] = {op_adc,  addr_abs,   4};
+    instruction_table[0x6E] = {op_ror,  addr_abs,   6};
 
     // row 7
-    instruction_table[0x70] = {op_bvs,  addr_rel,   "BVS rel",    2};
-    instruction_table[0x71] = {op_adc,  addr_ind_Y, "ADC ind,Y",  5};
-    instruction_table[0x75] = {op_adc,  addr_zpg_X, "ADC zpg,X",  4};
-    instruction_table[0x76] = {op_ror,  addr_zpg_X, "ROR zpg,X",  6};
-    instruction_table[0x78] = {op_sei,  IMPLIED,    "SEI",        2};
-    instruction_table[0x79] = {op_adc,  addr_abs_Y, "ADC abs,Y",  4};
-    instruction_table[0x7D] = {op_adc,  addr_abs_X, "ADC abs,X",  4};
-    instruction_table[0x7E] = {op_ror,  addr_abs_X, "ROR abs,X",  7};
+    instruction_table[0x70] = {op_bvs,  addr_rel,   2};
+    instruction_table[0x71] = {op_adc,  addr_ind_Y, 5};
+    instruction_table[0x75] = {op_adc,  addr_zpg_X, 4};
+    instruction_table[0x76] = {op_ror,  addr_zpg_X, 6};
+    instruction_table[0x78] = {op_sei,  IMPLIED,    2};
+    instruction_table[0x79] = {op_adc,  addr_abs_Y, 4};
+    instruction_table[0x7D] = {op_adc,  addr_abs_X, 4};
+    instruction_table[0x7E] = {op_ror,  addr_abs_X, 7};
 
     // row 8
-    instruction_table[0x81] = {op_sta,  addr_ind_X, "STA ind,X",  6};
-    instruction_table[0x84] = {op_sty,  addr_zpg,   "STY zpg",    3};
-    instruction_table[0x85] = {op_sta,  addr_zpg,   "STA zpg",    3};
-    instruction_table[0x86] = {op_stx,  addr_zpg,   "STX zpg",    3};
-    instruction_table[0x88] = {op_dey,  IMPLIED,    "DEY",        2};
-    instruction_table[0x8A] = {op_txa,  IMPLIED,    "TXA",        2};
-    instruction_table[0x8C] = {op_sty,  addr_abs,   "STY abs",    4};
-    instruction_table[0x8D] = {op_sta,  addr_abs,   "STA abs",    4};
-    instruction_table[0x8E] = {op_stx,  addr_abs,   "STX abs",    4};
+    instruction_table[0x81] = {op_sta,  addr_ind_X, 6};
+    instruction_table[0x84] = {op_sty,  addr_zpg,   3};
+    instruction_table[0x85] = {op_sta,  addr_zpg,   3};
+    instruction_table[0x86] = {op_stx,  addr_zpg,   3};
+    instruction_table[0x88] = {op_dey,  IMPLIED,    2};
+    instruction_table[0x8A] = {op_txa,  IMPLIED,    2};
+    instruction_table[0x8C] = {op_sty,  addr_abs,   4};
+    instruction_table[0x8D] = {op_sta,  addr_abs,   4};
+    instruction_table[0x8E] = {op_stx,  addr_abs,   4};
 
     // row 9
-    instruction_table[0x90] = {op_bcc, addr_rel,    "BCC rel",    2};
-    instruction_table[0x91] = {op_sta, addr_ind_Y,  "STA ind,Y",  6};
-    instruction_table[0x94] = {op_sty, addr_zpg_X,  "STY zpg,X",  4};
-    instruction_table[0x95] = {op_sta, addr_zpg_X,  "STA zpg,X",  4};
-    instruction_table[0x96] = {op_stx, addr_zpg_Y,  "STX zpg,Y",  4};
-    instruction_table[0x98] = {op_tya, IMPLIED,     "TYA",        2};
-    instruction_table[0x99] = {op_sta, addr_abs_Y,  "STA abs,Y",  5};
-    instruction_table[0x9A] = {op_txs, IMPLIED,     "TXS",        2};
-    instruction_table[0x9D] = {op_sta, addr_abs_X,  "STA abs,X",  5};
+    instruction_table[0x90] = {op_bcc, addr_rel,    2};
+    instruction_table[0x91] = {op_sta, addr_ind_Y,  6};
+    instruction_table[0x94] = {op_sty, addr_zpg_X,  4};
+    instruction_table[0x95] = {op_sta, addr_zpg_X,  4};
+    instruction_table[0x96] = {op_stx, addr_zpg_Y,  4};
+    instruction_table[0x98] = {op_tya, IMPLIED,     2};
+    instruction_table[0x99] = {op_sta, addr_abs_Y,  5};
+    instruction_table[0x9A] = {op_txs, IMPLIED,     2};
+    instruction_table[0x9D] = {op_sta, addr_abs_X,  5};
 
     // row A
-    instruction_table[0xA0] = {op_ldy, addr_imm,    "LDY #",      2};
-    instruction_table[0xA1] = {op_lda, addr_ind_X,  "LDA ind,X",  6};
-    instruction_table[0xA2] = {op_ldx, addr_imm,    "LDX #",      2};
-    instruction_table[0xA4] = {op_ldy, addr_zpg,    "LDY zpg",    3};
-    instruction_table[0xA5] = {op_lda, addr_zpg,    "LDA zpg",    3};
-    instruction_table[0xA6] = {op_ldx, addr_zpg,    "LDX zpg",    3};
-    instruction_table[0xA8] = {op_tay, IMPLIED,     "TAY",        2};
-    instruction_table[0xA9] = {op_lda, addr_imm,    "LDA #",      2};
-    instruction_table[0xAA] = {op_tax, IMPLIED,     "TAX",        2};
-    instruction_table[0xAC] = {op_ldy, addr_abs,    "LDY abs",    4};
-    instruction_table[0xAD] = {op_lda, addr_abs,    "LDA abs",    4};
-    instruction_table[0xAE] = {op_ldx, addr_abs,    "LDX abs",    4};
+    instruction_table[0xA0] = {op_ldy, addr_imm,    2};
+    instruction_table[0xA1] = {op_lda, addr_ind_X,  6};
+    instruction_table[0xA2] = {op_ldx, addr_imm,    2};
+    instruction_table[0xA4] = {op_ldy, addr_zpg,    3};
+    instruction_table[0xA5] = {op_lda, addr_zpg,    3};
+    instruction_table[0xA6] = {op_ldx, addr_zpg,    3};
+    instruction_table[0xA8] = {op_tay, IMPLIED,     2};
+    instruction_table[0xA9] = {op_lda, addr_imm,    2};
+    instruction_table[0xAA] = {op_tax, IMPLIED,     2};
+    instruction_table[0xAC] = {op_ldy, addr_abs,    4};
+    instruction_table[0xAD] = {op_lda, addr_abs,    4};
+    instruction_table[0xAE] = {op_ldx, addr_abs,    4};
 
     // row B
-    instruction_table[0xB0] = {op_bcs, addr_rel,    "BCS rel",    2};
-    instruction_table[0xB1] = {op_lda, addr_ind_Y,  "LDA ind,Y",  5};
-    instruction_table[0xB4] = {op_ldy, addr_zpg_X,  "LDY zpg,X",  4};
-    instruction_table[0xB5] = {op_lda, addr_zpg_X,  "LDA zpg,X",  4};
-    instruction_table[0xB6] = {op_ldx, addr_zpg_Y,  "LDX zpg,Y",  4};
-    instruction_table[0xB8] = {op_clv, IMPLIED,     "CLV",        2};
-    instruction_table[0xB9] = {op_lda, addr_abs_Y,  "LDA abs,Y",  4};
-    instruction_table[0xBA] = {op_tsx, IMPLIED,     "TSX",        2};
-    instruction_table[0xBC] = {op_ldy, addr_abs_X,  "LDY abs,X",  4};
-    instruction_table[0xBD] = {op_lda, addr_abs_X,  "LDA abs,X",  4};
-    instruction_table[0xBE] = {op_ldx, addr_abs_Y,  "LDX abs,Y",  4};
+    instruction_table[0xB0] = {op_bcs, addr_rel,    2};
+    instruction_table[0xB1] = {op_lda, addr_ind_Y,  5};
+    instruction_table[0xB4] = {op_ldy, addr_zpg_X,  4};
+    instruction_table[0xB5] = {op_lda, addr_zpg_X,  4};
+    instruction_table[0xB6] = {op_ldx, addr_zpg_Y,  4};
+    instruction_table[0xB8] = {op_clv, IMPLIED,     2};
+    instruction_table[0xB9] = {op_lda, addr_abs_Y,  4};
+    instruction_table[0xBA] = {op_tsx, IMPLIED,     2};
+    instruction_table[0xBC] = {op_ldy, addr_abs_X,  4};
+    instruction_table[0xBD] = {op_lda, addr_abs_X,  4};
+    instruction_table[0xBE] = {op_ldx, addr_abs_Y,  4};
     
     // row C
-    instruction_table[0xC0] = {op_cpy, addr_imm,    "CPY #",      2};
-    instruction_table[0xC1] = {op_cmp, addr_ind_X,  "CMP ind,X",  6};
-    instruction_table[0xC4] = {op_cpy, addr_zpg,    "CPY zpg",    3};
-    instruction_table[0xC5] = {op_cmp, addr_zpg,    "CMP zpg",    3};
-    instruction_table[0xC6] = {op_dec, addr_zpg,    "DEC zpg",    5};
-    instruction_table[0xC8] = {op_iny, IMPLIED,     "INY",        2};
-    instruction_table[0xC9] = {op_cmp, addr_imm,    "CMP #",      2};
-    instruction_table[0xCA] = {op_dex, IMPLIED,     "DEX",        2};
-    instruction_table[0xCC] = {op_cpy, addr_abs,    "CPY abs",    4};
-    instruction_table[0xCD] = {op_cmp, addr_abs,    "CMP abs",    4};
-    instruction_table[0xCE] = {op_dec, addr_abs,    "DEC abs",    6};
+    instruction_table[0xC0] = {op_cpy, addr_imm,    2};
+    instruction_table[0xC1] = {op_cmp, addr_ind_X,  6};
+    instruction_table[0xC4] = {op_cpy, addr_zpg,    3};
+    instruction_table[0xC5] = {op_cmp, addr_zpg,    3};
+    instruction_table[0xC6] = {op_dec, addr_zpg,    5};
+    instruction_table[0xC8] = {op_iny, IMPLIED,     2};
+    instruction_table[0xC9] = {op_cmp, addr_imm,    2};
+    instruction_table[0xCA] = {op_dex, IMPLIED,     2};
+    instruction_table[0xCC] = {op_cpy, addr_abs,    4};
+    instruction_table[0xCD] = {op_cmp, addr_abs,    4};
+    instruction_table[0xCE] = {op_dec, addr_abs,    6};
 
     // row D
-    instruction_table[0xD0] = {op_bne, addr_rel,    "BNE rel",    2};
-    instruction_table[0xD1] = {op_cmp, addr_ind_Y,  "CMP ind,Y",  5};
-    instruction_table[0xD5] = {op_cmp, addr_zpg_X,  "CMP zpg,X",  4};
-    instruction_table[0xD6] = {op_dec, addr_zpg_X,  "DEC zpg,X",  6};
-    instruction_table[0xD8] = {op_cld, IMPLIED,     "CLD",        2};
-    instruction_table[0xD9] = {op_cmp, addr_abs_Y,  "CMP abs,Y",  4};
-    instruction_table[0xDD] = {op_cmp, addr_abs_X,  "CMP abs,X",  4};
-    instruction_table[0xDE] = {op_dec, addr_abs_X,  "DEC abs,X",  7};
+    instruction_table[0xD0] = {op_bne, addr_rel,    2};
+    instruction_table[0xD1] = {op_cmp, addr_ind_Y,  5};
+    instruction_table[0xD5] = {op_cmp, addr_zpg_X,  4};
+    instruction_table[0xD6] = {op_dec, addr_zpg_X,  6};
+    instruction_table[0xD8] = {op_cld, IMPLIED,     2};
+    instruction_table[0xD9] = {op_cmp, addr_abs_Y,  4};
+    instruction_table[0xDD] = {op_cmp, addr_abs_X,  4};
+    instruction_table[0xDE] = {op_dec, addr_abs_X,  7};
 
     // row E
-    instruction_table[0xE0] = {op_cpx, addr_imm,    "CPX #",      2};
-    instruction_table[0xE1] = {op_sbc, addr_ind_X,  "SBC ind,X",  6};
-    instruction_table[0xE4] = {op_cpx, addr_zpg,    "CPX zpg",    3};
-    instruction_table[0xE5] = {op_sbc, addr_zpg,    "SBC zpg",    3};
-    instruction_table[0xE6] = {op_inc, addr_zpg,    "INC zpg",    5};
-    instruction_table[0xE8] = {op_inx, IMPLIED,     "INX",        2};
-    instruction_table[0xE9] = {op_sbc, addr_imm,    "SBC #",      2};
-    instruction_table[0xEA] = {op_nop, IMPLIED,     "NOP",        2};
-    instruction_table[0xEC] = {op_cpx, addr_abs,    "CPX abs",    4};
-    instruction_table[0xED] = {op_sbc, addr_abs,    "SBC abs",    4};
-    instruction_table[0xEE] = {op_inc, addr_abs,    "INC abs",    6};
+    instruction_table[0xE0] = {op_cpx, addr_imm,    2};
+    instruction_table[0xE1] = {op_sbc, addr_ind_X,  6};
+    instruction_table[0xE4] = {op_cpx, addr_zpg,    3};
+    instruction_table[0xE5] = {op_sbc, addr_zpg,    3};
+    instruction_table[0xE6] = {op_inc, addr_zpg,    5};
+    instruction_table[0xE8] = {op_inx, IMPLIED,     2};
+    instruction_table[0xE9] = {op_sbc, addr_imm,    2};
+    instruction_table[0xEA] = {op_nop, IMPLIED,     2};
+    instruction_table[0xEC] = {op_cpx, addr_abs,    4};
+    instruction_table[0xED] = {op_sbc, addr_abs,    4};
+    instruction_table[0xEE] = {op_inc, addr_abs,    6};
 
     // row F
-    instruction_table[0xF0] = {op_beq, addr_rel,    "BEQ rel",    2};
-    instruction_table[0xF1] = {op_sbc, addr_ind_Y,  "SBC ind,Y",  5};
-    instruction_table[0xF5] = {op_sbc, addr_zpg_X,  "SBC zpg,X",  4};
-    instruction_table[0xF6] = {op_inc, addr_zpg_X,  "INC zpg,X",  6};
-    instruction_table[0xF8] = {op_sed, IMPLIED,     "SED",        2};
-    instruction_table[0xF9] = {op_sbc, addr_abs_Y,  "SBC abs,Y",  4};
-    instruction_table[0xFD] = {op_sbc, addr_abs_X,  "SBC abs,X",  4};
-    instruction_table[0xFE] = {op_inc, addr_abs_X,  "INC abs,X",  7};
+    instruction_table[0xF0] = {op_beq, addr_rel,    2};
+    instruction_table[0xF1] = {op_sbc, addr_ind_Y,  5};
+    instruction_table[0xF5] = {op_sbc, addr_zpg_X,  4};
+    instruction_table[0xF6] = {op_inc, addr_zpg_X,  6};
+    instruction_table[0xF8] = {op_sed, IMPLIED,     2};
+    instruction_table[0xF9] = {op_sbc, addr_abs_Y,  4};
+    instruction_table[0xFD] = {op_sbc, addr_abs_X,  4};
+    instruction_table[0xFE] = {op_inc, addr_abs_X,  7};
 
     // well. That's sure to have no typos or mistakes.
 }

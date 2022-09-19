@@ -105,6 +105,10 @@ void show_mem_editor(const Memory *mem, const Cpu *cpu, ImguiLayerInfo *info)
     if (ImGui::Button("Jump to PC")) {
         mem_edit.GotoAddrAndHighlight(cpu->PC, cpu->PC);
     }
+    ImGui::SameLine();
+    if (ImGui::Button("Jump to SP")) {
+        mem_edit.GotoAddrAndHighlight(cpu->SP, cpu->SP);
+    }
     if (info->show_mem_edit) {
         ImGui::BeginChild("Memory editor");
         mem_edit.DrawContents(mem->data, Layout::MEM_SIZE, 0x0000);

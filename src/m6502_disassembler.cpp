@@ -19,6 +19,30 @@ void Disassembler::Page::get_disassembly(std::vector<DisassembledInstruction *> 
 }
 
 /*
+ * Not used by disassemble_page() or get_disassembly(). Simply used as a single
+ * instruction disassembler for other parts of the code.
+ */
+DisassembledInstruction Disassembler::disassemble_instruction(u16 addr)
+{
+    DisassembledInstruction ret;
+    ret.addr = addr;
+    u8 *it = this->mem.data + addr;
+    u8 op_code = *it++;
+    InstructionInfo info = instruction_info_table[op_code];
+
+    // at end of memory
+    if (addr > Layout::FREE_ROM_HIGH) {
+        ret.str = "end of memory lol TODO"; // TODO
+        ret.len = 0;
+        return ret;
+    }
+
+    ret.str = info.mnemonic + " " + info.addr_parser(&it);
+    ret.len = it - (this->mem.data + addr);
+    return ret;
+}
+
+/*
  * Disassembles one (1) page of memory starting at the instruction at
  * `first_instr_addr`. Returns the offset of the "next instruction" from
  * the page address of the next page. I.e. if the function returns 2, then
@@ -228,7 +252,7 @@ void Disassembler::populate_instruction_info_table()
 
     // "zero" fill
     for (int i = 0; i < 256; i++)
-        instruction_info_table[i] = {nullptr, "-"};
+        instruction_info_table[i] = {addr_impl, "-"};
 
     // populate
     // row 0

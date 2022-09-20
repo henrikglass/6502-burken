@@ -23,9 +23,12 @@ struct ImguiLayerInfo
     bool memedit_follow_pc           = false;
     bool reset_cpu                   = false;
     bool turbo_mode                  = false;
+    bool breakpoints_enabled         = false;
     float requested_clock_speed      = 10000.0f; // Hz
     float measured_clock_speed       = 0.0f;
     float frames_per_second          = 0.0f; 
+    std::vector<u16> breakpoints;
+
 };
 
 class ImguiLayer

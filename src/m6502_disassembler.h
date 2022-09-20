@@ -81,6 +81,7 @@ public:
         this->init_page_table();
         this->populate_instruction_info_table();    
     };
+    DisassembledInstruction disassemble_instruction(u16 addr);
     std::vector<DisassembledInstruction *> get_disassembly(u16 addr);
 };
 

@@ -62,13 +62,24 @@ void run_simulation(System *system, ImguiLayerInfo *info)
             n_cycles_thresh = info->requested_clock_speed / 60.0f;
         }
 
-        // handle paused execution
+        // handle paused execution and breakpoints
         if (info->execution_paused) {
             std::this_thread::sleep_for(std::chrono::milliseconds(20));
             if (!info->step_execution)
                 continue;
-            info->step_execution = false;
         }
+        if (info->breakpoints_enabled && !info->step_execution) {
+            for (u16 bp : info->breakpoints) {
+                if (system->cpu->PC == bp) {
+                    std::cout << "Hit breakpoint: " << std::hex << bp << std::dec << std::endl;
+                    info->execution_paused = true;
+                    break;
+                }
+            }
+            if (info->execution_paused)
+                continue;
+        }
+        info->step_execution = false;
 
         // handle manual (imgui) reset
         if (info->reset_cpu) {

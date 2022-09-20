@@ -5,6 +5,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 #include "imgui_memory_editor/imgui_memory_editor.h"
+#include "util.h"
 
 static MemoryEditor mem_edit;
 
@@ -55,6 +56,7 @@ void show_simulation_control(ImguiLayerInfo *info)
     ImGui::Text("Simulation control:\n");
     if (ImGui::Button(info->execution_paused ? "Resume" : "Pause")) {
         info->execution_paused = !info->execution_paused;
+        info->step_execution = true;
         info->changed = true;
     }
     ImGui::SameLine();
@@ -121,6 +123,8 @@ void show_mem_editor(const Memory *mem, const Cpu *cpu, ImguiLayerInfo *info)
     }
 }
 
+#include <iostream>
+
 void show_disassmbler(const Cpu *cpu, Disassembler *disasm, ImguiLayerInfo *info)
 {
     const int DISASSEMBLER_CONTENT_HEIGHT = 275;
@@ -150,8 +154,16 @@ void show_disassmbler(const Cpu *cpu, Disassembler *disasm, ImguiLayerInfo *info
     int row = 0;
     int tgt = 0;
     for (auto *instr : instrs) {
+        if (info->breakpoints_enabled) {
+            for (u16 bp : info->breakpoints) {
+                if (bp == instr->addr) {
+                    ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), ">>>");
+                    ImGui::SameLine();
+                }
+            }
+        }
         if (instr->addr == cpu->PC) {
-            ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.0f, 1.0f), "> 0x%04X:  %s <", instr->addr, instr->str.c_str());
+            ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "> 0x%04X:  %s <", instr->addr, instr->str.c_str());
             //ImGui::SetScrollHereY(0.5f);
             //tgt = ImGui::GetScrollY();
             tgt = row;
@@ -171,10 +183,60 @@ void show_disassmbler(const Cpu *cpu, Disassembler *disasm, ImguiLayerInfo *info
             ImGui::SetScrollY(tgt_scroll_pos - DISASSEMBLER_SCROLL_MARGIN);
         }
     }
-    
+
     ImGui::EndChild();
 
     //ImGui::Text("Op at PC: %s\n", instruction_table[(*mem)[cpu->PC]].mnemonic.c_str());
+}
+
+void show_breakpoints(Disassembler *disasm, ImguiLayerInfo *info)
+{
+    static char textinput[5] = ""; 
+    
+    ImGui::Separator();
+    ImGui::Text("Breakpoints");
+    if (!ImGui::BeginListBox(" BP", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+        return; 
+   
+    static size_t selected_item_idx = 0;
+
+    for (size_t i = 0; i < info->breakpoints.size(); i++) {
+        const bool is_selected = (selected_item_idx == i);
+        u16 bp_addr = info->breakpoints[i];
+        std::string instr = Util::int_to_hex(bp_addr) + ":  " + disasm->disassemble_instruction(bp_addr).str;
+        if (ImGui::Selectable(instr.c_str(), is_selected))
+            selected_item_idx = i;
+
+        if (is_selected)
+            ImGui::SetItemDefaultFocus();
+    }
+
+    ImGui::EndListBox();
+
+    // add breakpoint button
+    if (ImGui::Button("Add Breakpoint")) {
+        u16 new_bp = Util::hex_to_u16(textinput);
+        auto it = std::upper_bound(info->breakpoints.cbegin(), info->breakpoints.cend(), new_bp);
+        info->breakpoints.insert(it, new_bp);
+    }
+
+    // filtered text input
+    ImGui::SameLine();
+    ImGui::InputText("address", textinput, 5, ImGuiInputTextFlags_CharsHexadecimal);
+    
+    // delete breakpoint button
+    //ImGui::SameLine();
+    if (ImGui::Button("Delete Breakpoint")) {
+        if (selected_item_idx >= 0 && selected_item_idx < info->breakpoints.size()) {
+            info->breakpoints.erase(info->breakpoints.begin() + selected_item_idx);
+        }
+    }
+
+    ImGui::SameLine();
+    if (ImGui::Button((info->breakpoints_enabled) ? "Breakpoints: Enabled" : "Breakpoints: Disabled")) {
+        info->breakpoints_enabled = !info->breakpoints_enabled;
+    }
+
 }
 
 /*
@@ -186,7 +248,11 @@ void ImguiLayer::draw_main_window() const
 
     ImGui::Text("Fps: %3.1f", this->info->frames_per_second);
 
+    // --- CPU registers & state ---
     show_cpu_stats(&this->cpu);
+
+    // --- Breakpoints ---
+    show_breakpoints(this->disasm, this->info);
 
     // --- program visualization ---
     show_disassmbler(&this->cpu, this->disasm, this->info);
@@ -220,7 +286,7 @@ void ImguiLayer::draw()
     ImGui::NewFrame();
 
     // --- draw GUI! ---
-    //ImGui::ShowDemoWindow();
+    ImGui::ShowDemoWindow();
     this->draw_main_window();
 
     // render

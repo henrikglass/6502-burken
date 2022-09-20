@@ -43,3 +43,13 @@ int64_t Util::precise_sleep(int64_t ns)
     // return remaining nanoseconds left to sleep (should be < `spin_lock_threshold_ns`)
     return ns - spin_slept_ns;
 }
+
+
+u16 Util::hex_to_u16(const std::string &str)
+{
+    unsigned int x;
+    std::stringstream ss;
+    ss << std::hex << str;
+    ss >> x;
+    return static_cast<u16>(x);
+}

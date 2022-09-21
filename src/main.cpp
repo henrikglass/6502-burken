@@ -28,7 +28,7 @@ void sigint_handler(int signal)
     running = false;
 }
 
-void run_simulation(System *system, ImguiLayerInfo *info)
+void run_simulation(System *system, UiInfo *info)
 {
     using std::chrono::high_resolution_clock;
     using std::chrono::duration_cast;
@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
     Disassembler disassembler(mem);
 
     // Create an imgui layer and attach it to the OpenGL context of `display`
-    ImguiLayerInfo info;
+    UiInfo info;
     ImguiLayer imgui_layer(cpu, mem, &disassembler, &info);
     display.attach_imgui_layer(&imgui_layer);
 

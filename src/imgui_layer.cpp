@@ -50,7 +50,7 @@ void show_cpu_stats(const Cpu *cpu)
     );
 }
 
-void show_simulation_control(ImguiLayerInfo *info)
+void show_simulation_control(UiInfo *info)
 {
     ImGui::Separator();
     ImGui::Text("Simulation control:\n");
@@ -90,7 +90,7 @@ void show_simulation_control(ImguiLayerInfo *info)
     }
 }
 
-void show_mem_editor(const Memory *mem, const Cpu *cpu, ImguiLayerInfo *info)
+void show_mem_editor(const Memory *mem, const Cpu *cpu, UiInfo *info)
 {
     ImGui::Separator();
     ImGui::Text("Memory editor:\n");
@@ -125,7 +125,7 @@ void show_mem_editor(const Memory *mem, const Cpu *cpu, ImguiLayerInfo *info)
 
 #include <iostream>
 
-void show_disassmbler(const Cpu *cpu, Disassembler *disasm, ImguiLayerInfo *info)
+void show_disassmbler(const Cpu *cpu, Disassembler *disasm, UiInfo *info)
 {
     const int DISASSEMBLER_CONTENT_HEIGHT = 275;
     const int DISASSEMBLER_SCROLL_MARGIN = 25; 
@@ -154,18 +154,17 @@ void show_disassmbler(const Cpu *cpu, Disassembler *disasm, ImguiLayerInfo *info
     int row = 0;
     int tgt = 0;
     for (auto *instr : instrs) {
-        if (info->breakpoints_enabled) {
-            for (u16 bp : info->breakpoints) {
-                if (bp == instr->addr) {
+        for (u16 bp : info->breakpoints) {
+            if (bp == instr->addr) {
+                if (info->breakpoints_enabled)
                     ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), ">>>");
-                    ImGui::SameLine();
-                }
+                else
+                    ImGui::TextColored(ImVec4(0.3f, 0.3f, 0.3f, 1.0f), ">>>");
+                ImGui::SameLine();
             }
         }
         if (instr->addr == cpu->PC) {
             ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "> 0x%04X:  %s <", instr->addr, instr->str.c_str());
-            //ImGui::SetScrollHereY(0.5f);
-            //tgt = ImGui::GetScrollY();
             tgt = row;
         } else {
             ImGui::Text("  0x%04X:  %s", instr->addr, instr->str.c_str());
@@ -189,7 +188,7 @@ void show_disassmbler(const Cpu *cpu, Disassembler *disasm, ImguiLayerInfo *info
     //ImGui::Text("Op at PC: %s\n", instruction_table[(*mem)[cpu->PC]].mnemonic.c_str());
 }
 
-void show_breakpoints(Disassembler *disasm, ImguiLayerInfo *info)
+void show_breakpoints(Disassembler *disasm, UiInfo *info)
 {
     static char textinput[5] = ""; 
     

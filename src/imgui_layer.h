@@ -12,7 +12,7 @@
  *
  * TODO rename this
  */
-struct ImguiLayerInfo 
+struct UiInfo 
 {
     bool changed                     = true;
     bool show_disasm                 = true;
@@ -34,7 +34,7 @@ struct ImguiLayerInfo
 class ImguiLayer
 {
 public:
-    ImguiLayer(const Cpu &cpu, const Memory &mem, Disassembler *disasm, ImguiLayerInfo *info) : cpu(cpu), mem(mem) 
+    ImguiLayer(const Cpu &cpu, const Memory &mem, Disassembler *disasm, UiInfo *info) : cpu(cpu), mem(mem) 
     {
         this->info = info;
         this->disasm = disasm;
@@ -42,7 +42,7 @@ public:
     void setup(GLFWwindow *window, const char *glsl_version) const;
     void draw();
     void shutdown() const;
-    ImguiLayerInfo *info;
+    UiInfo *info;
 private:
     const Cpu &cpu;
     const Memory &mem;

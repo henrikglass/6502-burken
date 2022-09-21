@@ -162,7 +162,12 @@ int main(int argc, char *argv[])
     // put garbage in vga_text_buffer
     for (int i = Layout::VGA_TEXT_BUF_LOW; i < Layout::VGA_TEXT_BUF_HIGH; i++) {
         mem[i] = (i/2) % 256;
+        if (i % 2 == 1)
+            mem[i] = 0x07;
     }
+
+    mem[Layout::VGA_TEXT_BUF_LOW + 4] = 0x7f;
+    mem[Layout::VGA_TEXT_BUF_LOW + 5] = 0x87;
     // ------------------------------------
 
     // create a Disassembler object (used by ImguiLayer).

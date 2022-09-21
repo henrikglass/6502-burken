@@ -60,6 +60,8 @@ const vec4 palette[16] = {
 in vec2 uv;
 out vec4 frag_color;
 
+uniform float time;
+
 uniform usampler2D vga_text_buffer;
 uniform usampler2D vga_char_buffer;
 
@@ -85,6 +87,19 @@ uint sample_char(uint char_code, uint x, uint y)
     return (row >> x) & 1u;
 }
 
+/*
+ * tile data consists of two bytes, one color/attribute byte and one
+ * character byte:
+ *
+ * | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
+ * |   |           |               |                               |
+ *   b       bg            fg                    char
+ *
+ *   b     =  blink character
+ *   bg    =  background color
+ *   fg    =  foreground color
+ *   char  =  character code
+ */
 void main() 
 {
     uint pixel_x = uint(gl_FragCoord.x) - LEFT_MARGIN;
@@ -97,11 +112,15 @@ void main()
     uvec4 tile      = sample_tile(tile_x, tile_y);
     uint char_code  = tile.r;
     vec4 fg_color   = palette[(tile.g >> 0u) & 0x0Fu];
-    vec4 bg_color   = palette[(tile.g >> 4u) & 0x0Fu];
-    uint pixel      = sample_char(char_code, char_x, char_y);
-    
+    vec4 bg_color   = palette[(tile.g >> 4u) & 0x07u];
+    uint blink      = tile.g >> 7u;
+
+    // handle blink bit set
+    char_code = ((blink == 1u) && ((int(time*2) % 2)) == 1) ? 0x20u : char_code;
+
+    // color the pixel
+    uint pixel = sample_char(char_code, char_x, char_y);
     frag_color = bg_color;
-   
     if (pixel != 0u)
         frag_color = fg_color;
     

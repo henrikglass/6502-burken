@@ -118,7 +118,7 @@ void main()
             color = BACKGROUND_COLOR;
         }
         color *= PP_BRIGHTNESS;
-        color *= 0.85f + 0.15f * rgb_noise(gl_FragCoord.xy, time);
+        color *= 0.75f + 0.25f * rgb_noise(gl_FragCoord.xy, time);
         //color = apply_rgb_grid_pattern(color, fb_uv);
         color = apply_grille_effect(color, fb_uv);
         color = apply_vignette(color, fb_uv);

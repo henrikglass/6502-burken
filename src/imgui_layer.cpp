@@ -285,7 +285,7 @@ void ImguiLayer::draw()
     ImGui::NewFrame();
 
     // --- draw GUI! ---
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
     this->draw_main_window();
 
     // render

@@ -211,6 +211,7 @@ void Display::use_frambuffer_gen_program()
     glUseProgram(this->framebuffer_gen_program);
     glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_text_buffer"), 0);
     glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_char_buffer"), 1);
+    glUniform1f(glGetUniformLocation(this->framebuffer_gen_program, "time"), glfwGetTime());
     
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->vga_text_texture);
@@ -277,7 +278,7 @@ void Display::use_post_process_program()
     glUniform1i(glGetUniformLocation(this->post_process_program, "frame_buffer_texture"), 0);
     glUniform1ui(glGetUniformLocation(this->post_process_program, "display_width"),  display_width);
     glUniform1ui(glGetUniformLocation(this->post_process_program, "display_height"), display_height);
-    glUniform1f(glGetUniformLocation(this->post_process_program, "time"), timer_current);
+    glUniform1f(glGetUniformLocation(this->post_process_program, "time"), glfwGetTime());
     
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->framebuffer_tex_ntsc_swap);

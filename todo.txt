@@ -2,11 +2,10 @@ implement test all instructions
 Audio device
 keyboard device
 Is "data pointer" used when it should be?
-imgui disassembler
+test imgui disassembler
 Proper implementation of IRQ/reset/NMI (push registers onto stack)
 Proper implementation of BRK
 clock program
 invalid timer data shouldn't crash program... (floating point error)
 Maybe getting a segfault on every Ctrl-C isn't good...
-blink bit VGA
 clean up day...

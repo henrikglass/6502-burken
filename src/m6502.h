@@ -41,7 +41,6 @@ const u8 BIT_UNUSED = 5; //
 const u8 BIT_V      = 6; // oVerflow
 const u8 BIT_N      = 7; // Negative
 
-
 /*
  * A 6502 cpu.
  *

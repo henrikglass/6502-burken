@@ -1,3 +1,5 @@
+#ifndef TEST
+
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -197,12 +199,9 @@ int main(int argc, char *argv[])
     system.timer2  = &timer2;
     system.display = &display;
 
-    // DEBUG
-    //Disassembler disassembler(mem);
-    //auto ss = disassembler.get_disassembly(Layout::FREE_ROM_LOW + 7);
-    //std::cout << ss.str() << std::endl;
-
     // run simulation
     run_simulation(&system, &info);
 
 }
+
+#endif

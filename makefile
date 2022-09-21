@@ -1,5 +1,8 @@
 # project
-TARGET 	= 6502-burken
+TARGET = 6502-burken
+TARGET_TESTS = 6502-burken-tests
+
+
 
 # make flags
 MAKEFLAGS += --jobs $(shell nproc)
@@ -38,6 +41,8 @@ CFLAGS 	= 	-Iinclude \
 
 #CFLAGS += -O0 -pg -g
 
+test: CFLAGS += -DTEST
+
 DEBUG_FLAGS = #-DDEBUG_PRINTS
 
 # linker
@@ -55,13 +60,17 @@ INCLUDES 	:= $(wildcard $(SRCDIR)/*.h) \
 			   $(wildcard $(SRCDIR)/imgui/*.h)
 OBJECTS 	:= $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
-# targets
 build: tags $(OBJDIR) $(TARGET)
+
+test: $(OBJDIR) $(TARGET_TESTS)
 
 tags:
 	ctags -R src/
 
 $(BINDIR)/$(TARGET): $(OBJECTS)
+	$(LINKER) $(OBJECTS) $(LFLAGS) -o $@
+
+$(BINDIR)/$(TARGET_TESTS): $(OBJECTS)
 	$(LINKER) $(OBJECTS) $(LFLAGS) -o $@
 
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
@@ -73,6 +82,7 @@ $(OBJDIR):
 
 clean:
 	rm $(BINDIR)/$(TARGET) &\
+	rm $(BINDIR)/$(TARGET_TESTS) &\
 	rm $(OBJECTS)&\
 	rm tags & \
 	rmdir $(OBJDIR) \

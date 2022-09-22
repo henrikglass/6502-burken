@@ -88,17 +88,13 @@ int Disassembler::disassemble_page(Page *page, u16 first_instr_addr)
         page->code[offset].str = disassembly; 
         page->code[offset].addr = page->page_addr + offset;
         page->code[offset].len = (it - page_start) - offset;
-        //if (offset == 0)
-        //    std::cout << "> 0x" << std::hex << (page->page_addr + offset) << std::dec << ":  " << info.mnemonic + " " + info.addr_parser(&it) << std::endl;
-        //else
-        //    std::cout << "  0x" << std::hex << (page->page_addr + offset) << std::dec << ":  " << info.mnemonic + " " + info.addr_parser(&it) << std::endl;
     }
     
     return it - next_page;
 }
 
 /*
- * Returns the disassembled code at and surrounding `addr` as a stringstream.
+ * Returns the disassembled code at and surrounding `addr`.
  */
 std::vector<DisassembledInstruction *> Disassembler::get_disassembly(u16 addr)
 {
@@ -156,8 +152,8 @@ std::string byte_to_hex(u8 b)
 }
 
 /*
- * The addr_* functions correspond to the different addressing modes off the 
- * m6502. Each implements a small parser for the arguments beloning to an 
+ * The addr_* functions correspond to the different addressing modes of the 
+ * m6502. Each implements a small parser for the arguments belonging to an 
  * op-code.
  */
 std::string addr_acc(u8 **bytes) 
@@ -226,13 +222,13 @@ std::string addr_zpg(u8 **bytes)
 std::string addr_zpg_X(u8 **bytes)
 {
     u8 ll = *(*bytes)++;
-    return "$" + byte_to_hex(ll);
+    return "$" + byte_to_hex(ll), ", X";
 }
 
 std::string addr_zpg_Y(u8 **bytes)
 {
     u8 ll = *(*bytes)++;
-    return "$" + byte_to_hex(ll);
+    return "$" + byte_to_hex(ll), ", Y";
 }
 
 /*

@@ -704,8 +704,8 @@ u8 op_cli(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 u8 op_brk(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
 
-    printf("Hit BRK instruction. Exit for now.\n");
-    exit(0); // TODO implement correctly
+    //printf("Hit BRK instruction. Exit for now.\n");
+    //exit(0); // TODO implement correctly
     return 0;
 } 
 
@@ -762,7 +762,7 @@ void populate_instruction_table()
     instruction_table[0x0E] = {op_asl,  addr_abs,   6};
     
     // row 1
-    instruction_table[0x10] = {op_bpl,  IMPLIED,    2};
+    instruction_table[0x10] = {op_bpl,  addr_rel,   2};
     instruction_table[0x11] = {op_ora,  addr_ind_Y, 5};
     instruction_table[0x15] = {op_ora,  addr_zpg_X, 4};
     instruction_table[0x16] = {op_asl,  addr_zpg_X, 6};

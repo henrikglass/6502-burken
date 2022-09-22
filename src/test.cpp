@@ -35,10 +35,14 @@ bool run_test(const T &it)
         mem[addr] = val;
     }
     
-    bool dbg_halt = mem[cpu.PC] == 0x01;
+    bool dbg_halt = mem[cpu.PC] == 0x69;
 
     //`n_cycles` == 0 means that op-code is illegal. We don't care about illegal opcodes.
     if (instruction_table[mem[cpu.PC]].n_cycles == 0)
+        return true;
+
+    // we don't care about decimal mode, for now.
+    if (cpu.SR & 0b10000)
         return true;
 
     // execute instruction
@@ -59,7 +63,9 @@ bool run_test(const T &it)
         pass = pass && (mem[addr] == val);
     }
 
-    if (dbg_halt && !pass) {
+    // TODO compare # of cycles
+
+    if (dbg_halt && !pass && false) {
         std::cout << "\n\ntest name: " << test_name << std::endl;
 
         std::cout << "\n\ninitial state:" << std::endl;

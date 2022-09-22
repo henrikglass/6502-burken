@@ -62,7 +62,7 @@ OBJECTS 	:= $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 build: tags $(OBJDIR) $(TARGET)
 
-test: $(OBJDIR) $(TARGET_TESTS)
+test: tags $(OBJDIR) $(TARGET_TESTS)
 
 tags:
 	ctags -R src/

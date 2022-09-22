@@ -814,15 +814,15 @@ void populate_instruction_table()
     instruction_table[0x55] = {op_eor,  addr_zpg_X, 4};
     instruction_table[0x56] = {op_lsr,  addr_zpg_X, 6};
     instruction_table[0x58] = {op_cli,  IMPLIED,    2}; // TODO??
-    instruction_table[0x59] = {op_cli,  IMPLIED,    2};
-    instruction_table[0x5D] = {op_cli,  IMPLIED,    2};
-    instruction_table[0x5E] = {op_cli,  IMPLIED,    2};
+    instruction_table[0x59] = {op_eor,  addr_abs_Y, 2};
+    instruction_table[0x5D] = {op_eor,  addr_abs_X, 2};
+    instruction_table[0x5E] = {op_lsr,  addr_abs_X, 2};
 
     // row 6
-    instruction_table[0x60] = {op_bvc,  addr_rel,   2};
-    instruction_table[0x61] = {op_eor,  addr_ind_Y, 5};
-    instruction_table[0x65] = {op_eor,  addr_zpg_X, 4};
-    instruction_table[0x66] = {op_lsr,  addr_zpg_X, 6};
+    instruction_table[0x60] = {op_rts,  IMPLIED,    2};
+    instruction_table[0x61] = {op_adc,  addr_ind_X, 5};
+    instruction_table[0x65] = {op_adc,  addr_zpg,   4};
+    instruction_table[0x66] = {op_ror,  addr_zpg,   6};
     instruction_table[0x68] = {op_pla,  IMPLIED,    4};
     instruction_table[0x69] = {op_adc,  addr_imm,   2};
     instruction_table[0x6A] = {op_ror,  addr_acc,   2};

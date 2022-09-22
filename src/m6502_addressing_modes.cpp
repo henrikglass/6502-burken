@@ -84,11 +84,11 @@ AddrModeRet addr_imm(Cpu *cpu)
 AddrModeRet addr_ind(Cpu *cpu)
 {
     u8 ll = cpu->mem[cpu->PC++];
-    u8 hh = cpu->mem[cpu->PC++];
+    u16 hh = cpu->mem[cpu->PC++];
     u16 addr = (hh << 8) + ll;
-    ll = cpu->mem[addr];
-    hh = cpu->mem[addr + 1];
-    addr = (hh << 8) + ll + cpu->Y;
+    u16 addr_ll = cpu->mem[addr];
+    u16 addr_hh = cpu->mem[addr + 1];
+    addr = (addr_hh << 8) + addr_ll;
     u8 *data_ptr = &(cpu->mem[addr]); // TODO 
     return {0, data_ptr, addr}; // TODO # cycles
 }
@@ -102,12 +102,10 @@ AddrModeRet addr_ind(Cpu *cpu)
 AddrModeRet addr_ind_X(Cpu *cpu)
 {
     u8 ll = cpu->mem[cpu->PC++];
-    u8 hh = 0x00;                         // zero page
-    ll = (ll + cpu->X);                  // No carry!
-    u16 zp_addr = ll;
-    ll = cpu->mem[zp_addr];
-    hh = cpu->mem[zp_addr + 1];
-    u16 addr = (hh << 8) + ll;
+    u8 zp_addr = (ll + cpu->X); // no carry!
+    u8 addr_ll = cpu->mem[zp_addr];
+    u16 addr_hh = cpu->mem[(u8)(zp_addr + 1)];
+    u16 addr = (addr_hh << 8) + addr_ll;
     u8 *data_ptr = &(cpu->mem[addr]); // TODO 
     return {0, data_ptr, addr}; // TODO # cycles
 }
@@ -121,11 +119,10 @@ AddrModeRet addr_ind_X(Cpu *cpu)
 AddrModeRet addr_ind_Y(Cpu *cpu)
 {
     u8 ll = cpu->mem[cpu->PC++];
-    u16 hh = 0x0000;                        // zero page
-    u16 zp_addr = ll;
-    ll = cpu->mem[zp_addr];
-    hh = cpu->mem[zp_addr + 1];
-    u16 addr = hh + ll + cpu->Y; // with carry
+    u8 zp_addr = ll;
+    u8 addr_ll = cpu->mem[zp_addr];
+    u16 addr_hh = cpu->mem[(u8)(zp_addr + 1)];
+    u16 addr = (addr_hh << 8) + addr_ll + cpu->Y; // with carry
     u8 *data_ptr = &(cpu->mem[addr]); // TODO 
     return {0, data_ptr, addr}; // TODO # cycles
 }
@@ -168,7 +165,7 @@ AddrModeRet addr_zpg(Cpu *cpu)
 AddrModeRet addr_zpg_X(Cpu *cpu)
 {
     u8 ll = cpu->mem[cpu->PC++];
-    u16 addr = (ll + cpu->X) && 0x00FF;
+    u16 addr = (ll + cpu->X) & 0x00FF;
     u8 *data_ptr = &(cpu->mem[addr]); // TODO 
     return {0, data_ptr, addr};
 }
@@ -182,7 +179,7 @@ AddrModeRet addr_zpg_X(Cpu *cpu)
 AddrModeRet addr_zpg_Y(Cpu *cpu)
 {
     u8 ll = cpu->mem[cpu->PC++];
-    u16 addr = (ll + cpu->Y) && 0x00FF;
+    u16 addr = (ll + cpu->Y) & 0x00FF;
     u8 *data_ptr = &(cpu->mem[addr]); // TODO 
     return {0, data_ptr, addr};
 }

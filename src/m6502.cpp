@@ -29,13 +29,13 @@ void Cpu::reset()
 {
     //printf("RESET signal\n");
     // Done at startupt: <https://www.csh.rit.edu/~moffitt/docs/6502.html#BOOT>
-    this->SR |= (1 << BIT_I);                       // ; disable interrupts
-    this->PC  =  this->mem[Layout::RESET_VECTOR];   // ; put PC at where reset vector pointed
+    this->SR |= (1 << BIT_I);                                     // ; disable interrupts
+    this->PC  =  this->mem[Layout::RESET_VECTOR];                 // ; put PC at where reset vector pointed
     this->PC |= (this->mem[Layout::RESET_VECTOR + 1]) << 8;
     
     // TODO Do this through a reset routine
-    this->SP  = Layout::STACK_PAGE_HIGH;            // ; init stack pointer to ceiling of stack page ()
-    this->SR &= ~(1 << BIT_I);                      // ; enable interrupts again
+    this->SP  = Layout::STACK_PAGE_HIGH - Layout::STACK_PAGE_LOW; // ; init stack pointer to ceiling of stack page ()
+    this->SR &= ~(1 << BIT_I);                                    // ; enable interrupts again
 }
 
 void Cpu::irq() 

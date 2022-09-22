@@ -50,12 +50,14 @@ u8 generic_branch(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu), u8 bit, bool val
 
 void stack_push(Cpu *cpu, u8 byte)
 {
-    cpu->mem[cpu->SP--] = byte; 
+    cpu->mem[Layout::STACK_PAGE_LOW + cpu->SP] = byte; 
+    cpu->SP--;
 }
 
 u8 stack_pop(Cpu *cpu)
 {
-    return cpu->mem[cpu->SP++]; 
+    cpu->SP++;
+    return cpu->mem[Layout::STACK_PAGE_LOW + cpu->SP]; 
 }
 
 /******************************************************************************
@@ -821,7 +823,7 @@ void populate_instruction_table()
     instruction_table[0x61] = {op_eor,  addr_ind_Y, 5};
     instruction_table[0x65] = {op_eor,  addr_zpg_X, 4};
     instruction_table[0x66] = {op_lsr,  addr_zpg_X, 6};
-    instruction_table[0x68] = {op_cli,  IMPLIED,    2};
+    instruction_table[0x68] = {op_pla,  IMPLIED,    4};
     instruction_table[0x69] = {op_adc,  addr_imm,   2};
     instruction_table[0x6A] = {op_ror,  addr_acc,   2};
     instruction_table[0x6C] = {op_jmp,  addr_ind,   5};

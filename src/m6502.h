@@ -59,7 +59,7 @@ struct Cpu
     u8 SR = 0x00;
 
     // Stack pointer
-    u16 SP = 0x0000;
+    u8 SP = 0x00;
 
     // Memory
     Memory &mem;

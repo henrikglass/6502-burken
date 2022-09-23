@@ -83,11 +83,16 @@ AddrModeRet addr_imm(Cpu *cpu)
  */
 AddrModeRet addr_ind(Cpu *cpu)
 {
-    u8 ll = cpu->mem[cpu->PC++];
+    u16 ll = cpu->mem[cpu->PC++];
     u16 hh = cpu->mem[cpu->PC++];
     u16 addr = (hh << 8) + ll;
     u16 addr_ll = cpu->mem[addr];
-    u16 addr_hh = cpu->mem[addr + 1];
+    
+    // apparently, this is not correct
+    //u16 addr_hh = cpu->mem[addr + 1];
+    u16 addr_hh = cpu->mem[(addr & 0xFF00) + ((addr + 1) % 256)];
+
+
     addr = (addr_hh << 8) + addr_ll;
     u8 *data_ptr = &(cpu->mem[addr]); // TODO 
     return {0, data_ptr, addr}; // TODO # cycles
@@ -101,10 +106,10 @@ AddrModeRet addr_ind(Cpu *cpu)
  */
 AddrModeRet addr_ind_X(Cpu *cpu)
 {
-    u8 ll = cpu->mem[cpu->PC++];
-    u8 zp_addr = (ll + cpu->X); // no carry!
-    u8 addr_ll = cpu->mem[zp_addr];
-    u16 addr_hh = cpu->mem[(u8)(zp_addr + 1)];
+    u16 ll = cpu->mem[cpu->PC++];
+    u16 zp_addr = (ll + cpu->X) % 256; // no carry!
+    u16 addr_ll = cpu->mem[zp_addr];
+    u16 addr_hh = cpu->mem[(zp_addr + 1) % 256];
     u16 addr = (addr_hh << 8) + addr_ll;
     u8 *data_ptr = &(cpu->mem[addr]); // TODO 
     return {0, data_ptr, addr}; // TODO # cycles
@@ -118,11 +123,10 @@ AddrModeRet addr_ind_X(Cpu *cpu)
  */
 AddrModeRet addr_ind_Y(Cpu *cpu)
 {
-    u8 ll = cpu->mem[cpu->PC++];
-    u8 zp_addr = ll;
-    u8 addr_ll = cpu->mem[zp_addr];
-    u16 addr_hh = cpu->mem[(u8)(zp_addr + 1)];
-    u16 addr = (addr_hh << 8) + addr_ll + cpu->Y; // with carry
+    u16 arg = cpu->mem[cpu->PC++];
+    u16 zp_addr_ll = cpu->mem[arg];
+    u16 zp_addr_hh = cpu->mem[((arg + 1) % 256)];
+    u16 addr = (zp_addr_hh << 8) + zp_addr_ll + cpu->Y; 
     u8 *data_ptr = &(cpu->mem[addr]); // TODO 
     return {0, data_ptr, addr}; // TODO # cycles
 }

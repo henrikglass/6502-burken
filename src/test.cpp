@@ -35,7 +35,7 @@ bool run_test(const T &it)
         mem[addr] = val;
     }
     
-    bool dbg_halt = mem[cpu.PC] == 0x69;
+    bool dbg_halt = mem[cpu.PC] == 0x40;
 
     //`n_cycles` == 0 means that op-code is illegal. We don't care about illegal opcodes.
     if (instruction_table[mem[cpu.PC]].n_cycles == 0)
@@ -65,45 +65,45 @@ bool run_test(const T &it)
 
     // TODO compare # of cycles
 
-    if (dbg_halt && !pass && false) {
+    if (dbg_halt && !pass && !false) {
         std::cout << "\n\ntest name: " << test_name << std::endl;
 
         std::cout << "\n\ninitial state:" << std::endl;
-        std::cout << "\tpc:  " << initial_state["pc"] << std::endl;
-        std::cout << "\tsr:  " << initial_state["p"]  << std::endl;
-        std::cout << "\tacc: " << initial_state["a"]  << std::endl;
-        std::cout << "\tx:   " << initial_state["x"]  << std::endl;
-        std::cout << "\ty:   " << initial_state["y"]  << std::endl;
-        std::cout << "\tsp:  " << initial_state["s"]  << std::endl;
+        std::cout << "\tpc:  0x" << std::hex << (int)initial_state["pc"] << std::dec<< std::endl;
+        std::cout << "\tsr:  0x" << std::hex << (int)initial_state["p"]  << std::dec<< std::endl;
+        std::cout << "\tacc: 0x" << std::hex << (int)initial_state["a"]  << std::dec<< std::endl;
+        std::cout << "\tx:   0x" << std::hex << (int)initial_state["x"]  << std::dec<< std::endl;
+        std::cout << "\ty:   0x" << std::hex << (int)initial_state["y"]  << std::dec<< std::endl;
+        std::cout << "\tsp:  0x" << std::hex << (int)initial_state["s"]  << std::dec<< std::endl;
         for (auto mem_it = init_mem_state.begin(); mem_it != init_mem_state.end(); mem_it++) {
             u16 addr = (*mem_it)[0];
             u8  val  = (*mem_it)[1];
-            std::cout << "\tmem[" << addr << "] = " << (int)val << std::endl;
+            std::cout << std::hex << "\tmem[0x" << addr << "] = 0x" << (int)val << std::dec << std::endl;
         }
         
         std::cout << "\n\nfinal state:" << std::endl;
-        std::cout << "\tpc:  " << final_state["pc"] << std::endl;
-        std::cout << "\tsr:  " << final_state["p"]  << std::endl;
-        std::cout << "\tacc: " << final_state["a"]  << std::endl;
-        std::cout << "\tx:   " << final_state["x"]  << std::endl;
-        std::cout << "\ty:   " << final_state["y"]  << std::endl;
-        std::cout << "\tsp:  " << final_state["s"]  << std::endl;
+        std::cout << "\tpc:  0x" << std::hex << (int)final_state["pc"] << std::dec<< std::endl;
+        std::cout << "\tsr:  0x" << std::hex << (int)final_state["p"]  << std::dec<< std::endl;
+        std::cout << "\tacc: 0x" << std::hex << (int)final_state["a"]  << std::dec<< std::endl;
+        std::cout << "\tx:   0x" << std::hex << (int)final_state["x"]  << std::dec<< std::endl;
+        std::cout << "\ty:   0x" << std::hex << (int)final_state["y"]  << std::dec<< std::endl;
+        std::cout << "\tsp:  0x" << std::hex << (int)final_state["s"]  << std::dec<< std::endl;
         for (auto mem_it = final_mem_state.begin(); mem_it != final_mem_state.end(); mem_it++) {
             u16 addr = (*mem_it)[0];
             u8  val  = (*mem_it)[1];
-            std::cout << "\tmem[" << addr << "] = " << (int)val << std::endl;
+            std::cout << std::hex << "\tmem[0x" << addr << "] = 0x" << (int)val << std::dec << std::endl;
         }
         
         std::cout << "\n\nactual state:" << std::endl;
-        std::cout << "\tpc:  " << cpu.PC       << std::endl;
-        std::cout << "\tsr:  " << (int)cpu.SR  << std::endl;
-        std::cout << "\tacc: " << (int)cpu.ACC << std::endl;
-        std::cout << "\tx:   " << (int)cpu.X   << std::endl;
-        std::cout << "\ty:   " << (int)cpu.Y   << std::endl;
-        std::cout << "\tsp:  " << (int)cpu.SP  << std::endl;
+        std::cout << "\tpc:  0x" << std::hex << (int)cpu.PC  << std::dec << std::endl;
+        std::cout << "\tsr:  0x" << std::hex << (int)cpu.SR  << std::dec << std::endl;
+        std::cout << "\tacc: 0x" << std::hex << (int)cpu.ACC << std::dec << std::endl;
+        std::cout << "\tx:   0x" << std::hex << (int)cpu.X   << std::dec << std::endl;
+        std::cout << "\ty:   0x" << std::hex << (int)cpu.Y   << std::dec << std::endl;
+        std::cout << "\tsp:  0x" << std::hex << (int)cpu.SP  << std::dec << std::endl;
         for (auto mem_it = final_mem_state.begin(); mem_it != final_mem_state.end(); mem_it++) {
             u16 addr = (*mem_it)[0];
-            std::cout << "\tmem[" << addr << "] = " << (int)mem[addr] << std::endl;
+            std::cout << std::hex << "\tmem[0x" << addr << "] = 0x" << (int)mem[addr] << std::dec << std::endl;
         }
 
         exit(0);
@@ -126,6 +126,7 @@ int main()
         int n_tests_passed = 0;
         int n_tests_total = 0;
         for (auto it = data.begin(); it != data.end(); it++) {
+            //std::cout << n_tests_total << std::endl;
             if (run_test(it))
                 n_tests_passed++;
             n_tests_total++;

@@ -21,15 +21,6 @@ SOURCES := $(wildcard $(SRCDIR)/*.cpp)   \
 
 OBJECTS := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
-# For debug build
-#CFLAGS 	= 	-Iinclude \
-#			-Iinclude/imgui \
-#			-Isrc/imgui \
-#			-lglfw \
-#			-pg -g \
-#			-std=c++2a \
-#			-Wall -pedantic
-
 # For release build
 CFLAGS 	= 	-Iinclude \
 			-Iinclude/imgui \
@@ -39,6 +30,9 @@ CFLAGS 	= 	-Iinclude \
 			-std=c++2a \
 			-Wall -pedantic -Wunused
 
+#-DSUPPORT_DECIMAL_MODE \
+
+# uncomment for debug build
 #CFLAGS += -O0 -pg -g
 
 test: CFLAGS += -DTEST

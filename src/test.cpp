@@ -35,14 +35,10 @@ bool run_test(const T &it)
         mem[addr] = val;
     }
     
-    bool dbg_halt = mem[cpu.PC] == 0x40;
+    bool dbg_halt = mem[cpu.PC] == 0x00;
 
     //`n_cycles` == 0 means that op-code is illegal. We don't care about illegal opcodes.
     if (instruction_table[mem[cpu.PC]].n_cycles == 0)
-        return true;
-
-    // we don't care about decimal mode, for now.
-    if (cpu.SR & 0b10000)
         return true;
 
     // execute instruction
@@ -106,7 +102,9 @@ bool run_test(const T &it)
             std::cout << std::hex << "\tmem[0x" << addr << "] = 0x" << (int)mem[addr] << std::dec << std::endl;
         }
 
-        exit(0);
+        //exit(0);
+        int dummy;
+        std::cin >> dummy;
     }
 
     return pass;
@@ -118,7 +116,7 @@ int main()
 
     int n_instr_total = 0;
     int n_instr_passed = 0;
-    for (const auto &entry : std::filesystem::directory_iterator("tests")) {
+    for (const auto &entry : std::filesystem::directory_iterator("tests/nes6502")) {
         std::ifstream f(entry.path());
         json data = json::parse(f);
 

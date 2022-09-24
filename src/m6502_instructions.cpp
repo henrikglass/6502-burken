@@ -70,6 +70,72 @@ u8 stack_pop(Cpu *cpu)
  * TODO remove unnecessary parentheses. 
  *
  ******************************************************************************/
+#include <iostream>
+
+//u8 op_adc_decimal(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
+//{
+//    std::cout << "yes dec" << std::endl;
+//    auto fetched = addr_mode(cpu);
+//    u16 a = (u16) cpu->ACC; 
+//    u16 m = (u16) *(fetched.data_ptr); 
+//    u16 c = (u16) get_status_bit(cpu, BIT_C);
+//
+//    // op: perform operation in 16-bit space to capture potential carry bit
+//    u16 res = a + m + c;
+//    
+//    // decimal mode addition is a little peculiar
+//    set_status_bit(cpu, BIT_Z, ((res & 0xFF) == 0));
+//    if (((a & 0x0F) + (m & 0x0F) + c) > 9)
+//        res += 0x06;
+//    set_status_bit(cpu, BIT_N, ((res & 0xFF) >> 7));
+//    set_status_bit(cpu, BIT_V, !((a ^ m) & 0x80) && ((a ^ res) & 0x80)); // Thanks https://stackoverflow.com/a/16861251/5350029
+//    if (res > 0x99)
+//        res += 0x60;
+//    set_status_bit(cpu, BIT_C, res > 0x99);
+//
+//    cpu->ACC = (u8) (res & 0xFF);
+//    return fetched.additional_cycles;
+//}
+
+u8 op_adc_decimal(Cpu *cpu, u16 a, u16 m, u16 c)
+{
+    u8 vu = m & 0x0F;
+    u8 vt = (m & 0xF0) >> 4;
+    
+    u8 au = a & 0x0F;
+    u8 at = (a & 0xF0) >> 4;
+
+    u8 units = vu + au + c;
+    u8 tens  = vt + at;
+
+    if (units > 0x09) {
+        tens += 0x01;
+        units += 0x06;
+    }
+
+    if (tens > 0x09) {
+        tens += 0x06;
+    }
+    
+    u16 bin_res = a + m + c;
+    u8 res = (tens << 4) | (units & 0x0F);
+
+    // TODO figure out the N & V flags. We fail a handful of Tom Harte's processor tests 
+    // (for undocumented decimal mode behaviour). 99.9% of tests succeed tho.
+    set_status_bit(cpu, BIT_C, tens & 0xf0);
+    set_status_bit(cpu, BIT_N, bin_res & 0x80);
+    set_status_bit(cpu, BIT_V, !((a ^ m) & 0x80) && ((a ^ bin_res) & 0x80)); // Thanks https://stackoverflow.com/a/16861251/5350029
+    set_status_bit(cpu, BIT_Z, (bin_res & 0xFF) == 0);
+
+    cpu->ACC = res;
+    return 0;
+}
+
+u8 op_sbc_decimal(Cpu *cpu, u16 a, u16 m, u16 c)
+{
+    // TODO maybe...
+    return 0;
+}
 
 // Add with carry
 u8 op_adc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
@@ -79,13 +145,18 @@ u8 op_adc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     u16 m = (u16) *(fetched.data_ptr); 
     u16 c = (u16) get_status_bit(cpu, BIT_C);
 
+#ifdef SUPPORT_DECIMAL_MODE
+    if (get_status_bit(cpu, BIT_D))
+        return op_adc_decimal(cpu, a, m, c);
+#endif
+
     // op: perform operation in 16-bit space to capture potential carry bit
     u16 res = a + m + c;
 
-    set_status_bit(cpu, BIT_C, (res >> 8));
-    set_status_bit(cpu, BIT_N, ((res & 0xFF) >> 7));
-    set_status_bit(cpu, BIT_Z, ((res & 0xFF) == 0));
-    set_status_bit(cpu, BIT_V, ((~(a ^ m)) & (a ^ c) & 0x80)); // Thanks https://stackoverflow.com/a/16861251/5350029
+    set_status_bit(cpu, BIT_C, res >> 8);
+    set_status_bit(cpu, BIT_N, res & 0x80);
+    set_status_bit(cpu, BIT_V, !((a ^ m) & 0x80) && ((a ^ res) & 0x80));
+    set_status_bit(cpu, BIT_Z, (res & 0xFF) == 0);
 
     cpu->ACC = (u8) (res & 0xFF);
     return fetched.additional_cycles;
@@ -98,16 +169,22 @@ u8 op_sbc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
     u16 a = (u16) cpu->ACC; 
     u16 m = (u16) *(fetched.data_ptr); 
     u16 c = (u16) get_status_bit(cpu, BIT_C);
+
+#ifdef SUPPORT_DECIMAL_MODE
+    if (get_status_bit(cpu, BIT_D))
+        return op_sbc_decimal(cpu, a, m, c);
+#endif
     
     // op: same as op_adc but we flip b
-    u16 res = a + (m ^ 0xFF) + c;
+    m = (m ^ 0xff);
+    u16 res = a + m + c;
 
-    set_status_bit(cpu, BIT_C, (res >> 8));
-    set_status_bit(cpu, BIT_N, ((res & 0xFF) >> 7));
-    set_status_bit(cpu, BIT_Z, ((res & 0xFF) == 0));
-    set_status_bit(cpu, BIT_V, ((~(a ^ m)) & (a ^ c) & 0x80)); // Thanks https://stackoverflow.com/a/16861251/5350029
+    set_status_bit(cpu, BIT_C, res >> 8);
+    set_status_bit(cpu, BIT_N, res & 0x80);
+    set_status_bit(cpu, BIT_V, (a ^ res) & (m ^ res) & 0x80); 
+    set_status_bit(cpu, BIT_Z, (res & 0xFF) == 0);
+    
     cpu->ACC = (u8) (res & 0xFF);
-
     return fetched.additional_cycles;
 }
 
@@ -370,7 +447,11 @@ u8 op_php(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Pull Cpu->SR from stack
 u8 op_plp(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    cpu->SR = stack_pop(cpu);
+    u8 break_bit  = get_status_bit(cpu, BIT_B);
+    u8 unused_bit = get_status_bit(cpu, BIT_UNUSED);
+    cpu->SR = stack_pop(cpu); 
+    set_status_bit(cpu, BIT_B, break_bit);
+    set_status_bit(cpu, BIT_UNUSED, unused_bit);
     return 0;
 }
 
@@ -600,12 +681,7 @@ u8 op_bcc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Return from interrupt
 u8 op_rti(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    u8 break_bit  = get_status_bit(cpu, BIT_B);
-    u8 unused_bit = get_status_bit(cpu, BIT_UNUSED);
-    cpu->SR = stack_pop(cpu); 
-    set_status_bit(cpu, BIT_B, break_bit);
-    set_status_bit(cpu, BIT_UNUSED, unused_bit);
-
+    op_plp(cpu, nullptr); // nullptr = IMPLIED
     cpu->PC  = (u16) stack_pop(cpu);
     cpu->PC |= (u16) (stack_pop(cpu) << 8);
     return 0;
@@ -684,9 +760,17 @@ u8 op_cli(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Break
 u8 op_brk(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    // push return address onto stack
+    u16 return_address = cpu->PC + 1;
+    stack_push(cpu, (u8) ((return_address & 0xFF00) >> 8)); 
+    stack_push(cpu, (u8) (return_address & 0x00FF));
 
-    //printf("Hit BRK instruction. Exit for now.\n");
-    //exit(0); // TODO implement correctly
+    // push SR with interrupt flag set
+    op_php(cpu, nullptr);
+
+    // initiate software interrupt
+    set_status_bit(cpu, BIT_I, 1);
+    cpu->irq();
     return 0;
 } 
 

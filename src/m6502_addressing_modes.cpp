@@ -90,6 +90,8 @@ AddrModeRet addr_ind(Cpu *cpu)
     
     // apparently, this is not correct
     //u16 addr_hh = cpu->mem[addr + 1];
+
+    // But this is
     u16 addr_hh = cpu->mem[(addr & 0xFF00) + ((addr + 1) % 256)];
 
 

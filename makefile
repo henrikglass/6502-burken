@@ -33,7 +33,7 @@ CFLAGS 	= 	-Iinclude \
 #-DSUPPORT_DECIMAL_MODE \
 
 # uncomment for debug build
-#CFLAGS += -O0 -pg -g
+CFLAGS += -O0 -pg -g
 
 test: CFLAGS += -DTEST
 

@@ -11,7 +11,7 @@ void Disassembler::Page::get_disassembly(std::vector<DisassembledInstruction *> 
         if ((size_t)offset > this->code.size() - 1)
             break;
         DisassembledInstruction *instr = &(this->code[offset]);
-        if (instr->len == 0)
+        if (instr == nullptr || instr->len == 0)
             break;
         instrs->push_back(instr);
         offset += instr->len;
@@ -56,7 +56,6 @@ int Disassembler::disassemble_page(Page *page, u16 first_instr_addr)
 
     const u8 *page_start = this->mem.data + page->page_addr;
     const u8 *page_end   = this->mem.data + page->page_addr + Layout::PAGE_SIZE;
-    const u8 *next_page  = this->mem.data + page->page_addr + Layout::PAGE_SIZE + 1;
     page->first_instr_offset = first_instr_addr % Layout::PAGE_SIZE;
     u8 *it = this->mem.data + first_instr_addr;
 
@@ -69,18 +68,18 @@ int Disassembler::disassemble_page(Page *page, u16 first_instr_addr)
 
         // reached an invalid op code
         if (info.mnemonic == "-") {
-            return it - next_page;
+            return it - page_end;
         }
 
-        // TODO look a few bytes ahead. brk is still a valid instruction
-        if (info.mnemonic == "brk") {
+        // if page ends on a brk, stop disassembling (for now)
+        if (info.mnemonic == "brk" && offset == 255) {
             page->code.push_back({false, info.mnemonic, (u16)(page->page_addr + offset), 1}); 
-            return it - next_page + 1;
+            return -1;
         }
 
         // reached end of memory
         if (page->page_addr + offset > Layout::FREE_ROM_HIGH) {
-            return it - next_page;
+            return it - page_end;
         }
 
         page->code.resize((size_t) offset + 1);
@@ -90,7 +89,7 @@ int Disassembler::disassemble_page(Page *page, u16 first_instr_addr)
         page->code[offset].len = (it - page_start) - offset;
     }
     
-    return it - next_page;
+    return it - page_end;
 }
 
 /*
@@ -313,16 +312,16 @@ void Disassembler::populate_instruction_info_table()
     this->instruction_info_table[0x55] = {addr_zpg_X, "eor"};
     this->instruction_info_table[0x56] = {addr_zpg_X, "lsr"};
     this->instruction_info_table[0x58] = {addr_impl,  "cli"}; // TODO ???
-    this->instruction_info_table[0x59] = {addr_impl,  "cli"};
-    this->instruction_info_table[0x5D] = {addr_impl,  "cli"};
-    this->instruction_info_table[0x5E] = {addr_impl,  "cli"};
+    this->instruction_info_table[0x59] = {addr_abs_Y, "eor"};
+    this->instruction_info_table[0x5D] = {addr_abs_X, "eor"};
+    this->instruction_info_table[0x5E] = {addr_abs_X, "lsr"};
                                                                    
     // row 6                                                       
-    this->instruction_info_table[0x60] = {addr_rel,   "bvc"};
-    this->instruction_info_table[0x61] = {addr_ind_Y, "eor"};
-    this->instruction_info_table[0x65] = {addr_zpg_X, "eor"};
-    this->instruction_info_table[0x66] = {addr_zpg_X, "lsr"};
-    this->instruction_info_table[0x68] = {addr_impl,  "cli"};
+    this->instruction_info_table[0x60] = {addr_impl,  "rts"};
+    this->instruction_info_table[0x61] = {addr_ind_X, "adc"};
+    this->instruction_info_table[0x65] = {addr_zpg,   "adc"};
+    this->instruction_info_table[0x66] = {addr_zpg,   "ror"};
+    this->instruction_info_table[0x68] = {addr_impl,  "pla"};
     this->instruction_info_table[0x69] = {addr_imm,   "adc"};
     this->instruction_info_table[0x6A] = {addr_acc,   "ror"};
     this->instruction_info_table[0x6C] = {addr_ind,   "jmp"};

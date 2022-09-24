@@ -5,7 +5,7 @@
 
 Memory::Memory()
 {
-    data = new u8[Layout::MEM_SIZE];
+    data = new u8[Layout::MEM_SIZE + 0x2000];
     memset(data, 0, Layout::MEM_SIZE * sizeof(u8)); // Not really neccessary.
 }
 

@@ -123,8 +123,6 @@ void show_mem_editor(const Memory *mem, const Cpu *cpu, UiInfo *info)
     }
 }
 
-#include <iostream>
-
 void show_disassmbler(const Cpu *cpu, Disassembler *disasm, UiInfo *info)
 {
     const int DISASSEMBLER_CONTENT_HEIGHT = 275;
@@ -185,7 +183,6 @@ void show_disassmbler(const Cpu *cpu, Disassembler *disasm, UiInfo *info)
 
     ImGui::EndChild();
 
-    //ImGui::Text("Op at PC: %s\n", instruction_table[(*mem)[cpu->PC]].mnemonic.c_str());
 }
 
 void show_breakpoints(Disassembler *disasm, UiInfo *info)

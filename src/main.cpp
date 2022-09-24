@@ -188,6 +188,9 @@ int main(int argc, char *argv[])
     if (mem.load_from_file(Layout::FREE_ROM_LOW, argv[1]) < 0)
         return 1;
     
+    //if (mem.load_from_file(0x0, argv[1]) < 0)
+    //    return 1;
+
     // load VGA charset into memory
     if (mem.load_from_file(Layout::VGA_CHAR_BUF_LOW, "extra/6502burken_charset.bin") < 0)
         return 1;

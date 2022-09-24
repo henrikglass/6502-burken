@@ -36,6 +36,9 @@ private:
         // been disassembled
         int first_instr_offset = -1;
 
+        // `code_offsets` holds the offsets where code resides in the page.
+        //std::vector<int> code_offsets;
+
         // We compute a checksum over all bytes belonging to instructions in
         // the page. We count instructions whose 1-byte opcode resides in a page
         // as "belonging" to the page. Note: this might include bytes from the 

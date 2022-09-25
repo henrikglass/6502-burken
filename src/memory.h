@@ -24,9 +24,11 @@ namespace Layout
     const u16 TIMER2_DATA        = 0x1604; // 2 Bytes
     const u16 VGA_CTRL           = 0x1606; // 1 Bytes
     const u16 IO_PAGE_HIGH       = 0x16FF;
-    const u16 FREE_RAM_LOW       = 0x1700;
-    const u16 FREE_RAM_HIGH      = 0x3FFF;
-    const u16 IO_MEM_LOW         = 0x4000;
+    const u16 BOOT_SECTOR_LOW    = 0x1700;
+    const u16 BOOT_SECTOR_HIGH   = 0x1FFF;
+    const u16 FREE_RAM_LOW       = 0x2000;
+    const u16 FREE_RAM_HIGH      = 0x6FFF;
+    const u16 IO_MEM_LOW         = 0x7000;
     const u16 IO_MEM_HIGH        = 0x7FFF;
     const u16 FREE_ROM_LOW       = 0x8000; // Note: not actually protected from writes in any way.
     const u16 FREE_ROM_HIGH      = 0xFFF9;

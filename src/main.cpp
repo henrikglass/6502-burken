@@ -187,13 +187,17 @@ int main(int argc, char *argv[])
     // load program into memory
     if (mem.load_from_file(Layout::FREE_ROM_LOW, argv[1]) < 0)
         return 1;
-    
-    // DEBUG
+   
+    // load VGA text buffer splash screen into memory
+    if (mem.load_from_file(Layout::VGA_TEXT_BUF_LOW, "extra/6502burken_splash_screen_converted.bin") < 0)
+        return 1;
+
+    // load VGA color palette into memory
     if (mem.load_from_file(Layout::VGA_COLOR_BUF_LOW, "extra/6502burken_color_lut.bin") < 0)
         return 1;
 
     // load VGA charset into memory
-    if (mem.load_from_file(Layout::VGA_CHAR_BUF_LOW, "extra/6502burken_charset.bin") < 0)
+    if (mem.load_from_file(Layout::VGA_CHAR_BUF_LOW, "extra/6502burken_charset_v2.bin") < 0)
         return 1;
    
     // bundle everything together

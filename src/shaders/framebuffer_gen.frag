@@ -139,7 +139,7 @@ void main()
     // handle blink
     if (ctrl_blink_enable) {
         // handle blink bit set
-        char_code = ((blink == 1u) && ((int(time*2) % 2)) == 1) ? 0x20u : char_code;
+        char_code = ((blink == 1u) && ((int(time*2) % 2)) == 1) ? 0x00u : char_code;
     } else {
         // with blink disabled, the blink bit acts as an extra color index bit
         bg_color = sample_color((tile.g >> 4u) & 0x0Fu);

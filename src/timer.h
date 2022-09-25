@@ -6,7 +6,7 @@
 #include "typedefs.h"
 
 /*
- * Implements a timer loosely(!) based on TIMER 1 in an ATmega328P
+ * Implements a timer loosely based on TIMER 1 in an ATmega328P
  * microprocessor. Only supports normal mode, for now.
  */
 struct Timer 

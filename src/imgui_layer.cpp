@@ -148,7 +148,8 @@ void show_disassmbler(const Cpu *cpu, Disassembler *disasm, UiInfo *info)
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_HorizontalScrollbar;
     ImGui::BeginChild("Live disassembler", {0, DISASSEMBLER_CONTENT_HEIGHT}, false, window_flags);
         
-    auto instrs = disasm->get_disassembly(cpu->PC);
+    //auto instrs = disasm->get_disassembly(cpu->PC);
+    auto instrs = disasm->get_disassembly(0x8000);
     int row = 0;
     int tgt = 0;
     for (auto *instr : instrs) {

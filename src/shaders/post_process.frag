@@ -7,17 +7,17 @@ R""(
 //                             https://www.shadertoy.com/view/Ms23DR
 //                             https://www.shadertoy.com/view/ltB3zD
 
-const float VIEWPORT_WIDTH = 1320.0f;
-const float VIEWPORT_HEIGHT = 820.0f;
+const float VIEWPORT_WIDTH = 1920.0f;
+const float VIEWPORT_HEIGHT = 1080.0f;
 
 //const vec4 BACKGROUND_COLOR = vec4(0.153f, 0.106f, 0.149f, 1.0f);
 //const vec4 BACKGROUND_COLOR = vec4(0.153f, 0.706f, 0.949f, 1.0f);
 const vec4 BACKGROUND_COLOR = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
-const float PP_BRIGHTNESS = 1.7f;
+const float PP_BRIGHTNESS = 1.5f;
 
 const float PI = 3.1415926535f;
-const float PHI = 1.61803398874989484820459; // Φ = Golden Ratio 
+const float PHI = 1.61803398874989484820459;
 
 out vec4 frag_color;
 
@@ -55,6 +55,7 @@ vec2 curve(vec2 uv)
 
 vec4 apply_grille_effect(vec4 in_color, vec2 uv)
 {
+    uv *= 0.5f;
     int pix = int(uv.x * VIEWPORT_WIDTH);
     float vert_stripes  = 0.05f * (sin( (float(VIEWPORT_WIDTH) *  (1.00f*PI)) * uv.x) + 19.0f); 
     float horiz_stripes = 0.1f  * (sin( (float(VIEWPORT_HEIGHT) * (1.27f*PI)) * uv.y) + 9.0f); 
@@ -118,7 +119,7 @@ void main()
             color = BACKGROUND_COLOR;
         }
         color *= PP_BRIGHTNESS;
-        color *= 0.75f + 0.25f * rgb_noise(gl_FragCoord.xy, time);
+        color *= 0.85f + 0.15f * rgb_noise(gl_FragCoord.xy, time);
         //color = apply_rgb_grid_pattern(color, fb_uv);
         color = apply_grille_effect(color, fb_uv);
         color = apply_vignette(color, fb_uv);

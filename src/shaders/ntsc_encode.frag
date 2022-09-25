@@ -5,11 +5,12 @@ R""(
 
 // Code mostly taken from https://www.shadertoy.com/view/llyGzR
 
-const float VIEWPORT_WIDTH = 1320.0f;
-const float VIEWPORT_HEIGHT = 820.0f;
+const float VIEWPORT_WIDTH = 1920.0f;
+const float VIEWPORT_HEIGHT = 1080.0f;
 
 const float PI = 3.1415926535f;
 const float TAU = 2.0f * PI;
+const float PHI = 1.61803398874989484820459;
 
 const float F_COL = 1.0f / 4.0f;
 
@@ -17,7 +18,21 @@ in vec2 uv;
 
 out vec4 frag_color;
 
+uniform float time;
 uniform sampler2D frame_buffer_texture;
+
+float noise(vec2 uv, float seed)
+{
+    return fract(tan(distance(uv * PHI, uv) * seed) * uv.x);
+}
+
+vec4 rgb_noise(vec2 uv, float seed)
+{
+    return vec4(noise(uv, seed),
+                noise(uv, seed + 0.1f),
+                noise(uv, seed + 0.2f),
+                1.0f);
+}
 
 vec3 get_pixel_rgb()
 {
@@ -54,6 +69,9 @@ void main()
     float sig      = pixel_yiq.x + dot(pixel_osc, pixel_yiq.yz);
 
     frag_color = vec4(sig, 0.0f, 0.0f, 1.0f);
+
+    // add noise
+    frag_color.x *= 0.77f + 0.23f * rgb_noise(gl_FragCoord.xy, time).x;
 }
 
 )""

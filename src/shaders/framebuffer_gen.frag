@@ -33,6 +33,10 @@ const uint TILE_HEIGHT_IN_PIXELS = VIEWPORT_HEIGHT / TEXT_ROWS;
 const uint PIXEL_RATIO_X = VIEWPORT_WIDTH / (CHAR_SIZE*TEXT_COLS);
 const uint PIXEL_RATIO_Y = VIEWPORT_HEIGHT / (CHAR_SIZE*TEXT_ROWS);
 
+const uint VGA_CTRL_BLINK_BIT      = 0u;
+const uint VGA_CTRL_INVERSE_BIT    = 1u;
+const uint VGA_CTRL_MONOCHROME_BIT = 2u;
+
 /*
  * Color palette is based on "NA16" with some changes.
  *
@@ -60,10 +64,12 @@ const vec4 palette[16] = {
 in vec2 uv;
 out vec4 frag_color;
 
+uniform int vga_ctrl_register;
 uniform float time;
 
 uniform usampler2D vga_text_buffer;
 uniform usampler2D vga_char_buffer;
+uniform sampler2D vga_color_buffer;
 
 /*
  * Sample the VGA text buffer.
@@ -88,6 +94,14 @@ uint sample_char(uint char_code, uint x, uint y)
 }
 
 /*
+ * Sample the VGA color buffer.
+ */
+vec4 sample_color(uint c) 
+{
+    return texelFetch(vga_color_buffer, ivec2(c, 0), 0);
+}
+
+/*
  * tile data consists of two bytes, one color/attribute byte and one
  * character byte:
  *
@@ -102,6 +116,7 @@ uint sample_char(uint char_code, uint x, uint y)
  */
 void main() 
 {
+    // figure out where we are
     uint pixel_x = uint(gl_FragCoord.x) - LEFT_MARGIN;
     uint pixel_y = VIEWPORT_HEIGHT - (uint(gl_FragCoord.y) - BOTTOM_MARGIN) - 1u; // swap y axis
     uint tile_x  = pixel_x / TILE_WIDTH_IN_PIXELS;
@@ -109,21 +124,46 @@ void main()
     uint char_x  = (pixel_x % TILE_WIDTH_IN_PIXELS) / PIXEL_RATIO_X;
     uint char_y  = (pixel_y % TILE_HEIGHT_IN_PIXELS) / PIXEL_RATIO_Y;
 
+    // read the VGA CTRL register
+    bool ctrl_blink_enable  = bool((vga_ctrl_register >> VGA_CTRL_BLINK_BIT) & 1);
+    bool ctrl_color_inverse = bool((vga_ctrl_register >> VGA_CTRL_INVERSE_BIT) & 1);
+    bool ctrl_monochrome    = bool((vga_ctrl_register >> VGA_CTRL_MONOCHROME_BIT) & 1);
+
+    // color the pixel
     uvec4 tile      = sample_tile(tile_x, tile_y);
     uint char_code  = tile.r;
-    vec4 fg_color   = palette[(tile.g >> 0u) & 0x0Fu];
-    vec4 bg_color   = palette[(tile.g >> 4u) & 0x07u];
+    vec4 fg_color   = sample_color((tile.g >> 0u) & 0x0Fu);
+    vec4 bg_color   = sample_color((tile.g >> 4u) & 0x07u);
     uint blink      = tile.g >> 7u;
 
-    // handle blink bit set
-    char_code = ((blink == 1u) && ((int(time*2) % 2)) == 1) ? 0x20u : char_code;
+    // handle blink
+    if (ctrl_blink_enable) {
+        // handle blink bit set
+        char_code = ((blink == 1u) && ((int(time*2) % 2)) == 1) ? 0x20u : char_code;
+    } else {
+        // with blink disabled, the blink bit acts as an extra color index bit
+        bg_color = sample_color((tile.g >> 4u) & 0x0Fu);
+    }
+
+    // handle monochrome
+    if (ctrl_monochrome) {
+        // these colors look fine
+        fg_color = vec4(0.820f, 0.820f, 0.631f, 1.0f);
+        bg_color = vec4(0.020f, 0.059f, 0.133f, 1.0f);
+    } 
+
+    // handle inverse 
+    if (ctrl_color_inverse) {
+        vec4 tmp = fg_color;
+        fg_color = bg_color;
+        bg_color = tmp;
+    }
 
     // color the pixel
     uint pixel = sample_char(char_code, char_x, char_y);
     frag_color = bg_color;
     if (pixel != 0u)
         frag_color = fg_color;
-    
 }
 
 )""

@@ -5,8 +5,10 @@ R""(
 
 // Code mostly taken from https://www.shadertoy.com/view/llyGzR
 
-const float VIEWPORT_WIDTH = 1320.0f;
-const float VIEWPORT_HEIGHT = 820.0f;
+//const float VIEWPORT_WIDTH = 1320.0f;
+//const float VIEWPORT_HEIGHT = 820.0f;
+const float VIEWPORT_WIDTH = 1920.0f;
+const float VIEWPORT_HEIGHT = 1080.0f;
 
 const float PI = 3.1415926535f;
 const float TAU = 2.0f * PI;

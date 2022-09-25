@@ -92,6 +92,7 @@ void Display::setup_frambuffer_gen_program()
     // setup textures to hold vga text buffer and char buffer.
     glGenTextures(1, &this->vga_text_texture);
     glGenTextures(1, &this->vga_char_texture);
+    glGenTextures(1, &this->vga_color_texture);
 
     // configure vga text buffer texture
     glActiveTexture(GL_TEXTURE0);
@@ -108,6 +109,15 @@ void Display::setup_frambuffer_gen_program()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     this->update_vga_char_buffer_texture();
+    
+    // configure vga color buffer texture
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, this->vga_color_texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    this->update_vga_color_buffer_texture();
+    
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, 0);
     
@@ -149,14 +159,14 @@ void Display::setup_frambuffer_gen_program()
 
     // 1280x800 seems to look good.
     glBindTexture(GL_TEXTURE_2D, this->framebuffer_tex_ntsc_active);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1320, 820, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1920, 1080, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
     glBindTexture(GL_TEXTURE_2D, this->framebuffer_tex_ntsc_swap);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1320, 820, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1920, 1080, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
@@ -209,10 +219,15 @@ void Display::use_frambuffer_gen_program()
 {
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->framebuffer_tex_native, 0);
     glUseProgram(this->framebuffer_gen_program);
+
+    // update uniforms
+    glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_ctrl_register"), this->mem[Layout::VGA_CTRL]);
+    glUniform1f(glGetUniformLocation(this->framebuffer_gen_program, "time"), glfwGetTime());
     glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_text_buffer"), 0);
     glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_char_buffer"), 1);
-    glUniform1f(glGetUniformLocation(this->framebuffer_gen_program, "time"), glfwGetTime());
+    glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_color_buffer"), 2);
     
+    // update textures
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->vga_text_texture);
     this->update_vga_text_buffer_texture();
@@ -220,6 +235,10 @@ void Display::use_frambuffer_gen_program()
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, this->vga_char_texture);
     this->update_vga_char_buffer_texture();
+    
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, this->vga_color_texture);
+    this->update_vga_color_buffer_texture();
     
     glClearColor(0.7f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT); 
@@ -231,6 +250,7 @@ void Display::use_ntsc_encode_program()
 
     glUseProgram(this->ntsc_encode_program);
     glUniform1i(glGetUniformLocation(this->ntsc_encode_program, "frame_buffer_texture"), 0);
+    glUniform1f(glGetUniformLocation(this->ntsc_encode_program, "time"), glfwGetTime());
     
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->framebuffer_tex_native);
@@ -321,6 +341,22 @@ void Display::update_vga_char_buffer_texture()
             GL_RED_INTEGER, 
             GL_UNSIGNED_BYTE, 
             this->mem.data + Layout::VGA_CHAR_BUF_LOW
+    ); 
+}
+
+void Display::update_vga_color_buffer_texture()
+{
+    glActiveTexture(GL_TEXTURE2);
+    glTexImage2D(
+            GL_TEXTURE_2D, 
+            0, 
+            GL_RGB, // GL_RGB8. R, G, B --> actually colors this time.
+            VGA_N_COLORS,  // 16
+            1,
+            0, 
+            GL_RGB, 
+            GL_UNSIGNED_BYTE, 
+            this->mem.data + Layout::VGA_COLOR_BUF_LOW
     ); 
 }
 

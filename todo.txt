@@ -2,7 +2,6 @@ implement test all instructions
 Audio device
 keyboard device
 Is "data pointer" used when it should be?
-test imgui disassembler
 Proper implementation of IRQ/reset/NMI (push registers onto stack)
 Proper implementation of BRK
 clock program
@@ -12,7 +11,7 @@ pong?
 invalid timer data shouldn't crash program... (floating point error)
 Maybe getting a segfault on every Ctrl-C isn't good...
 clean up day...
-missing instructions
 vga color table (bild på telef.)
 cycle counts for instructions
 implement decimal mode
+improve disassembler...

@@ -23,6 +23,7 @@ namespace Layout
     const u16 TIMER2_CTRL        = 0x1603; // 1 Byte
     const u16 TIMER2_DATA        = 0x1604; // 2 Bytes
     const u16 VGA_CTRL           = 0x1606; // 1 Bytes
+    const u16 KEYBOARD_IO_PORT   = 0x1608; // 2 Bytes
     const u16 IO_PAGE_HIGH       = 0x16FF;
     const u16 BOOT_SECTOR_LOW    = 0x1700;
     const u16 BOOT_SECTOR_HIGH   = 0x1FFF;

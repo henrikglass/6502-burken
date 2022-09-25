@@ -15,3 +15,4 @@ vga color table (bild på telef.)
 cycle counts for instructions
 implement decimal mode
 improve disassembler...
+rename ImguiLayer to Ui.

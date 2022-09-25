@@ -511,7 +511,8 @@ int Display::loop()
     
     return 0;
 }
-    
+
+void glfw_key_callback(GLFWwindow *window, int key_code, int scan_code, int action, int mods);
 
 std::thread Display::start() 
 {
@@ -528,6 +529,17 @@ std::thread Display::start()
 
         // set timer reference
         timer_start = std::chrono::high_resolution_clock::now();
+
+        // If we have a keyboard attached to this thread, register
+        // a key_callback function with GLFW
+        if (this->keyboard != nullptr) {
+            glfwSetWindowUserPointer(this->window, this->keyboard);
+            auto key_callback_wrapper = [](GLFWwindow *window, int key_code, int scan_code, int action, int mods){
+                if (action == GLFW_PRESS)
+                    static_cast<Keyboard*>(glfwGetWindowUserPointer(window))->press(key_code, mods);
+            };
+            glfwSetKeyCallback(this->window, key_callback_wrapper);
+        }
 
         // enter render loop 
         bool should_exit = false;
@@ -552,3 +564,11 @@ void Display::attach_imgui_layer(ImguiLayer *imgui_layer)
 {
     this->imgui_layer = imgui_layer;
 }
+    
+void Display::attach_keyboard(Keyboard *keyboard)
+{
+    this->keyboard = keyboard;
+}
+
+
+

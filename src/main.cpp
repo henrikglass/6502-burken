@@ -179,6 +179,10 @@ int main(int argc, char *argv[])
     UiInfo info;
     ImguiLayer imgui_layer(cpu, mem, &disassembler, &info);
     display.attach_imgui_layer(&imgui_layer);
+    
+    // Create a keyboard and attach it to the GLFW context of `display`
+    Keyboard keyboard(&cpu, &mem, Layout::KEYBOARD_IO_PORT);
+    display.attach_keyboard(&keyboard);
 
     // Create timers and provide references to cpu and memory
     Timer timer1(cpu, mem, Layout::TIMER1_CTRL, Layout::TIMER1_DATA);

@@ -9,9 +9,9 @@
  * Implements a timer loosely based on TIMER 1 in an ATmega328P
  * microprocessor. Only supports normal mode, for now.
  */
-struct Timer 
+class Timer 
 {
-
+private:
     // references to cpu & memory
     const Memory &mem;
     Cpu &cpu;
@@ -35,6 +35,7 @@ struct Timer
     u16 prescaler_clock_sum; // keep track of the number of clock cycles
                              // since last tick of count
 
+public:
     Timer(Cpu &cpu, const Memory &mem, u16 ctrl_address, u16 data_address);
 
     void step(u16 n_cycles_elapsed);

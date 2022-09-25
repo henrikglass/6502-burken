@@ -2,6 +2,7 @@
 #define DISPLAY_H
 
 #include "memory.h"
+#include "keyboard.h"
 
 // TODO maybe some of these aren't needed
 #include <glad/glad.h>
@@ -10,7 +11,6 @@
 #include <thread>
 
 #include "imgui_layer.h"
-
 
 struct Vertex
 {
@@ -44,9 +44,14 @@ public:
     std::thread start();
 
     /*
-     * Attach an Imgui layer
+     * Attach an Imgui layer (It needs to borrow the display thread's GLFW/OpenGL contexts)
      */
     void attach_imgui_layer(ImguiLayer *imgui_layer);
+    
+    /*
+     * Attach a keyboard (It needs to borrow the display thread's GLFW context)
+     */
+    void attach_keyboard(Keyboard *keyboard);
 
 private:
 
@@ -83,11 +88,20 @@ private:
     const Memory &mem;
 
     /*
-     * We might keep a reference to an imgui_layer.
+     * Imgui needs an OpenGL context, so we provide a way to attach it
+     * to the display thread's OpenGL context.
      *
      * TODO multiple? Decide how to implement this in the nicest way.
      */
     ImguiLayer *imgui_layer = nullptr;
+    
+    /*
+     * Keyboard needs a GLFW context, so we provide a way to attach it
+     * to the display thread's GLFW context.
+     *
+     * TODO multiple? Decide how to implement this in the nicest way.
+     */
+    Keyboard *keyboard = nullptr;
 
     /*
      * OpenGL and GLFW related stuff

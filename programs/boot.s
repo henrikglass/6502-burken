@@ -17,6 +17,7 @@ TIMER1_DATA        = $1601 ; 2 Bytes
 TIMER2_CTRL        = $1603 ; 1 Byte
 TIMER2_DATA        = $1604 ; 2 Bytes
 VGA_CTRL           = $1606 ; 1 Bytes
+KEYBOARD_IO_PORT   = $1608 ; 1 Bytes
 IO_PAGE_HIGH       = $16FF
 BOOT_SECTOR_LOW    = $1700
 BOOT_SECTOR_HIGH   = $1FFF
@@ -35,6 +36,7 @@ PAGE_SIZE          = $100
 MEM_SIZE           = $10000
 
 MASK = $2000
+SOMETHING = $2001
 
     .org $8000        ; this is a good place for the entry point           
 
@@ -43,6 +45,26 @@ MASK = $2000
 ; VGA routines 
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; VGA_CURSOR_* holds the current cursor position. Address 0x11D0 is the first byte after 
+; the color buffer. 2 bytes big.
+VGA_CURSOR_POS = $11D0
+
+; VGA_CURRENT_COLOR holds a color byte 
+VGA_CURRENT_COLOR = $11D2
+
+vga_init:
+    ; set cursor to top left of screen (i.e. first byte of text buffer:)
+    lda #$00
+    sta VGA_CURSOR_POS       ; LL
+    lda #$02
+    sta VGA_CURSOR_POS + 1   ; HH
+   
+    ; set current color byte to some nice default 
+    lda #$07
+    sta VGA_CURRENT_COLOR
+    rts
+    
 
 ; Sets the blink bit to 1 in the VGA_CTRL register
 vga_enable_blink:
@@ -86,6 +108,34 @@ vga_disable_monochrome:
     sta VGA_CTRL
     rts
 
+; Moves the cursor 1 tile (2 bytes) forward 
+vga_inc_cursor_pos:
+    clc
+    lda VGA_CURSOR_POS
+    adc #2
+    sta VGA_CURSOR_POS
+    lda VGA_CURSOR_POS + 1
+    adc #0
+    sta VGA_CURSOR_POS + 1
+    rts
+
+; loads the memory at cursor with the contents of the ACC
+vga_putc:
+    sta $00                 ; temp <- ACC
+    lda VGA_CURSOR_POS      ; store cursor pos in zero page
+    sta $01
+    lda VGA_CURSOR_POS + 1
+    sta $02
+    lda $00                 ; ACC <- temp
+    ldx #0
+    sta ($01, X)            ; store acc using indirect addressing
+    ldx #1
+    lda VGA_CURRENT_COLOR
+    sta ($01, X)            ; store acc using indirect addressing
+    jsr vga_inc_cursor_pos
+    rts
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; 
 ; Timer 1 routines 
@@ -112,6 +162,8 @@ entry:
     lda #$ff
     sta MASK
     lda #%10101010
+    sta SOMETHING
+    jsr vga_init
     jsr vga_enable_blink
     jsr vga_enable_inverse_color
     nop
@@ -128,11 +180,33 @@ deadloop:
 ; IRQ / NMI service routine(s)
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-swap:
+isr_timer:
+    lda SOMETHING
     eor MASK
-    jmp deadloop
+    sta SOMETHING
+    rts
 
-    .org $fffc        ; RESET vector
-    .word entry       ; 
-    .org $fffe        ; IRQ BRK vector
-    .word swap        ; 
+isr_keyboard:
+    lda KEYBOARD_IO_PORT    ; check write/ack bit in KEYBOARD_IO_PORT
+    and #$80
+    bne handle_key_press    ; if 1 goto handle_key_press 
+    rts                     ; if 0 do nothing
+handle_key_press:
+    lda KEYBOARD_IO_PORT    ; acknowledge press by setting write/ack bit to 0
+    and #$7F
+    sta KEYBOARD_IO_PORT
+    jsr vga_putc            ; print character to screen
+    rts
+
+isr_system:
+    ;jsr isr_timer
+    jsr isr_keyboard
+    cli                     ; clear interrupt disable bit
+    rti                     ; return from isr
+
+    .org $FFFA              ; NMI vector
+    .word isr_system        ; 
+    .org $FFFC              ; RESET vector
+    .word entry             ; 
+    .org $FFFE              ; IRQ BRK vector
+    .word isr_system        ; 

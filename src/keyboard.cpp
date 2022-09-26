@@ -11,8 +11,24 @@ Keyboard::Keyboard(Cpu *cpu, Memory *mem, u16 io_port_address)
 
 void Keyboard::press(int key_code, int mods)
 {
-    (*this->mem)[this->io_port_address] = 0x80 | (key_code & 0x7f);
-    std::cout << "keypress " << (u32)key_code << std::endl;
-    std::cout << "keypress mods" << (u32)mods << std::endl;
+    //std::cout << key_code << " " << mods << std::endl;
+
+    // translate keycode + mods combination to 6502-burken keycode byte
+    //
+    // TODO Enter, arrow keys
+    u8 key_byte;
+    if      (key_code >= 48 && key_code <= 57)              key_byte = key_code;        // digits 0-9
+    else if (key_code >= 65 && key_code <= 90 && mods == 0) key_byte = key_code + 0x20; // characters a-z
+    else if (key_code >= 65 && key_code <= 90 && mods == 1) key_byte = key_code;        // characters A-Z
+    else if (key_code == 32) key_byte = 0x00;                                           // space
+    else if (key_code == 259) key_byte = 0x7f;                                          // backspace
+    else if (key_code == 257) key_byte = 0x7f;                                          // enter
+    else return;    
+
+    // write byte with write/ack bit set
+    std::cout << this->io_port_address << std::endl;
+    (*this->mem)[this->io_port_address] = 0x80 | (key_byte & 0x7f);
+
+    // generate an interrupt
     this->cpu->irq();
 }

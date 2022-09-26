@@ -28,9 +28,9 @@ CFLAGS 	= 	-Iinclude \
 			-lglfw \
 			-O2 -march=native \
 			-std=c++2a \
-			-Wall -pedantic -Wunused \
-			-DDEBUG_PRINTS
+			-Wall -pedantic -Wunused
 
+#-DDEBUG_PRINTS
 #-DSUPPORT_DECIMAL_MODE \
 
 # uncomment for debug build

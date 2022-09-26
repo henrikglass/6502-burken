@@ -1,9 +1,6 @@
-implement test all instructions
 Audio device
 keyboard device
 Is "data pointer" used when it should be?
-Proper implementation of IRQ/reset/NMI (push registers onto stack)
-Proper implementation of BRK
 clock program
 text output program
 draw program

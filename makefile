@@ -28,7 +28,8 @@ CFLAGS 	= 	-Iinclude \
 			-lglfw \
 			-O2 -march=native \
 			-std=c++2a \
-			-Wall -pedantic -Wunused
+			-Wall -pedantic -Wunused \
+			-DDEBUG_PRINTS
 
 #-DSUPPORT_DECIMAL_MODE \
 

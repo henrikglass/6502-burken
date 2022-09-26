@@ -53,14 +53,12 @@ u8 generic_branch(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu), u8 bit, bool val
 
 void stack_push(Cpu *cpu, u8 byte)
 {
-    cpu->mem[Layout::STACK_PAGE_LOW + cpu->SP] = byte; 
-    cpu->SP--;
+    cpu->mem[Layout::STACK_PAGE_LOW + (cpu->SP--)] = byte; 
 }
 
 u8 stack_pop(Cpu *cpu)
 {
-    cpu->SP++;
-    return cpu->mem[Layout::STACK_PAGE_LOW + cpu->SP]; 
+    return cpu->mem[Layout::STACK_PAGE_LOW + (++cpu->SP)]; 
 }
 
 /******************************************************************************
@@ -70,32 +68,6 @@ u8 stack_pop(Cpu *cpu)
  * TODO remove unnecessary parentheses. 
  *
  ******************************************************************************/
-#include <iostream>
-
-//u8 op_adc_decimal(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
-//{
-//    std::cout << "yes dec" << std::endl;
-//    auto fetched = addr_mode(cpu);
-//    u16 a = (u16) cpu->ACC; 
-//    u16 m = (u16) *(fetched.data_ptr); 
-//    u16 c = (u16) get_status_bit(cpu, BIT_C);
-//
-//    // op: perform operation in 16-bit space to capture potential carry bit
-//    u16 res = a + m + c;
-//    
-//    // decimal mode addition is a little peculiar
-//    set_status_bit(cpu, BIT_Z, ((res & 0xFF) == 0));
-//    if (((a & 0x0F) + (m & 0x0F) + c) > 9)
-//        res += 0x06;
-//    set_status_bit(cpu, BIT_N, ((res & 0xFF) >> 7));
-//    set_status_bit(cpu, BIT_V, !((a ^ m) & 0x80) && ((a ^ res) & 0x80)); // Thanks https://stackoverflow.com/a/16861251/5350029
-//    if (res > 0x99)
-//        res += 0x60;
-//    set_status_bit(cpu, BIT_C, res > 0x99);
-//
-//    cpu->ACC = (u8) (res & 0xFF);
-//    return fetched.additional_cycles;
-//}
 
 u8 op_adc_decimal(Cpu *cpu, u16 a, u16 m, u16 c)
 {
@@ -760,17 +732,20 @@ u8 op_cli(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Break
 u8 op_brk(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
-    // push return address onto stack
+    // push return address (2 bytes ahead of op code byte) onto stack
     u16 return_address = cpu->PC + 1;
     stack_push(cpu, (u8) ((return_address & 0xFF00) >> 8)); 
     stack_push(cpu, (u8) (return_address & 0x00FF));
 
-    // push SR with interrupt flag set
+    // push SR with B bit set
     op_php(cpu, nullptr);
 
     // initiate software interrupt
     set_status_bit(cpu, BIT_I, 1);
-    cpu->irq();
+
+    // set PC to IRQ vector
+    cpu->PC  =  cpu->mem[Layout::IRQ_BRK_VECTOR];
+    cpu->PC |= (cpu->mem[Layout::IRQ_BRK_VECTOR + 1]) << 8;
     return 0;
 } 
 

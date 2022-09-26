@@ -17,17 +17,15 @@ u8 Cpu::fetch_execute_next()
     // execute
     u8 cycles_taken = instr.execute(this);
 
-#ifdef DEBUG_PRINTS
-    this->print_status();
-#endif
-
     // return # of elapsed cpu cycles
     return cycles_taken;
 }
 
 void Cpu::reset() 
 {
-    //printf("RESET signal\n");
+#ifdef DEBUG_PRINTS
+    printf("RESET signal\n");
+#endif
     // Done at startupt: <https://www.csh.rit.edu/~moffitt/docs/6502.html#BOOT>
     this->SR |= (1 << BIT_I);                                     // ; disable interrupts
     this->PC  =  this->mem[Layout::RESET_VECTOR];                 // ; put PC at where reset vector pointed
@@ -40,14 +38,32 @@ void Cpu::reset()
 
 void Cpu::irq() 
 {
-    //printf("IRQ signal\n");
-    this->PC  =  this->mem[Layout::IRQ_BRK_VECTOR];
-    this->PC |= (this->mem[Layout::IRQ_BRK_VECTOR + 1]) << 8;
+#ifdef DEBUG_PRINTS
+    printf("IRQ signal\n");
+#endif
+    if (!(this->SR & (1 << BIT_I)))
+        this->nmi();
 }
 
 void Cpu::nmi()
 {
-    //printf("NMI signal\n");
-    this->PC  =  this->mem[Layout::NMI_VECTOR];
-    this->PC |= (this->mem[Layout::NMI_VECTOR + 1]) << 8;
+#ifdef DEBUG_PRINTS
+    printf("NMI signal\n");
+#endif
+    // push PC onto stack
+    this->mem[Layout::STACK_PAGE_LOW + (this->SP--)] = (PC & 0xFF00) >> 8; 
+    this->mem[Layout::STACK_PAGE_LOW + (this->SP--)] = (PC & 0x00FF); 
+
+    // push SR onto stack
+    u8 sr = this->SR;
+    sr |= (0 << BIT_B);
+    sr |= (1 << BIT_UNUSED);
+    this->mem[Layout::STACK_PAGE_LOW + (this->SP--)] = sr; 
+
+    // set I bit
+    this->SR |= (1 << BIT_I);
+   
+    // set PC to the IRQ vector
+    this->PC  =  this->mem[Layout::IRQ_BRK_VECTOR];
+    this->PC |= (this->mem[Layout::IRQ_BRK_VECTOR + 1]) << 8;
 }

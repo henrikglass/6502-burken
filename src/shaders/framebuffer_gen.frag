@@ -105,6 +105,8 @@ vec4 sample_color(uint c)
  * tile data consists of two bytes, one color/attribute byte and one
  * character byte:
  *
+ *             high byte                       low byte
+ * 
  * | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
  * |   |           |               |                               |
  *   b       bg            fg                    char

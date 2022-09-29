@@ -89,10 +89,12 @@ void Display::setup_frambuffer_gen_program()
 {
     glUseProgram(this->framebuffer_gen_program);
 
-    // setup textures to hold vga text buffer and char buffer.
+    // setup textures to hold vga text buffer, char buffer, color palette,
+    // and sprite buffer.
     glGenTextures(1, &this->vga_text_texture);
     glGenTextures(1, &this->vga_char_texture);
     glGenTextures(1, &this->vga_color_texture);
+    glGenTextures(1, &this->vga_sprite_buffer_texture);
 
     // configure vga text buffer texture
     glActiveTexture(GL_TEXTURE0);
@@ -117,6 +119,14 @@ void Display::setup_frambuffer_gen_program()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     this->update_vga_color_buffer_texture();
+    
+    // configure vga sprite buffer texture
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, this->vga_sprite_buffer_texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    this->update_vga_sprite_buffer_texture();
     
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -226,6 +236,7 @@ void Display::use_frambuffer_gen_program()
     glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_text_buffer"), 0);
     glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_char_buffer"), 1);
     glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_color_buffer"), 2);
+    glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_sprite_buffer"), 3);
     
     // update textures
     glActiveTexture(GL_TEXTURE0);
@@ -239,6 +250,10 @@ void Display::use_frambuffer_gen_program()
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, this->vga_color_texture);
     this->update_vga_color_buffer_texture();
+    
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, this->vga_sprite_buffer_texture);
+    this->update_vga_sprite_buffer_texture();
     
     glClearColor(0.7f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT); 
@@ -357,6 +372,22 @@ void Display::update_vga_color_buffer_texture()
             GL_RGB, 
             GL_UNSIGNED_BYTE, 
             this->mem.data + Layout::VGA_COLOR_BUF_LOW
+    ); 
+}
+
+void Display::update_vga_sprite_buffer_texture()
+{
+    glActiveTexture(GL_TEXTURE3);
+    glTexImage2D(
+            GL_TEXTURE_2D, 
+            0, 
+            GL_R8UI,
+            VGA_SPRITE_SIZE,
+            VGA_N_SPRITES,
+            0, 
+            GL_RED_INTEGER, 
+            GL_UNSIGNED_BYTE, 
+            this->mem.data + Layout::VGA_SPRITE_BUF_LOW
     ); 
 }
 

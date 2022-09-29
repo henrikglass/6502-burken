@@ -81,6 +81,7 @@ private:
     void update_vga_text_buffer_texture();
     void update_vga_char_buffer_texture();
     void update_vga_color_buffer_texture();
+    void update_vga_sprite_buffer_texture();
     
     /*
      * We read the VGA_* pages from memory to construct the image.
@@ -132,6 +133,9 @@ private:
     const unsigned int VGA_TEXT_ROWS    = 25;
     const unsigned int VGA_CHAR_SIZE    =  8;
     const unsigned int VGA_COLOR_SIZE   =  3;
+    const unsigned int VGA_N_SPRITES    =  5;
+    const unsigned int VGA_SPRITE_SIZE  = 37; // 4*8 sprite data. 1 byte color. 
+                                              // 2 byte x coord. 2 byte y coord
     const unsigned int VGA_N_CHARS      = Layout::VGA_CHAR_BUF_SIZE / VGA_CHAR_SIZE;
     const unsigned int VGA_N_COLORS     = Layout::VGA_COLOR_BUF_SIZE / VGA_COLOR_SIZE;
     const unsigned int RESOLUTION_X     = VGA_TEXT_COLUMNS * VGA_CHAR_SIZE;
@@ -154,6 +158,7 @@ private:
     unsigned int vga_text_texture;
     unsigned int vga_char_texture;
     unsigned int vga_color_texture;
+    unsigned int vga_sprite_buffer_texture;
     unsigned int framebuffer_tex_native;
     unsigned int framebuffer_tex_ntsc_active;
     unsigned int framebuffer_tex_ntsc_swap;

@@ -20,6 +20,7 @@ const uint LEFT_MARGIN     =   10u;
 const uint BOTTOM_MARGIN   =    5u;
 const uint TEXT_COLS       =   80u;
 const uint TEXT_ROWS       =   25u;
+const uint N_SPRITES       =    5u;
 
 /*
  * The size of a tile in viewport pixels
@@ -36,6 +37,15 @@ const uint PIXEL_RATIO_Y = VIEWPORT_HEIGHT / (CHAR_SIZE*TEXT_ROWS);
 const uint VGA_CTRL_BLINK_BIT      = 0u;
 const uint VGA_CTRL_INVERSE_BIT    = 1u;
 const uint VGA_CTRL_MONOCHROME_BIT = 2u;
+const uint VGA_CTRL_SPRITE1_ENABLE = 3u;
+const uint VGA_CTRL_SPRITE2_ENABLE = 4u;
+const uint VGA_CTRL_SPRITE3_ENABLE = 5u;
+const uint VGA_CTRL_SPRITE4_ENABLE = 6u;
+const uint VGA_CTRL_SPRITE5_ENABLE = 7u;
+
+const uint VGA_SPRITE_COLOR_OFFSET = 0x20u;
+const uint VGA_SPRITE_POS_X_OFFSET = 0x21u;
+const uint VGA_SPRITE_POS_Y_OFFSET = 0x23u;
 
 /*
  * Color palette is based on "NA16" with some changes.
@@ -70,9 +80,13 @@ uniform float time;
 uniform usampler2D vga_text_buffer;
 uniform usampler2D vga_char_buffer;
 uniform sampler2D vga_color_buffer;
+uniform usampler2D vga_sprite_buffer;
 
 /*
  * Sample the VGA text buffer.
+ *
+ * @x           The x offset in number of tiles [0, 79].
+ * @y           The y offset in number of tiles [0, 24].
  */
 uvec4 sample_tile(uint x, uint y) 
 {
@@ -83,8 +97,8 @@ uvec4 sample_tile(uint x, uint y)
  * Sample the VGA character buffer.
  *
  * @char_code   The char code
- * @x           The x offset inside a tile in pixels.
- * @y           The y offset inside a tile in pixels.
+ * @x           The x offset inside a tile in pixels [0, 7].
+ * @y           The y offset inside a tile in pixels [0, 7].
  */
 uint sample_char(uint char_code, uint x, uint y)
 {
@@ -95,10 +109,30 @@ uint sample_char(uint char_code, uint x, uint y)
 
 /*
  * Sample the VGA color buffer.
+ *
+ * @c   The color index [0, 15]
  */
 vec4 sample_color(uint c) 
 {
     return texelFetch(vga_color_buffer, ivec2(c, 0), 0);
+}
+
+/*
+ * Sample the VGA sprite buffer.
+ *
+ * @sprite_nr   The sprite number
+ * @x           The x offset inside a sprite in pixels [0, 15].
+ * @y           The y offset inside a sprite in pixels [0, 15].
+ */
+uint sample_sprite(uint sprite_nr, uint x, uint y) 
+{
+    uint tile_x = x / 8u;
+    uint tile_y = y / 8u;
+    uint pixel_x = (CHAR_SIZE - 1u) - (x % 8u); // flip horizontally 
+    uint pixel_y = y % 8u;
+    uint row_idx = 2u * 8u * tile_y + 8u * tile_x + pixel_y;
+    uint row = texelFetch(vga_sprite_buffer, ivec2(row_idx, sprite_nr), 0).r;
+    return (row >> pixel_x) & 1u;
 }
 
 /*
@@ -166,6 +200,51 @@ void main()
     frag_color = bg_color;
     if (pixel != 0u)
         frag_color = fg_color;
+
+    // handle sprites
+    int vga_ctrl = vga_ctrl_register;
+    for (uint sprite_nr = 0u; sprite_nr < N_SPRITES; sprite_nr++) {
+        
+        // skip sprites that are not enabled through the vga ctrl register
+        if (!bool((vga_ctrl >> (3u + sprite_nr)) & 1)) 
+            continue;
+
+        // read the sprite footer data
+        uint color    = texelFetch(vga_sprite_buffer, ivec2(VGA_SPRITE_COLOR_OFFSET,      sprite_nr), 0).r;
+        uint pos_x_ll = texelFetch(vga_sprite_buffer, ivec2(VGA_SPRITE_POS_X_OFFSET,      sprite_nr), 0).r;
+        uint pos_x_hh = texelFetch(vga_sprite_buffer, ivec2(VGA_SPRITE_POS_X_OFFSET + 1u, sprite_nr), 0).r;
+        uint pos_y_ll = texelFetch(vga_sprite_buffer, ivec2(VGA_SPRITE_POS_Y_OFFSET,      sprite_nr), 0).r;
+        uint pos_y_hh = texelFetch(vga_sprite_buffer, ivec2(VGA_SPRITE_POS_Y_OFFSET + 1u, sprite_nr), 0).r;
+
+        // figure out the sprite position
+        int pos_x = int((pos_x_hh << 8) + pos_x_ll);
+        int pos_y = int((pos_y_hh << 8) + pos_y_ll);
+
+        // figure out this fragments position in 6502-space (620x200, border margins, etc.)
+        int pixel_pos_x = int(pixel_x / PIXEL_RATIO_X);
+        int pixel_pos_y = int(pixel_y / PIXEL_RATIO_Y);
+
+        // transform current screen-relative fragment position into sprite-relative position
+        int pos_in_sprite_x = pixel_pos_x - pos_x; 
+        int pos_in_sprite_y = pixel_pos_y - pos_y; 
+        
+        // color pixel if inside sprite
+        if (pos_in_sprite_x >= 0 && pos_in_sprite_y >= 0 && 
+                pos_in_sprite_x < 16 && pos_in_sprite_y < 16) {
+            pixel = sample_sprite(0u, uint(pos_in_sprite_x), uint(pos_in_sprite_y));
+            if (pixel != 0u)
+                frag_color = sample_color(color & 0x0Fu);
+        }
+
+    }
+    //uint xx = (pixel_x / PIXEL_RATIO_X) - 320u;
+    //uint yy = (pixel_y / PIXEL_RATIO_Y) - 100u;
+    //if (xx >= 0u && yy >= 0u && xx < 16u && yy < 16u) {
+    //    pixel = sample_sprite(0u, xx, yy);
+    //    if (pixel != 0u)
+    //        frag_color = vec4(0.8, 0.8, 0.8, 1.0);
+    //}
+    
 }
 
 )""

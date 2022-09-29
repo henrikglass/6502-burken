@@ -1,39 +1,46 @@
 
 ; The memory layout of 6502-burken. Make sure this is the same
 ; as the listing found in `src/memory.h`.
-ZERO_PAGE_LOW      = $0000
-ZERO_PAGE_HIGH     = $00FF
-STACK_PAGE_LOW     = $0100
-STACK_PAGE_HIGH    = $01FF
-VGA_TEXT_BUF_LOW   = $0200
-VGA_TEXT_BUF_HIGH  = $119F
-VGA_COLOR_BUF_LOW  = $11A0
-VGA_COLOR_BUF_HIGH = $11CF
-VGA_CHAR_BUF_LOW   = $1200
-VGA_CHAR_BUF_HIGH  = $15FF
-IO_PAGE_LOW        = $1600
-TIMER1_CTRL        = $1600 ; 1 Byte
-TIMER1_DATA        = $1601 ; 2 Bytes
-TIMER2_CTRL        = $1603 ; 1 Byte
-TIMER2_DATA        = $1604 ; 2 Bytes
-VGA_CTRL           = $1606 ; 1 Bytes
-KEYBOARD_IO_PORT   = $1608 ; 1 Bytes
-IO_PAGE_HIGH       = $16FF
-BOOT_SECTOR_LOW    = $1700
-BOOT_SECTOR_HIGH   = $1FFF
-FREE_RAM_LOW       = $2000
-FREE_RAM_HIGH      = $6FFF
-IO_MEM_LOW         = $7000
-IO_MEM_HIGH        = $7FFF
-FREE_ROM_LOW       = $8000
-FREE_ROM_HIGH      = $FFF9
-NMI_VECTOR         = $FFFA ; 2 bytes
-RESET_VECTOR       = $FFFC ; 2 bytes
-IRQ_BRK_VECTOR     = $FFFE ; 2 bytes
+ZERO_PAGE_LOW       = $0000
+ZERO_PAGE_HIGH      = $00FF
+STACK_PAGE_LOW      = $0100
+STACK_PAGE_HIGH     = $01FF
+VGA_TEXT_BUF_LOW    = $0200
+VGA_TEXT_BUF_HIGH   = $119F
+VGA_COLOR_BUF_LOW   = $11A0
+VGA_COLOR_BUF_HIGH  = $11CF
+VGA_CHAR_BUF_LOW    = $1200
+VGA_CHAR_BUF_HIGH   = $15FF
+VGA_SPRITE_BUF_LOW  = $1600
+VGA_SPRITE1         = $1600
+VGA_SPRITE2         = $1625
+VGA_SPRITE3         = $164A
+VGA_SPRITE4         = $166F
+VGA_SPRITE5         = $1694
+VGA_SPRITE_BUF_HIGH = $16FF
+IO_PAGE_LOW         = $1700
+TIMER1_CTRL         = $1700 ; 1 Byte
+TIMER1_DATA         = $1701 ; 2 Bytes
+TIMER2_CTRL         = $1703 ; 1 Byte
+TIMER2_DATA         = $1704 ; 2 Bytes
+VGA_CTRL            = $1706 ; 1 Bytes
+KEYBOARD_IO_PORT    = $1708 ; 1 Bytes
+IO_PAGE_HIGH        = $17FF
+BOOT_SECTOR_LOW     = $1800
+BOOT_SECTOR_HIGH    = $1FFF
+FREE_RAM_LOW        = $2000
+FREE_RAM_HIGH       = $6FFF
+IO_MEM_LOW          = $7000
+IO_MEM_HIGH         = $7FFF
+FREE_ROM_LOW        = $8000
+FREE_ROM_HIGH       = $FFF9
+NMI_VECTOR          = $FFFA ; 2 bytes
+RESET_VECTOR        = $FFFC ; 2 bytes
+IRQ_BRK_VECTOR      = $FFFE ; 2 bytes
 
-N_PAGES            = $FF
-PAGE_SIZE          = $100
-MEM_SIZE           = $10000
+N_PAGES             = $FF
+PAGE_SIZE           = $100
+MEM_SIZE            = $10000
 
 MASK = $2000
 SOMETHING = $2001
@@ -115,6 +122,27 @@ vga_init:
     ; return
     rts
     
+;---------------------------
+;---------------------------
+; Sets the enable sprite 1 bit to 1 in the VGA_CTRL register
+;---------------------------
+;---------------------------
+vga_enable_sprite1:
+    lda VGA_CTRL
+    ora #%00001000
+    sta VGA_CTRL
+    rts
+
+;---------------------------
+;---------------------------
+; Sets the enable sprite 1 bit to 0 in the VGA_CTRL register
+;---------------------------
+;---------------------------
+vga_disable_sprite1:
+    lda VGA_CTRL
+    and #%11110111
+    sta VGA_CTRL
+    rts
 
 ;---------------------------
 ;---------------------------
@@ -457,6 +485,7 @@ entry:
     jsr vga_init
     jsr vga_enable_blink
     jsr vga_enable_inverse_color
+    jsr vga_enable_sprite1
     lda #39
     sta arg8_0 ; x
     lda #12
@@ -474,11 +503,19 @@ entry:
     nop
     nop
     nop
+    lda #$31                ; set sprite color
+    sta VGA_SPRITE1 + $20
+    lda #100
+    sta VGA_SPRITE1 + $23   ; set sprite y (ll)
     nop
+    lda #0
     
 
 deadloop:
     nop
+    sta VGA_SPRITE1 + $21   ; set sprite x (ll)
+    sta VGA_SPRITE1 + $23   ; set sprite y (ll)
+    adc #1
     jmp deadloop
 
 

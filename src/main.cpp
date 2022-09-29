@@ -203,6 +203,11 @@ int main(int argc, char *argv[])
     // load VGA charset into memory
     if (mem.load_from_file(Layout::VGA_CHAR_BUF_LOW, "extra/6502burken_charset_v2.bin") < 0)
         return 1;
+    
+    // debug
+    if (mem.load_from_file(Layout::VGA_SPRITE_BUF_LOW + 0x00, "extra/mouse_cursor_sprite.bin") < 0)
+        return 1;
+   
    
     // bundle everything together
     system.cpu     = &cpu;

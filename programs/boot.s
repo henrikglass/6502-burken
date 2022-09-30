@@ -484,7 +484,7 @@ timer1_set_1sec:
 entry:
     jsr vga_init
     jsr vga_enable_blink
-    jsr vga_enable_inverse_color
+    ;jsr vga_enable_inverse_color
     jsr vga_enable_sprite1
     lda #39
     sta arg8_0 ; x

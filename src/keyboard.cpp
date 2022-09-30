@@ -30,7 +30,7 @@ void Keyboard::press(int key_code, int mods)
     else return;    
 
     // write byte with write/ack bit set
-    std::cout << this->io_port_address << std::endl;
+    //std::cout << this->io_port_address << std::endl;
     (*this->mem)[this->io_port_address] = 0x80 | (key_byte & 0x7f);
 
     // generate an interrupt

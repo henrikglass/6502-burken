@@ -39,6 +39,7 @@ public:
         this->info = info;
         this->disasm = disasm;
     };
+    bool want_capture_io() const;
     void setup(GLFWwindow *window, const char *glsl_version) const;
     void draw();
     void shutdown() const;

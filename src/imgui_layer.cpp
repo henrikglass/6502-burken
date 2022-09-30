@@ -291,6 +291,12 @@ void ImguiLayer::draw()
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
+bool ImguiLayer::want_capture_io() const
+{
+    ImGuiIO& io = ImGui::GetIO();
+    return io.WantCaptureKeyboard || io.WantCaptureMouse;
+}
+
 void ImguiLayer::shutdown() const
 {
     ImGui_ImplOpenGL3_Shutdown();

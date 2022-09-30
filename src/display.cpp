@@ -401,7 +401,7 @@ int Display::setup()
 {
     // glfw setup. Apparently vmware is only good enough for version 3.3
     glfwInit();
-    const char *glsl_version = "#version 330 core";
+    //const char *glsl_version = "#version 330 core";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -430,11 +430,6 @@ int Display::setup()
     }
 
     glViewport(0, 0, display_width, display_height);
-
-    // setup ImguiLayer (maybe)
-    if (this->imgui_layer != nullptr) {
-        this->imgui_layer->setup(this->window, glsl_version);
-    }
    
     this->framebuffer_gen_program = make_shader_program(
         this->pass_through_vert_shader_source,
@@ -564,12 +559,22 @@ std::thread Display::start()
         // If we have a keyboard attached to this thread, register
         // a key_callback function with GLFW
         if (this->keyboard != nullptr) {
-            glfwSetWindowUserPointer(this->window, this->keyboard);
+            glfwSetWindowUserPointer(this->window, this);
             auto key_callback_wrapper = [](GLFWwindow *window, int key_code, int scan_code, int action, int mods){
+                Display *this_display = static_cast<Display*>(glfwGetWindowUserPointer(window));
+                if (this_display->imgui_layer->want_capture_io())
+                    return;
                 if (action == GLFW_PRESS)
-                    static_cast<Keyboard*>(glfwGetWindowUserPointer(window))->press(key_code, mods);
+                    this_display->keyboard->press(key_code, mods);
             };
             glfwSetKeyCallback(this->window, key_callback_wrapper);
+        }
+
+        // setup AFTER registering GLFW input callback. Otherwise backspace, enter key, etc.
+        // doesn't work inside dear imgui.
+        if (this->imgui_layer != nullptr) {
+            const char *glsl_version = "#version 330 core";
+            this->imgui_layer->setup(this->window, glsl_version);
         }
 
         // enter render loop 

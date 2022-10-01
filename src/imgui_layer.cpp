@@ -123,10 +123,21 @@ void show_mem_editor(const Memory *mem, const Cpu *cpu, UiInfo *info)
     }
 }
 
+#include <iostream>
+
 void show_disassmbler(const Cpu *cpu, Disassembler *disasm, UiInfo *info)
 {
     const int DISASSEMBLER_CONTENT_HEIGHT = 275;
     const int DISASSEMBLER_SCROLL_MARGIN = 25; 
+    
+    static u16 disassembly_start = 0x8000;
+    static u16 disassembly_end   = 0xFFFF;
+    static char textinput_start[5] = ""; 
+    static char textinput_end[5] = ""; 
+    
+    auto padding = [](int n){
+        return std::string(3 * n, ' ').c_str();
+    };
 
     ImGui::Separator();
     ImGui::Text("Live disassembler:\n");
@@ -141,15 +152,15 @@ void show_disassmbler(const Cpu *cpu, Disassembler *disasm, UiInfo *info)
         info->changed = true;
     }
     
+
     if (!info->show_disasm) {
         return;
     }
 
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_HorizontalScrollbar;
     ImGui::BeginChild("Live disassembler", {0, DISASSEMBLER_CONTENT_HEIGHT}, false, window_flags);
-        
-    //auto instrs = disasm->get_disassembly(cpu->PC);
-    auto instrs = disasm->get_disassembly(0x8000);
+       
+    auto instrs = disasm->get_disassembly(disassembly_start, disassembly_end);
     int row = 0;
     int tgt = 0;
     for (auto *instr : instrs) {
@@ -163,10 +174,18 @@ void show_disassmbler(const Cpu *cpu, Disassembler *disasm, UiInfo *info)
             }
         }
         if (instr->addr == cpu->PC) {
-            ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "> 0x%04X:  %s <", instr->addr, instr->str.c_str());
+            ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "> 0x%04X:   %s%s  %s <", 
+                    instr->addr, 
+                    instr->bytes_str.c_str(), 
+                    padding(3 - instr->len),
+                    instr->assembly_str.c_str());
             tgt = row;
         } else {
-            ImGui::Text("  0x%04X:  %s", instr->addr, instr->str.c_str());
+            ImGui::Text("  0x%04X:   %s%s  %s", 
+                    instr->addr, 
+                    instr->bytes_str.c_str(), 
+                    padding(3 - instr->len),
+                    instr->assembly_str.c_str());
         }
         row++;
     }
@@ -184,6 +203,29 @@ void show_disassmbler(const Cpu *cpu, Disassembler *disasm, UiInfo *info)
 
     ImGui::EndChild();
 
+    // filtered text input
+    ImGuiInputTextFlags flags = ImGuiInputTextFlags_CharsHexadecimal   | 
+                                ImGuiInputTextFlags_EnterReturnsTrue   | 
+                                ImGuiInputTextFlags_AutoSelectAll      | 
+                                ImGuiInputTextFlags_NoHorizontalScroll;
+
+    ImGui::Separator();
+    if (ImGui::Button("Set range")) {
+        std::cout << "a" << std::endl;
+        u16 start = Util::hex_to_u16(textinput_start);
+        u16 end   = Util::hex_to_u16(textinput_end);
+        if (start < end) {
+            std::cout << "b" << std::endl;
+            disassembly_start = start;
+            disassembly_end   = end;
+        }
+    }
+    ImGui::SameLine();
+    ImGui::PushItemWidth(50);
+    ImGui::InputText("start", textinput_start, 5, flags);
+    ImGui::SameLine();
+    ImGui::InputText("end",   textinput_end,   5, flags);
+    ImGui::PopItemWidth();
 }
 
 void show_breakpoints(Disassembler *disasm, UiInfo *info)
@@ -200,7 +242,7 @@ void show_breakpoints(Disassembler *disasm, UiInfo *info)
     for (size_t i = 0; i < info->breakpoints.size(); i++) {
         const bool is_selected = (selected_item_idx == i);
         u16 bp_addr = info->breakpoints[i];
-        std::string instr = Util::int_to_hex(bp_addr) + ":  " + disasm->disassemble_instruction(bp_addr).str;
+        std::string instr = Util::int_to_hex(bp_addr) + ":  " + disasm->disassemble_instruction(bp_addr).assembly_str;
         if (ImGui::Selectable(instr.c_str(), is_selected))
             selected_item_idx = i;
 
@@ -210,19 +252,25 @@ void show_breakpoints(Disassembler *disasm, UiInfo *info)
 
     ImGui::EndListBox();
 
+    // filtered text input
+    ImGuiInputTextFlags flags = ImGuiInputTextFlags_CharsHexadecimal   | 
+                                ImGuiInputTextFlags_EnterReturnsTrue   | 
+                                ImGuiInputTextFlags_AutoSelectAll      | 
+                                ImGuiInputTextFlags_NoHorizontalScroll;
+    bool add_breakpoint = ImGui::InputText("New breakpoint address", textinput, 5, flags);
+    
+    add_breakpoint = add_breakpoint | ImGui::Button("Add Breakpoint");
+    
     // add breakpoint button
-    if (ImGui::Button("Add Breakpoint")) {
+    if (add_breakpoint) {
         u16 new_bp = Util::hex_to_u16(textinput);
         auto it = std::upper_bound(info->breakpoints.cbegin(), info->breakpoints.cend(), new_bp);
         info->breakpoints.insert(it, new_bp);
     }
 
-    // filtered text input
-    ImGui::SameLine();
-    ImGui::InputText("address", textinput, 5, ImGuiInputTextFlags_CharsHexadecimal);
     
     // delete breakpoint button
-    //ImGui::SameLine();
+    ImGui::SameLine();
     if (ImGui::Button("Delete Breakpoint")) {
         if (selected_item_idx >= 0 && selected_item_idx < info->breakpoints.size()) {
             info->breakpoints.erase(info->breakpoints.begin() + selected_item_idx);

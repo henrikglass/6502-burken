@@ -15,7 +15,8 @@
 struct DisassembledInstruction
 {
     bool label = false; // TODO implement "best guess" labels
-    std::string str;
+    std::string assembly_str;
+    std::string bytes_str;
     u16 addr;
     u8 len;
 };
@@ -85,7 +86,7 @@ public:
         this->populate_instruction_info_table();    
     };
     DisassembledInstruction disassemble_instruction(u16 addr);
-    std::vector<DisassembledInstruction *> get_disassembly(u16 addr);
+    std::vector<DisassembledInstruction *> get_disassembly(u16 start_addr, u16 stop_addr);
 };
 
 #endif

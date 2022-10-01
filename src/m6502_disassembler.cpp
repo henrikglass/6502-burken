@@ -2,6 +2,29 @@
 
 #include <iostream>
 
+std::string byte_to_hex(u8 b)
+{
+    char const nibble[16] = {
+        '0', '1', '2', '3', '4', '5', '6', '7',
+        '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
+    };
+
+    std::string hexstr;
+    hexstr += nibble[(b & 0xF0) >> 4];
+    hexstr += nibble[(b & 0x0F)];
+
+    return hexstr;
+}
+
+std::string get_bytes_str(u8 *data, u16 len)
+{
+    std::string bytes_str;
+    for (int i = 0; i < len; i++) {
+        bytes_str += byte_to_hex(data[i]) + " ";
+    }
+    return bytes_str;
+}
+
 /*
  * Puts the disassembly for a page into `*instrs`
  */
@@ -32,12 +55,12 @@ DisassembledInstruction Disassembler::disassemble_instruction(u16 addr)
 
     // at end of memory
     if (addr > Layout::FREE_ROM_HIGH) {
-        ret.str = "end of memory lol TODO"; // TODO
+        ret.assembly_str = "end of memory lol TODO"; // TODO
         ret.len = 0;
         return ret;
     }
 
-    ret.str = info.mnemonic + " " + info.addr_parser(&it);
+    ret.assembly_str = info.mnemonic + " " + info.addr_parser(&it);
     ret.len = it - (this->mem.data + addr);
     return ret;
 }
@@ -60,8 +83,9 @@ int Disassembler::disassemble_page(Page *page, u16 first_instr_addr)
     u8 *it = this->mem.data + first_instr_addr;
 
     while (it < page_end) {
-        u16 offset = (u16) (it - page_start); // fel. -1
-        u8 op_code = *it++;
+        u8 *instr_start = it;
+        u16 offset      = (u16) (it - page_start); // fel. -1
+        u8 op_code      = *it++;
         InstructionInfo info = instruction_info_table[op_code];
 
         // TODO check for jmps and add labels...
@@ -73,7 +97,7 @@ int Disassembler::disassemble_page(Page *page, u16 first_instr_addr)
 
         // if page ends on a brk, stop disassembling (for now)
         if (info.mnemonic == "brk" && offset == 255) {
-            page->code.push_back({false, info.mnemonic, (u16)(page->page_addr + offset), 1}); 
+            page->code.push_back({false, info.mnemonic, "00 ", (u16)(page->page_addr + offset), 1}); 
             return -1;
         }
 
@@ -84,9 +108,10 @@ int Disassembler::disassemble_page(Page *page, u16 first_instr_addr)
 
         page->code.resize((size_t) offset + 1);
         std::string disassembly = info.mnemonic + " " + info.addr_parser(&it);
-        page->code[offset].str = disassembly; 
-        page->code[offset].addr = page->page_addr + offset;
-        page->code[offset].len = (it - page_start) - offset;
+        page->code[offset].addr         = page->page_addr + offset;
+        page->code[offset].len          = (it - page_start) - offset;
+        page->code[offset].assembly_str = disassembly; 
+        page->code[offset].bytes_str    = get_bytes_str(instr_start, page->code[offset].len); 
     }
     
     return it - page_end;
@@ -95,24 +120,24 @@ int Disassembler::disassemble_page(Page *page, u16 first_instr_addr)
 /*
  * Returns the disassembled code at and surrounding `addr`.
  */
-std::vector<DisassembledInstruction *> Disassembler::get_disassembly(u16 addr)
+std::vector<DisassembledInstruction *> Disassembler::get_disassembly(u16 start_addr, u16 stop_addr)
 {
     std::vector<DisassembledInstruction *> instrs;
 
     // figure out where to start disassembling/printing from.
-    u16 page_nr   = addr / Layout::PAGE_SIZE;
-    int instr_off = addr % Layout::PAGE_SIZE;
-    if (this->page_table[page_nr].first_instr_offset != -1) {
-        
-        // If this page has been disassembled. Find the first disassembled
-        // page contigous with this one.
-        while (page_nr > 0 && this->page_table[page_nr - 1].first_instr_offset != -1) {
-            page_nr--;
-        }
+    u16 page_nr   = start_addr / Layout::PAGE_SIZE;
+    int instr_off = start_addr % Layout::PAGE_SIZE;
+    //if (this->page_table[page_nr].first_instr_offset != -1) {
+    //    
+    //    // If this page has been disassembled. Find the first disassembled
+    //    // page contigous with this one.
+    //    while (page_nr > 0 && this->page_table[page_nr - 1].first_instr_offset != -1) {
+    //        page_nr--;
+    //    }
 
-        // overwrite `instr_off`
-        instr_off = this->page_table[page_nr].first_instr_offset;
-    }
+    //    // overwrite `instr_off`
+    //    instr_off = this->page_table[page_nr].first_instr_offset;
+    //}
     const u16 first_page_nr = page_nr;
 
     // disassemble pages
@@ -121,33 +146,33 @@ std::vector<DisassembledInstruction *> Disassembler::get_disassembly(u16 addr)
         // get the address of the first instruction on the page
         u16 first_instr_addr = page_nr * Layout::PAGE_SIZE + instr_off;
 
+        // TODO checksum
+
         // disassemble page starting at `first_instr_addr`.
         instr_off = this->disassemble_page(page, first_instr_addr);
         
         // get the next page
         page = &(this->page_table[++page_nr]);
+
+        // manually stop once we reach a page we don't
+        // care about
+        if (page_nr * 0x100 > stop_addr)
+            break;
+        
+        // Idk if this is handled elsewhere, but let's still make sure
+        // we don't run past the end of memory
+        if (page_nr >= Layout::N_PAGES)
+            break;
     }
 
     // print disassembly
     for (page_nr = first_page_nr; this->page_table[page_nr].first_instr_offset != -1; page_nr++) {
+        if (page_nr * 0x100 > stop_addr)
+            break;
         this->page_table[page_nr].get_disassembly(&instrs);
     }
    
     return instrs;
-}
-
-std::string byte_to_hex(u8 b)
-{
-    char const nibble[16] = {
-        '0', '1', '2', '3', '4', '5', '6', '7',
-        '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
-    };
-
-    std::string hexstr;
-    hexstr += nibble[(b & 0xF0) >> 4];
-    hexstr += nibble[(b & 0x0F)];
-
-    return hexstr;
 }
 
 /*
@@ -209,7 +234,7 @@ std::string addr_ind_Y(u8 **bytes)
 std::string addr_rel(u8 **bytes)
 {
     u8 bb = *(*bytes)++;
-    return "$" + byte_to_hex(bb);
+    return std::to_string((s8)bb);
 }
 
 std::string addr_zpg(u8 **bytes)

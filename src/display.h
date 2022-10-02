@@ -3,6 +3,7 @@
 
 #include "memory.h"
 #include "keyboard.h"
+#include "mouse.h"
 
 // TODO maybe some of these aren't needed
 #include <glad/glad.h>
@@ -52,6 +53,11 @@ public:
      * Attach a keyboard (It needs to borrow the display thread's GLFW context)
      */
     void attach_keyboard(Keyboard *keyboard);
+    
+    /*
+     * Attach a mouse (It needs to borrow the display thread's GLFW context)
+     */
+    void attach_mouse(Mouse *mouse);
 
 private:
 
@@ -103,6 +109,21 @@ private:
      * TODO multiple? Decide how to implement this in the nicest way.
      */
     Keyboard *keyboard = nullptr;
+    
+    /*
+     * Mouse needs a GLFW context, so we provide a way to attach it
+     * to the display thread's GLFW context.
+     *
+     * TODO multiple? Decide how to implement this in the nicest way.
+     */
+    Mouse *mouse = nullptr;
+   
+    /*
+     * If `focused` is true, then 6502-burken owns the mouse input. I.e.
+     * the user cannot interact with the Imgui ui and the mouse cursor 
+     * is hidden. This is toggleable with <C-f> ("control focus").
+     */
+    bool focused = false;
 
     /*
      * OpenGL and GLFW related stuff

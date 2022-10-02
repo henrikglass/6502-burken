@@ -25,6 +25,7 @@ TIMER2_CTRL         = $1703 ; 1 Byte
 TIMER2_DATA         = $1704 ; 2 Bytes
 VGA_CTRL            = $1706 ; 1 Bytes
 KEYBOARD_IO_PORT    = $1708 ; 1 Bytes
+MOUSE_IO_PORT       = $1709 ; 3 Bytes
 IO_PAGE_HIGH        = $17FF
 BOOT_SECTOR_LOW     = $1800
 BOOT_SECTOR_HIGH    = $1FFF
@@ -76,7 +77,7 @@ tmp16_3 = $1e
 
 ret  = $A0
 
-    .org $8000        ; this is a good place for the entry point           
+    .org $8000
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -511,12 +512,28 @@ entry:
     lda #0
     
 
-deadloop:
+gameloop:
     nop
-    sta VGA_SPRITE1 + $21   ; set sprite x (ll)
-    sta VGA_SPRITE1 + $23   ; set sprite y (ll)
-    adc #1
-    jmp deadloop
+    ;sta VGA_SPRITE1 + $21   ; set sprite x (ll)
+    ;sta VGA_SPRITE1 + $23   ; set sprite y (ll)
+    ;adc #1
+    jsr update_mouse_cursor_pos
+    jmp gameloop
+
+update_mouse_cursor_pos:
+    ; update cursor sprite position with mouse io movement registers
+    lda VGA_SPRITE1 + $21
+    adc MOUSE_IO_PORT + $01
+    sta VGA_SPRITE1 + $21
+    lda VGA_SPRITE1 + $23
+    adc MOUSE_IO_PORT + $02
+    sta VGA_SPRITE1 + $23
+
+    ; reset mouse mv registers
+    lda #0
+    sta MOUSE_IO_PORT + $01
+    sta MOUSE_IO_PORT + $02
+    rts
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

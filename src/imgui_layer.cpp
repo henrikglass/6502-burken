@@ -292,6 +292,7 @@ void ImguiLayer::draw_main_window() const
     ImGui::Begin("6502-burken");
 
     ImGui::Text("Fps: %3.1f", this->info->frames_per_second);
+    ImGui::Text("Controls: Use <C-f> to toggle mouse focus");
 
     // --- CPU registers & state ---
     show_cpu_stats(&this->cpu);
@@ -345,9 +346,30 @@ bool ImguiLayer::want_capture_io() const
     return io.WantCaptureKeyboard || io.WantCaptureMouse;
 }
 
+void ImguiLayer::disable_interaction()
+{
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NoMouse;
+    
+}
+
+void ImguiLayer::enable_interaction()
+{
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
+}
+
 void ImguiLayer::shutdown() const
 {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 }
+
+
+
+
+
+
+
+

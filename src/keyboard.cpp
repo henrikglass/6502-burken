@@ -11,7 +11,7 @@ Keyboard::Keyboard(Cpu *cpu, Memory *mem, u16 io_port_address)
 
 void Keyboard::press(int key_code, int mods)
 {
-    //std::cout << key_code << " " << mods << std::endl;
+    std::cout << key_code << " " << mods << std::endl;
 
     // translate keycode + mods combination to 6502-burken keycode byte
     //

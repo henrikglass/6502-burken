@@ -40,6 +40,8 @@ public:
         this->disasm = disasm;
     };
     bool want_capture_io() const;
+    void disable_interaction();
+    void enable_interaction();
     void setup(GLFWwindow *window, const char *glsl_version) const;
     void draw();
     void shutdown() const;

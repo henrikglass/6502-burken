@@ -556,18 +556,47 @@ std::thread Display::start()
         // set timer reference
         timer_start = std::chrono::high_resolution_clock::now();
 
-        // If we have a keyboard attached to this thread, register
-        // a key_callback function with GLFW
+        // register mouse/keyboard callback functions and do general setup of inputs
+        glfwSetWindowUserPointer(this->window, this);
         if (this->keyboard != nullptr) {
-            glfwSetWindowUserPointer(this->window, this);
-            auto key_callback_wrapper = [](GLFWwindow *window, int key_code, int scan_code, int action, int mods){
+            auto key_callback = [](GLFWwindow *window, int key_code, int scan_code, int action, int mods){
                 Display *this_display = static_cast<Display*>(glfwGetWindowUserPointer(window));
+                
+                // ctrl-f (control focus) toggles this->focused
+                if (mods == 2 && key_code == 70 && action == GLFW_PRESS) {
+                    this_display->focused = !this_display->focused;
+                    if (this_display->focused) {
+                        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+                        this_display->imgui_layer->disable_interaction();
+                    } else {
+                        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+                        this_display->imgui_layer->enable_interaction();
+                    }
+                    return;
+                }
+
                 if (this_display->imgui_layer->want_capture_io())
                     return;
-                if (action == GLFW_PRESS)
+                if (action == GLFW_PRESS /* || action == GLFW_REPEAT */)
                     this_display->keyboard->press(key_code, mods);
             };
-            glfwSetKeyCallback(this->window, key_callback_wrapper);
+            glfwSetKeyCallback(this->window, key_callback);
+        }
+        if (this->mouse != nullptr) {
+            if (glfwRawMouseMotionSupported()) {
+                glfwSetInputMode(this->window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+            }
+
+            auto cursor_move_callback = [](GLFWwindow *window, double xpos, double ypos) {
+                Display *this_display = static_cast<Display*>(glfwGetWindowUserPointer(window));
+                if (this_display->focused) {
+                    this_display->mouse->poll(xpos, ypos);
+                } else {
+                    if (this_display->imgui_layer->want_capture_io())
+                        return;
+                }
+            };
+            glfwSetCursorPosCallback(this->window, cursor_move_callback);
         }
 
         // setup AFTER registering GLFW input callback. Otherwise backspace, enter key, etc.
@@ -604,6 +633,11 @@ void Display::attach_imgui_layer(ImguiLayer *imgui_layer)
 void Display::attach_keyboard(Keyboard *keyboard)
 {
     this->keyboard = keyboard;
+}
+    
+void Display::attach_mouse(Mouse *mouse)
+{
+    this->mouse = mouse;
 }
 
 

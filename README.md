@@ -1,4 +1,5 @@
 # 6502-burken
+A WIP computer emulation based on the MOS Technology 6502 cpu.
 
 # Credits
 This project uses open source components, listed below.

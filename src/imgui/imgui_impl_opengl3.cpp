@@ -85,6 +85,9 @@
 //  ES 3.0    300       "#version 300 es"   = WebGL 2.0
 //----------------------------------------
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-dereference"
+
 #if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_WARNINGS)
 #define _CRT_SECURE_NO_WARNINGS
 #endif
@@ -869,3 +872,4 @@ void    ImGui_ImplOpenGL3_DestroyDeviceObjects()
 #if defined(__clang__)
 #pragma clang diagnostic pop
 #endif
+#pragma GCC diagnostic pop

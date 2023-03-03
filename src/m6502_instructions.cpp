@@ -5,10 +5,10 @@
  * Few helper functions and constants
  */
 
-u16 ptr_to_addr(Cpu *cpu, u8 *ptr)
-{
-    return (u16) (ptr - cpu->mem.data);
-}
+//u16 ptr_to_addr(Cpu *cpu, u8 *ptr)
+//{
+//    return (u16) (ptr - cpu->mem.data);
+//}
 
 u8 get_status_bit(Cpu *cpu, u8 bit_pos) 
 {
@@ -105,6 +105,11 @@ u8 op_adc_decimal(Cpu *cpu, u16 a, u16 m, u16 c)
 
 u8 op_sbc_decimal(Cpu *cpu, u16 a, u16 m, u16 c)
 {
+    (void) cpu;
+    (void) a;
+    (void) m;
+    (void) c;
+
     // TODO maybe...
     return 0;
 }
@@ -331,6 +336,8 @@ u8 op_eor(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Increment Cpu->X
 u8 op_inx(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     u8 x = cpu->X;
    
     x++;
@@ -345,6 +352,8 @@ u8 op_inx(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Increment Cpu->Y
 u8 op_iny(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     u8 y = cpu->Y;
    
     y++;
@@ -359,6 +368,8 @@ u8 op_iny(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Decrement Cpu->X
 u8 op_dex(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     u8 x = cpu->X;
    
     x--;
@@ -373,6 +384,8 @@ u8 op_dex(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Decrement Cpu->Y
 u8 op_dey(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     u8 y = cpu->Y;
    
     y--;
@@ -409,6 +422,8 @@ u8 op_bit(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Push Cpu->SR onto stack 
 u8 op_php(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     u8 sr = cpu->SR;
     sr |= (1 << BIT_B);
     sr |= (1 << BIT_UNUSED);
@@ -419,6 +434,8 @@ u8 op_php(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Pull Cpu->SR from stack
 u8 op_plp(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     u8 break_bit  = get_status_bit(cpu, BIT_B);
     u8 unused_bit = get_status_bit(cpu, BIT_UNUSED);
     cpu->SR = stack_pop(cpu); 
@@ -430,6 +447,8 @@ u8 op_plp(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Push Cpu->ACC onto stack 
 u8 op_pha(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     stack_push(cpu, cpu->ACC);
     return 0;
 }
@@ -437,6 +456,8 @@ u8 op_pha(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Pull Cpu->ACC from stack
 u8 op_pla(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     cpu->ACC = stack_pop(cpu);
     set_status_bit(cpu, BIT_N, (cpu->ACC >> 7));
     set_status_bit(cpu, BIT_Z, (cpu->ACC == 0));
@@ -521,6 +542,8 @@ u8 op_ldy(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Transfer Cpu->X --> Cpu->ACC
 u8 op_txa(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     cpu->ACC = cpu->X;
     set_status_bit(cpu, BIT_N, (cpu->ACC >> 7));
     set_status_bit(cpu, BIT_Z, (cpu->ACC == 0));
@@ -530,6 +553,8 @@ u8 op_txa(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Transfer Cpu->Y --> Cpu->ACC
 u8 op_tya(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     cpu->ACC = cpu->Y;
     set_status_bit(cpu, BIT_N, (cpu->ACC >> 7));
     set_status_bit(cpu, BIT_Z, (cpu->ACC == 0));
@@ -539,6 +564,8 @@ u8 op_tya(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Transfer Cpu->ACC --> Cpu->X
 u8 op_tax(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     cpu->X = cpu->ACC;
     set_status_bit(cpu, BIT_N, (cpu->X >> 7));
     set_status_bit(cpu, BIT_Z, (cpu->X == 0));
@@ -548,6 +575,8 @@ u8 op_tax(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Transfer Cpu->ACC --> Cpu->Y
 u8 op_tay(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     cpu->Y = cpu->ACC;
     set_status_bit(cpu, BIT_N, (cpu->Y >> 7));
     set_status_bit(cpu, BIT_Z, (cpu->Y == 0));
@@ -557,6 +586,8 @@ u8 op_tay(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Transfer Cpu->X --> Cpu->SP
 u8 op_txs(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     cpu->SP = cpu->X;
     return 0;
 }
@@ -564,6 +595,8 @@ u8 op_txs(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Transfer Cpu->SP --> Cpu->X
 u8 op_tsx(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     cpu->X = cpu->SP;
     set_status_bit(cpu, BIT_N, (cpu->X >> 7));
     set_status_bit(cpu, BIT_Z, (cpu->X == 0));
@@ -653,6 +686,8 @@ u8 op_bcc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Return from interrupt
 u8 op_rti(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     op_plp(cpu, nullptr); // nullptr = IMPLIED
     cpu->PC  = (u16) stack_pop(cpu);
     cpu->PC |= (u16) (stack_pop(cpu) << 8);
@@ -662,6 +697,8 @@ u8 op_rti(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Return from subroutine
 u8 op_rts(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     cpu->PC  = (u16) stack_pop(cpu);
     cpu->PC |= (u16) (stack_pop(cpu) << 8);
     cpu->PC++;
@@ -677,6 +714,8 @@ u8 op_rts(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Set carry 
 u8 op_sec(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     set_status_bit(cpu, BIT_C, HIGH);
     return 0;
 } 
@@ -684,6 +723,8 @@ u8 op_sec(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Set decimal
 u8 op_sed(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     set_status_bit(cpu, BIT_D, HIGH);
     return 0;
 }
@@ -691,6 +732,8 @@ u8 op_sed(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // set interrupt disable
 u8 op_sei(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     set_status_bit(cpu, BIT_I, HIGH);
     return 0;
 }
@@ -698,6 +741,8 @@ u8 op_sei(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Clear carry
 u8 op_clc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     set_status_bit(cpu, BIT_C, LOW);
     return 0;
 }
@@ -705,6 +750,8 @@ u8 op_clc(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Clear decimal
 u8 op_cld(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     set_status_bit(cpu, BIT_D, LOW);
     return 0;
 }
@@ -712,6 +759,8 @@ u8 op_cld(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Clear overflow
 u8 op_clv(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     set_status_bit(cpu, BIT_V, LOW);
     return 0;
 }
@@ -719,6 +768,8 @@ u8 op_clv(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Clear interrupt disable
 u8 op_cli(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     set_status_bit(cpu, BIT_I, LOW);
     return 0;
 }
@@ -732,6 +783,8 @@ u8 op_cli(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // Break
 u8 op_brk(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     // push return address (2 bytes ahead of op code byte) onto stack
     u16 return_address = cpu->PC + 1;
     stack_push(cpu, (u8) ((return_address & 0xFF00) >> 8)); 
@@ -753,6 +806,9 @@ u8 op_brk(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
 // No operation
 u8 op_nop(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) cpu;
+    (void) addr_mode;
+
     return 0;
 } 
 
@@ -762,6 +818,8 @@ u8 op_nop(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu))
  */
 u8 OP_INVALID(Cpu *cpu, AddrModeRet (*addr_mode)(Cpu *cpu)) 
 {
+    (void) addr_mode;
+
     printf("Error: Hit unkown opcode 0x%02X . Exiting.\n", cpu->mem[cpu->PC - 1]);
     exit(1);
     return 0; // unreachable

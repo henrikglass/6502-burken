@@ -41,6 +41,8 @@ float timer_current;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
+    (void) window;
+
     glViewport(0, 0, width, height);
     display_width  = width;
     display_height = height;
@@ -60,13 +62,13 @@ unsigned int make_shader_program(const char *vert_shader_src, const char *frag_s
     glLinkProgram(shader_program);
     
     // check for compile errors
-    char log[512];
     int vert_success, frag_success, link_success;
     glGetShaderiv(vert_shader, GL_COMPILE_STATUS, &vert_success);
     glGetShaderiv(frag_shader, GL_COMPILE_STATUS, &frag_success);
     glGetProgramiv(shader_program, GL_LINK_STATUS, &link_success);
     if (!(vert_success & frag_success & link_success))
     {
+        char log[512];
         glGetShaderInfoLog(vert_shader, 512, nullptr, log);
         std::cout << "Vertex shader error:\n" << log << std::endl;
         glGetShaderInfoLog(frag_shader, 512, nullptr, log);
@@ -232,7 +234,7 @@ void Display::use_frambuffer_gen_program()
 
     // update uniforms
     glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_ctrl_register"), this->mem[Layout::VGA_CTRL]);
-    glUniform1f(glGetUniformLocation(this->framebuffer_gen_program, "time"), glfwGetTime());
+    glUniform1f(glGetUniformLocation(this->framebuffer_gen_program, "time"), (float) glfwGetTime());
     glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_text_buffer"), 0);
     glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_char_buffer"), 1);
     glUniform1i(glGetUniformLocation(this->framebuffer_gen_program, "vga_color_buffer"), 2);
@@ -265,7 +267,7 @@ void Display::use_ntsc_encode_program()
 
     glUseProgram(this->ntsc_encode_program);
     glUniform1i(glGetUniformLocation(this->ntsc_encode_program, "frame_buffer_texture"), 0);
-    glUniform1f(glGetUniformLocation(this->ntsc_encode_program, "time"), glfwGetTime());
+    glUniform1f(glGetUniformLocation(this->ntsc_encode_program, "time"), (float) glfwGetTime());
     
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->framebuffer_tex_native);
@@ -313,7 +315,7 @@ void Display::use_post_process_program()
     glUniform1i(glGetUniformLocation(this->post_process_program, "frame_buffer_texture"), 0);
     glUniform1ui(glGetUniformLocation(this->post_process_program, "display_width"),  display_width);
     glUniform1ui(glGetUniformLocation(this->post_process_program, "display_height"), display_height);
-    glUniform1f(glGetUniformLocation(this->post_process_program, "time"), glfwGetTime());
+    glUniform1f(glGetUniformLocation(this->post_process_program, "time"), (float) glfwGetTime());
     
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->framebuffer_tex_ntsc_swap);
@@ -410,7 +412,11 @@ int Display::setup()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    this->window = glfwCreateWindow(display_width, display_height, "6502-burken", nullptr, nullptr);
+    this->window = glfwCreateWindow(display_width, 
+                                    display_height, 
+                                    "6502-burken", 
+                                    nullptr, 
+                                    nullptr);
     if (window == nullptr)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -502,8 +508,14 @@ int Display::loop()
     
     glfwSwapBuffers(this->window);
     glfwPollEvents();
+    
+    //if (this->focused && this->mouse != nullptr) {
+    //    double xpos, ypos;
+    //    glfwGetCursorPos(this->window, &xpos, &ypos);
+    //    this->mouse->poll(xpos, ypos);
+    //}
 
-    glBindVertexArray(this->VAO);
+    //glBindVertexArray(this->VAO);
     
     // ---------------- redraw ----------------
 
@@ -560,6 +572,8 @@ std::thread Display::start()
         glfwSetWindowUserPointer(this->window, this);
         if (this->keyboard != nullptr) {
             auto key_callback = [](GLFWwindow *window, int key_code, int scan_code, int action, int mods){
+                (void) scan_code;
+
                 Display *this_display = static_cast<Display*>(glfwGetWindowUserPointer(window));
                 
                 // ctrl-f (control focus) toggles this->focused

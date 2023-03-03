@@ -1,6 +1,8 @@
 #include "m6502_disassembler.h"
+#include "util.h"
 
 #include <iostream>
+#include <algorithm>
 
 std::string byte_to_hex(u8 b)
 {
@@ -42,6 +44,21 @@ void Disassembler::Page::get_disassembly(std::vector<DisassembledInstruction *> 
 }
 
 /*
+ * Recalculate CRC.
+ */
+bool Disassembler::Page::calculate_crc(const Memory &mem)
+{
+    u32 crc = Util::crc32(mem.data + this->page_addr, Layout::PAGE_SIZE);
+
+    if (crc != this->crc) {
+        this->crc = crc;        
+        return true;
+    }
+
+    return false;
+}
+
+/*
  * Not used by disassemble_page() or get_disassembly(). Simply used as a single
  * instruction disassembler for other parts of the code.
  */
@@ -57,11 +74,13 @@ DisassembledInstruction Disassembler::disassemble_instruction(u16 addr)
     if (addr > Layout::FREE_ROM_HIGH) {
         ret.assembly_str = "end of memory lol TODO"; // TODO
         ret.len = 0;
+        ret.label = false;
         return ret;
     }
 
     ret.assembly_str = info.mnemonic + " " + info.addr_parser(&it);
     ret.len = it - (this->mem.data + addr);
+    ret.label = false;
     return ret;
 }
 
@@ -125,44 +144,41 @@ std::vector<DisassembledInstruction *> Disassembler::get_disassembly(u16 start_a
     std::vector<DisassembledInstruction *> instrs;
 
     // figure out where to start disassembling/printing from.
-    u16 page_nr   = start_addr / Layout::PAGE_SIZE;
-    int instr_off = start_addr % Layout::PAGE_SIZE;
-    //if (this->page_table[page_nr].first_instr_offset != -1) {
-    //    
-    //    // If this page has been disassembled. Find the first disassembled
-    //    // page contigous with this one.
-    //    while (page_nr > 0 && this->page_table[page_nr - 1].first_instr_offset != -1) {
-    //        page_nr--;
-    //    }
+    u16 page_nr              = start_addr / Layout::PAGE_SIZE;
+    int instr_off            = start_addr % Layout::PAGE_SIZE;
+    const u16 first_page_nr  = page_nr;
+    
+    // Check if crc checksum has changed.
+    bool crc_changed = false;
+    for (page_nr = first_page_nr; (page_nr * Layout::PAGE_SIZE) < stop_addr; page_nr++) {
+        crc_changed = crc_changed || this->page_table[page_nr].calculate_crc(this->mem);
+    }
+    
+    // Redisassemble all pages if crc changed for just one page.
+    if (crc_changed) {
+        // disassemble pages
+        page_nr = first_page_nr;
+        Page *page = &(this->page_table[page_nr]);
+        while (instr_off >= 0) {
+            // get the address of the first instruction on the page
+            u16 first_instr_addr = page_nr * Layout::PAGE_SIZE + instr_off;
 
-    //    // overwrite `instr_off`
-    //    instr_off = this->page_table[page_nr].first_instr_offset;
-    //}
-    const u16 first_page_nr = page_nr;
+            // disassemble page starting at `first_instr_addr`.
+            instr_off = this->disassemble_page(page, first_instr_addr);
 
-    // disassemble pages
-    Page *page = &(this->page_table[page_nr]);
-    while (instr_off >= 0) {
-        // get the address of the first instruction on the page
-        u16 first_instr_addr = page_nr * Layout::PAGE_SIZE + instr_off;
+            // get the next page
+            page = &(this->page_table[++page_nr]);
 
-        // TODO checksum
+            // manually stop once we reach a page we don't
+            // care about
+            if (page_nr * 0x100 > stop_addr)
+                break;
 
-        // disassemble page starting at `first_instr_addr`.
-        instr_off = this->disassemble_page(page, first_instr_addr);
-        
-        // get the next page
-        page = &(this->page_table[++page_nr]);
-
-        // manually stop once we reach a page we don't
-        // care about
-        if (page_nr * 0x100 > stop_addr)
-            break;
-        
-        // Idk if this is handled elsewhere, but let's still make sure
-        // we don't run past the end of memory
-        if (page_nr >= Layout::N_PAGES)
-            break;
+            // Idk if this is handled elsewhere, but let's still make sure
+            // we don't run past the end of memory
+            if (page_nr >= Layout::N_PAGES)
+                break;
+        }
     }
 
     // print disassembly
@@ -171,7 +187,7 @@ std::vector<DisassembledInstruction *> Disassembler::get_disassembly(u16 start_a
             break;
         this->page_table[page_nr].get_disassembly(&instrs);
     }
-   
+
     return instrs;
 }
 
@@ -182,6 +198,7 @@ std::vector<DisassembledInstruction *> Disassembler::get_disassembly(u16 start_a
  */
 std::string addr_acc(u8 **bytes) 
 {
+    (void) bytes;
     return "A";
 }
 
@@ -209,6 +226,7 @@ std::string addr_imm(u8 **bytes)
 
 std::string addr_impl(u8 **bytes)
 {
+    (void) bytes;
     return "";
 }
 
@@ -287,7 +305,7 @@ void Disassembler::populate_instruction_info_table()
     this->instruction_info_table[0x0E] = {addr_abs,   "asl"};
                                                                     
     // row 1                                                        
-    this->instruction_info_table[0x10] = {addr_impl,  "bpl"};
+    this->instruction_info_table[0x10] = {addr_rel,   "bpl"};
     this->instruction_info_table[0x11] = {addr_ind_Y, "ora"};
     this->instruction_info_table[0x15] = {addr_zpg_X, "ora"};
     this->instruction_info_table[0x16] = {addr_zpg_X, "asl"};

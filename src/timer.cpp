@@ -12,7 +12,7 @@ const u16 prescaler_map[8] = {
 };
 
 Timer::Timer(Cpu &cpu, const Memory &mem, u16 ctrl_address, u16 data_address) :
-    mem(mem), cpu(cpu)
+    mem(mem), cpu(cpu), prescaler_clock_sum(0u)
 {
     this->ctrl_address = ctrl_address;
     this->data_address = data_address;

@@ -525,14 +525,30 @@ update_mouse_cursor_pos:
     lda VGA_SPRITE1 + $21
     adc MOUSE_IO_PORT + $01
     sta VGA_SPRITE1 + $21
+    and #$80
+    lda #$00
+    bpl pos1
+    lda #$ff
+pos1:
+    adc VGA_SPRITE1 + $22
+    sta VGA_SPRITE1 + $22
+
     lda VGA_SPRITE1 + $23
     adc MOUSE_IO_PORT + $02
     sta VGA_SPRITE1 + $23
-
+    and #$80
+    lda #$00
+    bpl pos2
+    lda #$ff
+pos2:
+    adc VGA_SPRITE1 + $24
+    sta VGA_SPRITE1 + $24
+    
     ; reset mouse mv registers
     lda #0
     sta MOUSE_IO_PORT + $01
     sta MOUSE_IO_PORT + $02
+
     rts
 
 

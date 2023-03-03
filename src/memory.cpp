@@ -40,7 +40,7 @@ int Memory::load_from_file(u16 dest, const std::string &path)
     u32 n_read = fread(&(this->data[dest]), sizeof(u8), max_n_bytes, f);
     fclose(f);
     
-    printf("%d bytes read from <%s>\n", n_read, path.c_str());
+    printf("%u bytes read from <%s>\n", n_read, path.c_str());
 
     return 0;
 }

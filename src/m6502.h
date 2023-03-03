@@ -47,7 +47,7 @@ const u8 BIT_N      = 7; // Negative
  */
 struct Cpu 
 {
-    Cpu(Memory &mem);
+    explicit Cpu(Memory &mem);
 
     // Program counter
     u16 PC = 0x00;

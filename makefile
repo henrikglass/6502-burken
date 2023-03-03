@@ -1,14 +1,18 @@
+###############################################################################
+# General configuration
+###############################################################################
+
+.PHONY: test build static-analysis clean tags
+
 # project
 TARGET = 6502-burken
 TARGET_TESTS = 6502-burken-tests
-
-
 
 # make flags
 MAKEFLAGS += --jobs $(shell nproc)
 
 # compiler
-CC 		= g++
+CC = g++
 
 # SUBPROJ_SRCDIRS returns "src/ src/imgui/ ..." etc.
 SUBPROJ_SRCDIRS = $(sort $(dir $(wildcard $(SRCDIR)/*/)))
@@ -22,19 +26,31 @@ SOURCES := $(wildcard $(SRCDIR)/*.cpp)   \
 OBJECTS := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 # For release build
-CFLAGS 	= 	-Iinclude \
-			-Iinclude/imgui \
+WFLAGS  =   -Werror -Wall -Wpedantic -Wextra -Wvla -Wnull-dereference \
+            -Wswitch-enum -Wno-deprecated -Wduplicated-cond \
+            -Wduplicated-branches -Wpointer-arith -Wcast-qual \
+            -Winit-self -Wuninitialized -Wcast-align -Wstrict-aliasing \
+            -Wformat=2 -Wwrite-strings
+
+CFLAGS 	= 	-isystem include \
+			-isystem include/imgui \
 			-Isrc/imgui \
 			-lglfw \
 			-O2 -march=native \
 			-std=c++2a \
-			-Wall -pedantic -Wunused
-
+			$(WFLAGS)
 #-DDEBUG_PRINTS
 #-DSUPPORT_DECIMAL_MODE \
 
+
+CPPCHECKFLAGS   = --max-ctu-depth=3 --enable=all --inline-suppr --suppress=variableScope \
+                  --suppress=missingInclude --suppress=missingIncludeSystem \
+                  --suppress=unmatchedSuppression --suppress=unusedFunction --std=c++11 \
+                  --language=c++
+CLANGTIDYFLAGS  = -checks=bugprone-*,clang-analyzer-*$\
+
 # uncomment for debug build
-#CFLAGS += -O0 -pg -g
+CFLAGS += -O0 -pg -g
 
 test: CFLAGS += -DTEST
 
@@ -55,12 +71,12 @@ INCLUDES 	:= $(wildcard $(SRCDIR)/*.h) \
 			   $(wildcard $(SRCDIR)/imgui/*.h)
 OBJECTS 	:= $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
-build: tags $(OBJDIR) $(TARGET)
+###############################################################################
+# Build rules 
+###############################################################################
+build: $(OBJDIR) $(TARGET)
 
-test: tags $(OBJDIR) $(TARGET_TESTS)
-
-tags:
-	ctags -R src/
+test: $(OBJDIR) $(TARGET_TESTS)
 
 $(BINDIR)/$(TARGET): $(OBJECTS)
 	$(LINKER) $(OBJECTS) $(LFLAGS) -o $@
@@ -74,6 +90,17 @@ $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 $(OBJDIR):
 	mkdir $(OBJDIR)
 	mkdir $(OBJDIR)/imgui
+
+#
+# other rules
+#
+static-analysis:
+	cppcheck $(CPPCHECKFLAGS) -isrc/imgui -isrc/glad.cpp $(SRCDIR)/*
+	clang-tidy $(CLANGTIDYFLAGS) $(SRCDIR)/*.cpp $(SRCDIR)/*.h \
+               -- $(CFLAGS) -Wno-unknown-warning-option
+
+tags:
+	ctags -R src/
 
 clean:
 	rm $(BINDIR)/$(TARGET) &\

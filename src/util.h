@@ -3,7 +3,7 @@
 
 #include "typedefs.h"
 
-#include <cstdint>
+#include <stdint.h>
 #include <string>
 #include <sstream>
 #include <iomanip>
@@ -23,6 +23,8 @@ namespace Util
     }
 
     u16 hex_to_u16(const std::string &str);
+
+    u32 crc32(const u8 *data, size_t len);
 };
 
 #endif

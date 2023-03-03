@@ -16,7 +16,7 @@ void Mouse::poll(double xpos, double ypos)
     static double last_x = 0;
     static double last_y = 0;
 
-    double delta_x = xpos - last_x;
+    double delta_x = xpos - last_x; // compensate for aspect ratio
     double delta_y = ypos - last_y;
 
     last_x = xpos;

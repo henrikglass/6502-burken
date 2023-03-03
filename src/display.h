@@ -30,7 +30,7 @@ class Display
 {
 public:
 
-    Display(const Memory &mem) : mem(mem) 
+    explicit Display(const Memory &mem) : mem(mem) 
     {
         //int err = this->setup();
         //if (err != 0)
@@ -147,49 +147,52 @@ private:
         #include "shaders/post_process.frag"
     ;
 
-    GLFWwindow *window;
+    GLFWwindow *window = nullptr;
     
     // Constants
-    const unsigned int VGA_TEXT_COLUMNS = 80;
-    const unsigned int VGA_TEXT_ROWS    = 25;
-    const unsigned int VGA_CHAR_SIZE    =  8;
-    const unsigned int VGA_COLOR_SIZE   =  3;
-    const unsigned int VGA_N_SPRITES    =  5;
-    const unsigned int VGA_SPRITE_SIZE  = 37; // 4*8 sprite data. 1 byte color. 
-                                              // 2 byte x coord. 2 byte y coord
-    const unsigned int VGA_N_CHARS      = Layout::VGA_CHAR_BUF_SIZE / VGA_CHAR_SIZE;
-    const unsigned int VGA_N_COLORS     = Layout::VGA_COLOR_BUF_SIZE / VGA_COLOR_SIZE;
-    const unsigned int RESOLUTION_X     = VGA_TEXT_COLUMNS * VGA_CHAR_SIZE;
-    const unsigned int RESOLUTION_Y     = VGA_TEXT_ROWS * VGA_CHAR_SIZE;
+    const unsigned int VGA_TEXT_COLUMNS      = 80;
+    const unsigned int VGA_TEXT_ROWS         = 25;
+    const unsigned int VGA_CHAR_SIZE         =  8;
+    const unsigned int VGA_COLOR_SIZE        =  3;
+    const unsigned int VGA_N_SPRITES         =  5;
+    const unsigned int VGA_SPRITE_SIZE       = 37; // 4*8 sprite data. 1 byte color. 
+                                                   // 2 byte x coord. 2 byte y coord
+    const unsigned int VGA_N_CHARS           = Layout::VGA_CHAR_BUF_SIZE / VGA_CHAR_SIZE;
+    const unsigned int VGA_N_COLORS          = Layout::VGA_COLOR_BUF_SIZE / VGA_COLOR_SIZE;
+    const unsigned int RESOLUTION_X          = VGA_TEXT_COLUMNS * VGA_CHAR_SIZE;
+    const unsigned int RESOLUTION_Y          = VGA_TEXT_ROWS * VGA_CHAR_SIZE;
+
+
+    // initialize all these to 0 to suppress cppcheck warnings.
 
     // programs
-    unsigned int framebuffer_gen_program;
-    unsigned int ntsc_encode_program;
-    unsigned int ntsc_decode_pass_a_program;
-    unsigned int ntsc_decode_pass_b_program;
-    unsigned int post_process_program;
+    unsigned int framebuffer_gen_program     = 0;
+    unsigned int ntsc_encode_program         = 0;
+    unsigned int ntsc_decode_pass_a_program  = 0;
+    unsigned int ntsc_decode_pass_b_program  = 0;
+    unsigned int post_process_program        = 0;
 
     // fbos
-    unsigned int offscreen_fbo;
+    unsigned int offscreen_fbo               = 0;
     
     // vbos
-    unsigned int full_screen_tri_vbo; 
+    unsigned int full_screen_tri_vbo         = 0; 
 
     //textures
-    unsigned int vga_text_texture;
-    unsigned int vga_char_texture;
-    unsigned int vga_color_texture;
-    unsigned int vga_sprite_buffer_texture;
-    unsigned int framebuffer_tex_native;
-    unsigned int framebuffer_tex_ntsc_active;
-    unsigned int framebuffer_tex_ntsc_swap;
+    unsigned int vga_text_texture            = 0;
+    unsigned int vga_char_texture            = 0;
+    unsigned int vga_color_texture           = 0;
+    unsigned int vga_sprite_buffer_texture   = 0;
+    unsigned int framebuffer_tex_native      = 0;
+    unsigned int framebuffer_tex_ntsc_active = 0;
+    unsigned int framebuffer_tex_ntsc_swap   = 0;
+    
+    // vaos
+    unsigned int VAO                         = 0;
 
     // other uniforms
     //unsigned int display_width  = 1280;
     //unsigned int display_height =  800;
-
-    // vaos
-    unsigned int VAO;
 
     
 };

@@ -217,8 +217,8 @@ void main()
         uint pos_y_hh = texelFetch(vga_sprite_buffer, ivec2(VGA_SPRITE_POS_Y_OFFSET + 1u, sprite_nr), 0).r;
 
         // figure out the sprite position
-        int pos_x = int((pos_x_hh << 8) + pos_x_ll);
-        int pos_y = int((pos_y_hh << 8) + pos_y_ll);
+        int pos_x = int((pos_x_hh << 8) + pos_x_ll); //>> 3;
+        int pos_y = int((pos_y_hh << 8) + pos_y_ll); //>> 3;
 
         // figure out this fragments position in 6502-space (620x200, border margins, etc.)
         int pixel_pos_x = int(pixel_x / PIXEL_RATIO_X);

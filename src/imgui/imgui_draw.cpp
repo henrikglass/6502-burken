@@ -21,6 +21,8 @@ Index of this file:
 // [SECTION] Default font data (ProggyClean.ttf)
 
 */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-qual"
 
 #if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_WARNINGS)
 #define _CRT_SECURE_NO_WARNINGS
@@ -4160,3 +4162,5 @@ static const char* GetDefaultCompressedFontDataTTFBase85()
 }
 
 #endif // #ifndef IMGUI_DISABLE
+
+#pragma GCC diagnostic pop

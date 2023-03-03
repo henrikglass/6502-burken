@@ -45,7 +45,7 @@ private:
         // as "belonging" to the page. Note: this might include bytes from the 
         // next page (`page_addr` + 0x100) and exclude bytes from the start of 
         // the current page (I.e. those at offsets < `first_instr_offset`).
-        u32 checksum = 0;
+        u32 crc = 0;
 
         // A sparse array that maps address offsets to disassembled instructions 
         // . I.e. mem[`start` + <offset>] = the op-code of the disassembled 
@@ -54,6 +54,9 @@ private:
 
         // Returns the disassembled text as a stringstream.
         void get_disassembly(std::vector<DisassembledInstruction *> *instrs);
+
+        // calculate the crc sum for this page. Returns true if crc has changed.
+        bool calculate_crc(const Memory &mem);
     };
 
     /*
@@ -80,7 +83,7 @@ private:
     void populate_instruction_info_table();
 
 public:
-    Disassembler(const Memory &mem) : mem(mem) 
+    explicit Disassembler(const Memory &mem) : mem(mem) 
     {
         this->init_page_table();
         this->populate_instruction_info_table();    

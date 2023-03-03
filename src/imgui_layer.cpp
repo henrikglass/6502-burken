@@ -131,12 +131,12 @@ void show_disassmbler(const Cpu *cpu, Disassembler *disasm, UiInfo *info)
     const int DISASSEMBLER_SCROLL_MARGIN = 25; 
     
     static u16 disassembly_start = 0x8000;
-    static u16 disassembly_end   = 0xFFFF;
+    static u16 disassembly_end   = 0x8500;
     static char textinput_start[5] = ""; 
     static char textinput_end[5] = ""; 
     
     auto padding = [](int n){
-        return std::string(3 * n, ' ').c_str();
+        return std::string(3 * n, ' ');
     };
 
     ImGui::Separator();
@@ -152,7 +152,6 @@ void show_disassmbler(const Cpu *cpu, Disassembler *disasm, UiInfo *info)
         info->changed = true;
     }
     
-
     if (!info->show_disasm) {
         return;
     }
@@ -166,26 +165,27 @@ void show_disassmbler(const Cpu *cpu, Disassembler *disasm, UiInfo *info)
     for (auto *instr : instrs) {
         for (u16 bp : info->breakpoints) {
             if (bp == instr->addr) {
-                if (info->breakpoints_enabled)
+                if (info->breakpoints_enabled) {
                     ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), ">>>");
-                else
+                } else {
                     ImGui::TextColored(ImVec4(0.3f, 0.3f, 0.3f, 1.0f), ">>>");
+                }
                 ImGui::SameLine();
             }
         }
         if (instr->addr == cpu->PC) {
             ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "> 0x%04X:   %s%s  %s <", 
-                    instr->addr, 
-                    instr->bytes_str.c_str(), 
-                    padding(3 - instr->len),
-                    instr->assembly_str.c_str());
+                               instr->addr, 
+                               instr->bytes_str.c_str(), 
+                               padding(3 - instr->len).c_str(),
+                               instr->assembly_str.c_str());
             tgt = row;
         } else {
             ImGui::Text("  0x%04X:   %s%s  %s", 
-                    instr->addr, 
-                    instr->bytes_str.c_str(), 
-                    padding(3 - instr->len),
-                    instr->assembly_str.c_str());
+                        instr->addr, 
+                        instr->bytes_str.c_str(), 
+                        padding(3 - instr->len).c_str(),
+                        instr->assembly_str.c_str());
         }
         row++;
     }
@@ -195,7 +195,7 @@ void show_disassmbler(const Cpu *cpu, Disassembler *disasm, UiInfo *info)
         float own_scroll_pos = ImGui::GetScrollY();
         float tgt_scroll_pos = float(tgt)/float(row) * (scroll_max + DISASSEMBLER_CONTENT_HEIGHT);
         
-        if (own_scroll_pos + DISASSEMBLER_CONTENT_HEIGHT < tgt_scroll_pos + DISASSEMBLER_SCROLL_MARGIN/2 ||
+        if (own_scroll_pos + DISASSEMBLER_CONTENT_HEIGHT < tgt_scroll_pos + DISASSEMBLER_SCROLL_MARGIN/2.0f ||
                 own_scroll_pos > tgt_scroll_pos) {
             ImGui::SetScrollY(tgt_scroll_pos - DISASSEMBLER_SCROLL_MARGIN);
         }
@@ -272,7 +272,7 @@ void show_breakpoints(Disassembler *disasm, UiInfo *info)
     // delete breakpoint button
     ImGui::SameLine();
     if (ImGui::Button("Delete Breakpoint")) {
-        if (selected_item_idx >= 0 && selected_item_idx < info->breakpoints.size()) {
+        if (selected_item_idx < info->breakpoints.size()) {
             info->breakpoints.erase(info->breakpoints.begin() + selected_item_idx);
         }
     }
@@ -342,7 +342,7 @@ void ImguiLayer::draw()
 
 bool ImguiLayer::want_capture_io() const
 {
-    ImGuiIO& io = ImGui::GetIO();
+    const ImGuiIO& io = ImGui::GetIO();
     return io.WantCaptureKeyboard || io.WantCaptureMouse;
 }
 

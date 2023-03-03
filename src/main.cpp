@@ -4,6 +4,7 @@
 #include <chrono>
 #include <thread>
 #include <cstring>
+#include <algorithm>
 #include <signal.h>
 
 #include "memory.h"
@@ -27,6 +28,8 @@ struct System
 
 void sigint_handler(int signal)
 {
+    (void) signal;
+
     running = false;
 }
 
@@ -71,12 +74,10 @@ void run_simulation(System *system, UiInfo *info)
                 continue;
         }
         if (info->breakpoints_enabled && !info->step_execution) {
-            for (u16 bp : info->breakpoints) {
-                if (system->cpu->PC == bp) {
-                    std::cout << "Hit breakpoint: " << std::hex << bp << std::dec << std::endl;
-                    info->execution_paused = true;
-                    break;
-                }
+            auto bp = std::find(info->breakpoints.begin(), info->breakpoints.end(), system->cpu->PC);
+            if (bp != info->breakpoints.end()) {
+                std::cout << "Hit breakpoint: " << std::hex << *bp << std::dec << std::endl;
+                info->execution_paused = true;
             }
             if (info->execution_paused)
                 continue;

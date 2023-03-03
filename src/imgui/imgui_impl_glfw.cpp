@@ -54,6 +54,10 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-dereference"
+
 // Clang warnings with -Weverything
 #if defined(__clang__)
 #pragma clang diagnostic push
@@ -660,3 +664,4 @@ void ImGui_ImplGlfw_NewFrame()
 #if defined(__clang__)
 #pragma clang diagnostic pop
 #endif
+#pragma GCC diagnostic pop

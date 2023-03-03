@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
 
     // Create an imgui layer and attach it to the OpenGL context of `display`
     UiInfo info;
-    ImguiLayer imgui_layer(cpu, mem, &disassembler, &info);
+    ImguiLayer imgui_layer(&cpu, mem, &disassembler, &info);
     display.attach_imgui_layer(&imgui_layer);
     
     // Create a keyboard and attach it to the GLFW context of `display`
@@ -192,6 +192,14 @@ int main(int argc, char *argv[])
     // Create timers and provide references to cpu and memory
     Timer timer1(cpu, mem, Layout::TIMER1_CTRL, Layout::TIMER1_DATA);
     Timer timer2(cpu, mem, Layout::TIMER2_CTRL, Layout::TIMER2_DATA);
+
+    // load boot program into boot sector
+    if (mem.load_from_file(Layout::BOOT_SECTOR_LOW, "extra/boot.bin") < 0)
+        return 1;
+    
+    // load default reset and interrupt vectors
+    if (mem.load_from_file(Layout::NMI_VECTOR, "extra/vectors.bin") < 0)
+        return 1;
 
     // load program into memory
     if (mem.load_from_file(Layout::FREE_ROM_LOW, argv[1]) < 0)

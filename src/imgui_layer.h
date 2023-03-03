@@ -34,7 +34,7 @@ struct UiInfo
 class ImguiLayer
 {
 public:
-    ImguiLayer(const Cpu &cpu, const Memory &mem, Disassembler *disasm, UiInfo *info) : cpu(cpu), mem(mem) 
+    ImguiLayer(Cpu *cpu, const Memory &mem, Disassembler *disasm, UiInfo *info) : cpu(cpu), mem(mem) 
     {
         this->info = info;
         this->disasm = disasm;
@@ -47,7 +47,7 @@ public:
     void shutdown() const;
     UiInfo *info;
 private:
-    const Cpu &cpu;
+    Cpu *cpu;
     const Memory &mem;
     Disassembler *disasm;
 

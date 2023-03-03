@@ -50,8 +50,15 @@ void show_cpu_stats(const Cpu *cpu)
     );
 }
 
-void show_simulation_control(UiInfo *info)
+void show_simulation_control(Cpu *cpu, UiInfo *info)
 {
+    static char textinput_pc_set[5] = ""; 
+    // filtered text input
+    ImGuiInputTextFlags flags = ImGuiInputTextFlags_CharsHexadecimal   | 
+                                ImGuiInputTextFlags_EnterReturnsTrue   | 
+                                ImGuiInputTextFlags_AutoSelectAll      | 
+                                ImGuiInputTextFlags_NoHorizontalScroll;
+
     ImGui::Separator();
     ImGui::Text("Simulation control:\n");
     if (ImGui::Button(info->execution_paused ? "Resume" : "Pause")) {
@@ -88,6 +95,15 @@ void show_simulation_control(UiInfo *info)
         ImGui::SameLine();
         ImGui::Text("-");
     }
+    
+    ImGui::PushItemWidth(50);
+    if (ImGui::Button("Set PC")) {
+        u16 new_pc = Util::hex_to_u16(textinput_pc_set);
+        cpu->PC = new_pc;
+    }
+    ImGui::SameLine();
+    ImGui::InputText("address", textinput_pc_set, 5, flags);
+    ImGui::PopItemWidth();
 }
 
 void show_mem_editor(const Memory *mem, const Cpu *cpu, UiInfo *info)
@@ -211,11 +227,9 @@ void show_disassmbler(const Cpu *cpu, Disassembler *disasm, UiInfo *info)
 
     ImGui::Separator();
     if (ImGui::Button("Set range")) {
-        std::cout << "a" << std::endl;
         u16 start = Util::hex_to_u16(textinput_start);
         u16 end   = Util::hex_to_u16(textinput_end);
         if (start < end) {
-            std::cout << "b" << std::endl;
             disassembly_start = start;
             disassembly_end   = end;
         }
@@ -262,7 +276,7 @@ void show_breakpoints(Disassembler *disasm, UiInfo *info)
     add_breakpoint = add_breakpoint | ImGui::Button("Add Breakpoint");
     
     // add breakpoint button
-    if (add_breakpoint) {
+    if (add_breakpoint && (textinput[0] != '\00')) {
         u16 new_bp = Util::hex_to_u16(textinput);
         auto it = std::upper_bound(info->breakpoints.cbegin(), info->breakpoints.cend(), new_bp);
         info->breakpoints.insert(it, new_bp);
@@ -295,24 +309,24 @@ void ImguiLayer::draw_main_window() const
     ImGui::Text("Controls: Use <C-f> to toggle mouse focus");
 
     // --- CPU registers & state ---
-    show_cpu_stats(&this->cpu);
+    show_cpu_stats(this->cpu);
 
     // --- Breakpoints ---
     show_breakpoints(this->disasm, this->info);
 
     // --- program visualization ---
-    show_disassmbler(&this->cpu, this->disasm, this->info);
+    show_disassmbler(this->cpu, this->disasm, this->info);
 
     // --- Execution speed control --- 
-    show_simulation_control(this->info);
+    show_simulation_control(this->cpu, this->info);
     
     // --- Memory inspector ---
-    show_mem_editor(&this->mem, &this->cpu, this->info);
+    show_mem_editor(&this->mem, this->cpu, this->info);
 
     ImGui::End();
 
     // some logic
-    last_frame_pc = this->cpu.PC;
+    last_frame_pc = this->cpu->PC;
 }
 
 void ImguiLayer::setup(GLFWwindow *window, const char *glsl_version) const

@@ -21,7 +21,6 @@ int64_t Util::precise_sleep(int64_t ns)
 
     const int sleep_method_threshold_ns = 5000000; // 5 ms
     const int spin_lock_threshold_ns = 1000; // 10 us 
-    //const int spin_lock_threshold_ns = 0; // 1 us 
 
     // utilize OS sleep function for coarser sleeps
     while (ns > sleep_method_threshold_ns) {

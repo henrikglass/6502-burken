@@ -7,6 +7,8 @@
 #include "imgui_memory_editor/imgui_memory_editor.h"
 #include "util.h"
 
+#include <algorithm>
+
 static MemoryEditor mem_edit;
 
 static u16 last_frame_pc;
